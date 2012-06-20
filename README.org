@@ -1,4 +1,14 @@
-kfs-maven-archetype
-===================
+* kfs-maven-plugin
 
-Maven archetype for converting/creating mavenized KFS/Overlay distributions
+Maven plugin for converting/creating mavenized KFS/Overlay distributions
+
+** How does it work?
+
+The KFS maven plugin works in 2 separate use cases
+
+*** Create a new KFS Overlay
+
+
+*** Convert an existing KFS distribution into a maven project
+
+* Usage
