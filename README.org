@@ -39,6 +39,6 @@ mvn -cpu kfs:overlay -DgroupId=org.kualigan -DartifactId=kfs -Dversion=4.0.0
 #+BEGIN_EXAMPLE
 
 mvn -cpu install:install-file kfs:overlay -DgroupId=org.kualigan
--DartifactId=kfs -Dversion=4.0.0 -Dfile=kfs.war
+-DartifactId=kfs -Dversion=4.0.0 -Dpackaging=war -Dfile=kfs.war
 
 #+END_EXAMPLE
