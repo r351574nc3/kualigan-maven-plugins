@@ -11,4 +11,16 @@ The KFS maven plugin works in 2 separate use cases
 
 *** Convert an existing KFS distribution into a maven project
 
-* Usage
+** Usage
+
+#+BEGIN_EXAMPLE
+
+mvn -cpu kfs:create
+
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+
+mvn -cpu kfs:overlay
+
+#+END_EXAMPLE
