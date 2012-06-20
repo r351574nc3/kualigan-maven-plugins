@@ -19,8 +19,26 @@ mvn -cpu kfs:create
 
 #+END_EXAMPLE
 
+*** Overlay using simplified GAV syntax
 #+BEGIN_EXAMPLE
 
-mvn -cpu kfs:overlay
+mvn -cpu kfs:overlay -Dgav=org.kualigan:kfs:4.0.0
+
+#+END_EXAMPLE
+
+*** Overlay using more verbose/formal syntax
+
+#+BEGIN_EXAMPLE
+
+mvn -cpu kfs:overlay -DgroupId=org.kualigan -DartifactId=kfs -Dversion=4.0.0
+
+#+END_EXAMPLE
+
+*** Overlay using more verbose/formal syntax adding install goal
+
+#+BEGIN_EXAMPLE
+
+mvn -cpu install:install-file kfs:overlay -DgroupId=org.kualigan
+-DartifactId=kfs -Dversion=4.0.0 -Dfile=kfs.war
 
 #+END_EXAMPLE
