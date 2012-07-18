@@ -15,9 +15,22 @@ The KFS maven plugin works in 2 separate use cases
 
 #+BEGIN_EXAMPLE
 
+mvn -cpu kfs:migrate -Dkfs.local.path=$HOME/workspace/kfs/trunk
+
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+
 mvn -cpu kfs:create
 
 #+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+
+mvn -cpu kfs:create -Dkfs.svn.path=https://svn.kuali.org/repos/kfs/branches/tem-release-5-0-merge
+
+#+END_EXAMPLE
+
 
 *** Overlay using simplified GAV syntax
 #+BEGIN_EXAMPLE
