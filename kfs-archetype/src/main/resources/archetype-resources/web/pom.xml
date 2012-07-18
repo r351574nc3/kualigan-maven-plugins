@@ -36,25 +36,6 @@ limitations under the License.
 
   <build>
     <finalName>${project.parent.name}-${environment}</finalName>
-    <filters>
-      <filter>${user.home}/kfs-build.properties</filter>
-      <filter>${env.filter}</filter>
-      <filter>${filter.directory}/b2b.properties</filter>
-      <filter>${filter.directory}/batch.properties</filter>
-      <filter>${filter.directory}/build.properties</filter>
-      <filter>${filter.directory}/build-foundation.properties</filter>
-      <filter>${filter.directory}/cas.properties</filter>
-      <filter>${filter.directory}/database.properties</filter>
-      <filter>${filter.directory}/directory.properties</filter>
-      <filter>${filter.directory}/email.properties</filter>
-      <filter>${filter.directory}/ldap.properties</filter>
-      <filter>${filter.directory}/logging.properties</filter>
-      <filter>${filter.directory}/rice.properties</filter>
-      <filter>${filter.directory}/spring.properties</filter>
-      <filter>${filter.directory}/springide.properties</filter>
-      <filter>${filter.directory}/url.properties</filter>
-      <filter>${filter.directory}/web.properties</filter>
-    </filters>
     
     <resources>
       <resource>
