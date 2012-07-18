@@ -4,7 +4,7 @@
 
   <groupId>org.kualigan.maven.archetypes</groupId>
   <artifactId>kfs-archetype</artifactId>
-  <version>0.0.1</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>kfs-archetype</name>
@@ -77,9 +77,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:r351574nc3/kfs-maven.git/kfs</connection>
-    <developerConnection>scm:git:git@github.com:r351574nc3/kfs-maven.git/kfs</developerConnection>
-    <url>http://www.github.com/r351574nc3/kfs-maven/kfs</url>
+    <connection>scm:git:git@github.com:r351574nc3/kfs-maven-plugin.git/kfs</connection>
+    <developerConnection>scm:git:git@github.com:r351574nc3/kfs-maven-plugin.git/kfs</developerConnection>
+    <url>http://www.github.com/r351574nc3/kfs-maven-plugin</url>
   </scm>
 
   <distributionManagement>
