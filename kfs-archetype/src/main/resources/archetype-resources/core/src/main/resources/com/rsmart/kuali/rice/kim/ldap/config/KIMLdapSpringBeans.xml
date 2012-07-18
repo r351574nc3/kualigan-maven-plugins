@@ -1,0 +1,261 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/cache
+                           http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
+  
+
+
+  <bean id="contextSource" class="org.springframework.ldap.core.support.LdapContextSource">
+    <property name="url" value="${symbol_dollar}{rice.ldap.url}" />
+    <property name="base" value="${symbol_dollar}{rice.ldap.base}" />
+    <property name="authenticationSource" ref="authenticationSource" />
+  </bean>
+
+  <bean id="kimPlatformAwareDao" abstract="true"
+		class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
+    <property name="jcdAlias" value="kimDataSource" />
+    <property name="dbPlatform" ref="dbPlatform" />
+  </bean>
+
+  <bean id="authenticationSource"
+		class="org.springframework.ldap.authentication.DefaultValuesAuthenticationSourceDecorator">
+    <property name="target" ref="springSecurityAuthenticationSource" />
+    <property name="defaultUser" value="${symbol_dollar}{rice.ldap.username}" />
+    <property name="defaultPassword" value="${symbol_dollar}{rice.ldap.password}" />
+  </bean>
+
+  <bean id="springSecurityAuthenticationSource"
+		class="org.springframework.security.ldap.authentication.SpringSecurityAuthenticationSource" />
+
+  <bean id="ldapTemplate" class="org.springframework.ldap.core.LdapTemplate">
+    <constructor-arg ref="contextSource" />
+  </bean>
+
+  <!-- //////////////////////////////////////////////////////////////// -->
+  <!-- // Start of Mappings // -->
+  <!-- //////////////////////////////////////////////////////////////// -->
+  <bean id="ContextMapper-kimEntityAddressInfo" parent="ContextMapper-kimEntityAddressInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityAddressInfo-parentBean" abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityAddressInfoMapper">
+    <property name="constants" ref="kimConstants" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityAffiliationInfo" parent="ContextMapper-kimEntityAffiliationInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityAffiliationInfo-parentBean"
+		abstract="true" class="org.kuali.rice.kim.ldap.KimEntityAffiliationInfoMapper">
+    <property name="constants" ref="kimConstants" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityDefaultInfo" parent="ContextMapper-kimEntityDefaultInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityDefaultInfo-parentBean" abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityDefaultInfoMapper">
+    <property name="constants" ref="kimConstants" />
+    <property name="affiliationMapper" ref="ContextMapper-kimEntityAffiliationInfo" />
+    <property name="defaultNameMapper" ref="ContextMapper-kimEntityNameInfo" />
+    <property name="employmentMapper"
+              ref="ContextMapper-kimEntityEmploymentInformationInfo" />
+    <property name="entityTypeMapper" ref="ContextMapper-kimEntityEntityTypeDefaultInfo" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityEmailInfo" parent="ContextMapper-kimEntityEmailInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityEmailInfo-parentBean" abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityEmailInfoMapper">
+    <property name="constants" ref="kimConstants" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityEmploymentInformationInfo"
+		parent="ContextMapper-kimEntityEmploymentInformationInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityEmploymentInformationInfo-parentBean"
+		abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityEmploymentInformationInfoMapper">
+    <property name="constants" ref="kimConstants" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityEntityTypeDefaultInfo" parent="ContextMapper-kimEntityEntityTypeDefaultInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityEntityTypeDefaultInfo-parentBean"
+		abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityEntityTypeDefaultInfoMapper">
+    <property name="constants" ref="kimConstants" />
+    <property name="addressMapper" ref="ContextMapper-kimEntityAddressInfo" />
+    <property name="phoneMapper" ref="ContextMapper-kimEntityPhoneInfo" />
+    <property name="emailMapper" ref="ContextMapper-kimEntityEmailInfo" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityEntityTypeInfo" parent="ContextMapper-kimEntityEntityTypeInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityEntityTypeInfo-parentBean"
+		abstract="true" class="org.kuali.rice.kim.ldap.KimEntityEntityTypeInfoMapper">
+    <property name="constants" ref="kimConstants" />
+    <property name="addressMapper" ref="ContextMapper-kimEntityAddressInfo" />
+    <property name="phoneMapper" ref="ContextMapper-kimEntityPhoneInfo" />
+    <property name="emailMapper" ref="ContextMapper-kimEntityEmailInfo" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityInfo" parent="ContextMapper-kimEntityInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityInfo-parentBean" abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityInfoMapper">
+    <property name="constants" ref="kimConstants" />
+    <property name="affiliationMapper" ref="ContextMapper-kimEntityAffiliationInfo" />
+    <property name="defaultNameMapper" ref="ContextMapper-kimEntityNameInfo" />
+    <property name="employmentMapper"
+              ref="ContextMapper-kimEntityEmploymentInformationInfo" />
+    <property name="entityTypeMapper" ref="ContextMapper-kimEntityEntityTypeInfo" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityNameInfo" parent="ContextMapper-kimEntityNameInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityNameInfo-parentBean" abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityNameInfoMapper">
+    <property name="constants" ref="kimConstants" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityNamePrincipalNameInfo" parent="ContextMapper-kimEntityNamePrincipalNameInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityNamePrincipalNameInfo-parentBean"
+		abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityNamePrincipalNameInfoMapper">
+    <property name="constants" ref="kimConstants" />
+    <property name="defaultNameMapper" ref="ContextMapper-kimEntityNameInfo" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityPhoneInfo" parent="ContextMapper-kimEntityPhoneInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityPhoneInfo-parentBean" abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityPhoneInfoMapper">
+    <property name="constants" ref="kimConstants" />
+  </bean>
+
+  <bean id="ContextMapper-kimEntityPrivacyPreferencesInfo"
+		parent="ContextMapper-kimEntityPrivacyPreferencesInfo-parentBean" />
+  <bean id="ContextMapper-kimEntityPrivacyPreferencesInfo-parentBean"
+		abstract="true"
+		class="org.kuali.rice.kim.ldap.KimEntityPrivacyPreferencesInfoMapper">
+    <property name="constants" ref="kimConstants" />
+  </bean>
+
+  <bean id="ContextMapper-kimPrincipalInfo" parent="ContextMapper-kimPrincipalInfo-parentBean" />
+  <bean id="ContextMapper-kimPrincipalInfo-parentBean" abstract="true"
+		class="${package}.KimPrincipalInfoMapper">
+    <property name="constants" ref="kimConstants" />
+    <property name="parameterService" ref="parameterService" />
+  </bean>
+
+  <!-- //////////////////////////////////////////////////////////////// -->
+  <!-- // End of Mappings // -->
+  <!-- //////////////////////////////////////////////////////////////// -->
+
+
+  <bean id="kimConstants" class="org.kuali.rice.kim.util.ConstantsImpl">
+    <!-- for both KimPrincipal and KimEntity -->
+    <property name="kimLdapIdProperty" value="${symbol_dollar}{rice.ldapattr.entityId}" />
+
+    <!-- for KimPrincipalInfo -->
+    <property name="kimLdapNameProperty" value="${symbol_dollar}{rice.ldapattr.principalName}" />
+    <property name="principalAlwayActive" value="${symbol_dollar}{rice.ldap.principalAlwaysActive}" />
+
+    <!-- for KimEntityNameInfo -->
+    <property name="snLdapProperty" value="${symbol_dollar}{rice.ldapattr.lastName}" />
+    <property name="middleNameLdapProperty" value="${symbol_dollar}{rice.ldapattr.middleName}" />
+    <property name="givenNameLdapProperty" value="${symbol_dollar}{rice.ldapattr.firstName}" />
+    <property name="cnLdapProperty" value="${symbol_dollar}{rice.ldapattr.fullName}" />
+    <property name="titleLdapProperty" value="${symbol_dollar}{rice.ldapattr.title}" />
+    <property name="entityTitleLength" value="${symbol_dollar}{rice.kim.entityTitleLength}" />
+
+    <!-- for KimEntityEmailInfo -->
+    <property name="mailLdapProperty" value="${symbol_dollar}{rice.ldapattr.email}" />
+
+    <!-- for KimEntityPhoneInfo -->
+    <property name="phoneLdapProperty" value="${symbol_dollar}{rice.ldapattr.phoneNumber}" />
+    <property name="phonePatternKim" value="${symbol_dollar}{rice.pattern.phoneNumberKimFormat}" />
+    <property name="phonePatternLdap" value="${symbol_dollar}{rice.pattern.phoneNumberLdapRegex}" />
+
+    <!-- for KimEntityEmploymentInformationInfo -->
+    <property name="employeeIdProperty" value="${symbol_dollar}{rice.ldapattr.employeeId}" />
+    <property name="empolyeePayrollIdProperty" value="${symbol_dollar}{rice.ldapattr.payrollId}" />
+    <property name="departmentCodeLdapProperty" value="${symbol_dollar}{rice.ldapattr.deptNumber}" />
+    <property name="departmentNameLdapProperty" value="${symbol_dollar}{rice.ldapattr.deptName}" />
+    <property name="employeeTypeProperty" value="${symbol_dollar}{rice.ldapattr.employeeType}" />
+    <property name="employeeStatusProperty" value="${symbol_dollar}{rice.ldapattr.employeeStatus}" />
+    <property name="employeeTypeMappings" value="${symbol_dollar}{rice.ldap.employeeTypeMappings}" />
+    <property name="employeeStatusMappings" value="${symbol_dollar}{rice.ldap.employeeStatusMappings}" />
+    <property name="employeeStatusId" value="${symbol_dollar}{rice.kim.employee.status.id}" />
+
+    <!-- for KimEntityAddressInfo -->
+    <property name="line1LdapProperty" value="${symbol_dollar}{rice.ldapattr.line1Addr}" />
+    <property name="line2LdapProperty" value="${symbol_dollar}{rice.ldapattr.line2Addr}" />
+    <property name="streetLdapProperty" value="${symbol_dollar}{rice.ldapattr.street}" />
+    <property name="postalAddrLdapProperty" value="${symbol_dollar}{rice.ldapattr.postalAddr}" />
+    <property name="cityLdapProperty" value="${symbol_dollar}{rice.ldapattr.city}" />
+    <property name="stateLdapProperty" value="${symbol_dollar}{rice.ldapattr.state}" />
+    <property name="zipCodeLdapProperty" value="${symbol_dollar}{rice.ldapattr.zipCode}" />
+    <property name="countryLdapProperty" value="${symbol_dollar}{rice.ldapattr.country}" />
+    <property name="defaultCountryCode" value="${symbol_dollar}{rice.ldap.defaultCountryCode}" />
+    <property name="defaultZipCode" value="${symbol_dollar}{rice.ldap.defaultZipCode}" />
+    <property name="cityZipMappings" value="${symbol_dollar}{rice.ldap.cityZipMappings}" />
+
+    <!-- for KimEntityAffiliationInfo -->
+    <property name="campusCodeLdapProperty" value="${symbol_dollar}{rice.ldapattr.campus}" />
+    <property name="campusLdapProperty" value="${symbol_dollar}{rice.ldapattr.campus}" />
+    <property name="primaryAffiliationLdapProperty" value="${symbol_dollar}{rice.ldapattr.primaryAffiliation}" />
+    <property name="affiliationLdapProperty" value="${symbol_dollar}{rice.ldapattr.affiliation}" />
+    <property name="campusMappings" value="${symbol_dollar}{rice.ldap.campusMappings}" />
+    <property name="affiliationMappings" value="${symbol_dollar}{rice.ldap.affiliationMappings}" />
+    <property name="employeeAffiliationCodes" value="Staff,Student,Faculty,Employee" />
+    <property name="defaultCampusCode" value="${symbol_dollar}{rice.ldap.defaultCampusCode}" />
+
+    <!-- for KimEntityEntityTypeDefaultInfo and KimEntityEntityTypeInfo -->
+    <property name="kimToLdapFieldMappings" value="${symbol_dollar}{kim.to.ldap.field.mappings}" />
+    <property name="kimToLdapValueMappings" value="${symbol_dollar}{kim.to.ldap.value.mappings}" />
+    <property name="parameterNamespaceCode" value="KR-SYS" />
+    <property name="parameterDetailTypeCode" value="Config" />
+    <property name="personEntityTypeCode" value="PERSON" />
+
+    <property name="kimToLdapUnmappedMappings" value="employeeStatus=, employeeType=" />
+
+
+    <property name="externalIdTypeCode" value="${symbol_dollar}{rice.kim.externalIdTypeCode}" />
+    <property name="externalIdProperty" value="externalIdentifiers.externalId" />
+    <property name="externalIdTypeProperty"
+              value="externalIdentifiers.externalIdentifierTypeCode" />
+  </bean>
+
+  <bean id="ldapPrincipalDao" class="org.kuali.rice.kim.dao.impl.LdapPrincipalDaoImpl">
+    <property name="ldapTemplate" ref="ldapTemplate" />
+    <property name="parameterService" ref="parameterService" />
+    <property name="kimConstants" ref="kimConstants" />
+
+    <property name="contextMappers">
+      <map>
+        <entry key="KimPrincipalInfo" value-ref="ContextMapper-kimPrincipalInfo" />
+        <entry key="KimEntityAddressInfo" value-ref="ContextMapper-kimEntityAddressInfo" />
+        <entry key="KimEntityAffiliationInfo" value-ref="ContextMapper-kimEntityAffiliationInfo" />
+        <entry key="KimEntityDefaultInfo" value-ref="ContextMapper-kimEntityDefaultInfo" />
+        <entry key="KimEntityEmailInfo" value-ref="ContextMapper-kimEntityEmailInfo" />
+        <entry key="KimEntityEmploymentInformationInfo" value-ref="ContextMapper-kimEntityEmploymentInformationInfo" />
+        <entry key="KimEntityEntityTypeDefaultInfo" value-ref="ContextMapper-kimEntityEntityTypeDefaultInfo" />
+        <entry key="KimEntityEntityTypeInfo" value-ref="ContextMapper-kimEntityEntityTypeInfo" />
+        <entry key="KimEntityInfo" value-ref="ContextMapper-kimEntityInfo" />
+        <entry key="KimEntityNameInfo" value-ref="ContextMapper-kimEntityNameInfo" />
+        <entry key="KimEntityNamePrincipalNameInfo" value-ref="ContextMapper-kimEntityNamePrincipalNameInfo" />
+        <entry key="KimEntityPhoneInfo" value-ref="ContextMapper-kimEntityPhoneInfo" />
+        <entry key="KimEntityPrivacyPreferencesInfo" value-ref="ContextMapper-kimEntityPrivacyPreferencesInfo" />
+      </map>
+    </property>
+  </bean>
+
+  <bean id="kimIdentityDelegateService"
+		class="org.kuali.rice.kim.service.impl.LdapIdentityDelegateServiceImpl">
+    <property name="principalDao" ref="ldapPrincipalDao" />
+  </bean>
+
+  <bean id="kimUiDocumentService"
+		class="org.kuali.rice.kim.service.impl.LdapUiDocumentServiceImpl" />
+
+  <bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.LdapKimGroupDaoImpl"
+		parent="kimPlatformAwareDao" p:personService-ref="personService" />
+
+
+</beans>

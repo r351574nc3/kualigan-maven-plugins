@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Copyright 2005-2012 The Kuali Foundation
+
+Licensed under the Educational Community License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.opensource.org/licenses/ecl2.php
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+--><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>${groupId}</groupId>
+    <artifactId>${rootArtifactId}</artifactId>
+    <version>${version}</version>
+  </parent>
+  <artifactId>${artifactId}</artifactId>
+  <packaging>war</packaging>
+  
+  <properties>
+    <kfs.web.unpack.phase>none</kfs.web.unpack.phase>
+    <help.unpack.phase>none</help.unpack.phase>
+    <help.unpack.phase>none</help.unpack.phase>
+    <build.environment>dev</build.environment>
+    <env.filter>${filter.directory}/${build.environment}-build.properties</env.filter>
+    <login.user>williamh</login.user>
+  </properties>
+
+  <build>
+    <finalName>${project.parent.name}-${environment}</finalName>
+    <filters>
+      <filter>${user.home}/kfs-build.properties</filter>
+      <filter>${env.filter}</filter>
+      <filter>${filter.directory}/b2b.properties</filter>
+      <filter>${filter.directory}/batch.properties</filter>
+      <filter>${filter.directory}/build.properties</filter>
+      <filter>${filter.directory}/build-foundation.properties</filter>
+      <filter>${filter.directory}/cas.properties</filter>
+      <filter>${filter.directory}/database.properties</filter>
+      <filter>${filter.directory}/directory.properties</filter>
+      <filter>${filter.directory}/email.properties</filter>
+      <filter>${filter.directory}/ldap.properties</filter>
+      <filter>${filter.directory}/logging.properties</filter>
+      <filter>${filter.directory}/rice.properties</filter>
+      <filter>${filter.directory}/spring.properties</filter>
+      <filter>${filter.directory}/springide.properties</filter>
+      <filter>${filter.directory}/url.properties</filter>
+      <filter>${filter.directory}/web.properties</filter>
+    </filters>
+    
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+        <excludes>
+          <exclude>**/*.zip</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>${maven-antrun-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>unpack-help</id>
+            <phase>${help.unpack.phase}</phase>
+            <configuration>
+              <target>
+                <unzip src="src/main/resources/help.zip" dest="src/main/webapp/static/help/" overwrite="false" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Unpacks the datadictionary because KFS has trouble accessing the datadictionary from a jar -->       
+      <!-- When we add modules, make sure we unpack the DD -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>${maven-dependency-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>unpack-datadictionary</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>rsmart-kfs-core</artifactId>
+                  <version>${project.version}</version>  
+                  <type>jar</type>
+                  <overWrite>true</overWrite>
+                  <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                  <excludes>**/*.class</excludes>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+            </execution>
+          </executions>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+      </plugin>
+
+    </plugins>
+
+
+  </build> 
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.kuali.rice</groupId>
+      <artifactId>rice-ldap</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>${kfs.maven.groupId}</groupId>
+      <artifactId>${rootArtifactId}-web</artifactId>
+      <version>${version}</version>  
+      <type>tar.bz2</type>
+      <classifier>src</classifier>
+    </dependency>
+    <dependency>
+      <groupId>${kfs.maven.groupId}</groupId>
+      <artifactId>${rootArtifactId}-web</artifactId>
+      <version>${version}</version>  
+      <type>war</type>
+    </dependency>
+    <dependency>
+      <groupId>${project.groupId}</groupId>
+      <artifactId>rsmart-${rootArtifactId}-core</artifactId>
+      <version>${version}</version>  
+    </dependency>
+    <!--
+    <dependency>
+      <groupId>org.apache.directory.server</groupId>
+      <artifactId>apacheds-all</artifactId>
+    </dependency> 
+  -->
+ </dependencies> 
+</project>
