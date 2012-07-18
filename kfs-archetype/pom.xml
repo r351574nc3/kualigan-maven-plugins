@@ -9,7 +9,7 @@
 
   <groupId>org.kualigan.maven.archetypes</groupId>
   <artifactId>kfs-archetype</artifactId>
-  <version>0.0.3-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>kfs-archetype</name>
@@ -51,9 +51,35 @@
         </plugin>
       </plugins>
     </pluginManagement>
+
   </build>
 
-  <url>https://github.com/r351574nc3/kfs-overlay-reference/</url>
+    <profiles>
+        <profile>
+            <id>kuali-release</id>
+            <properties>
+                <kuali.gpg.phase>install</kuali.gpg.phase>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>gpg</id>
+                                <phase>${kuali.gpg.phase}</phase>
+                                <goals>
+                                  <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <url>https://github.com/r351574nc3/kfs-overlay-reference/</url>
 
   <developers>
     <developer>
