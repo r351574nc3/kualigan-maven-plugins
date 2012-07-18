@@ -61,7 +61,7 @@ public class CreateOverlayMojo extends AbstractMojo {
      * @parameter expression="${kfs.local.path}"
      * @required
      */
-    private String kfsPath
+    private String kfsPath;
 
     /**
      * @parameter expression="${groupId}"

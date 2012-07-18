@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.kuali.pom</groupId>
     <artifactId>kuali-common</artifactId>
-    <version>1.3.8</version>
+    <version>1.3.12</version>
   </parent>
   
   <groupId>org.kualigan.maven.plugins</groupId>
@@ -29,30 +29,6 @@
       </resource>
     </resources>
     <plugins>
-      <plugin>
-        <!--
-          building this plugin requires Java6 (and not 5 nor 7) because it still
-          has old APT processor code that's no longer present in Java7.
-          We can lift this restriction when we remove Java5 compatibility in development
-        -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <version>1.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireJavaVersion>
-                  <version>(1.6,1.7)</version>
-                </requireJavaVersion>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
@@ -85,11 +61,6 @@
       <groupId>com.sun.codemodel</groupId>
       <artifactId>codemodel</artifactId>
       <version>2.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.kohsuke.stapler</groupId>
-      <artifactId>stapler-groovy</artifactId>
-      <version>1.169</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
@@ -137,19 +108,7 @@
       <artifactId>plexus-interactivity-api</artifactId>
       <version>1.0-alpha-4</version>
     </dependency>
-    <!-- for using annotation processor -->
-    <dependency>
-      <groupId>org.kohsuke.stapler</groupId>
-      <artifactId>maven-stapler-plugin</artifactId>
-      <version>1.16</version>
-      <!-- make sure to exclude servlet so that the one in Jetty (which has different groupId) will win -->
-      <exclusions>
-        <exclusion>
-          <groupId>javax.servlet</groupId>
-          <artifactId>servlet-api</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+    
   </dependencies>
 
   <reporting>
@@ -167,5 +126,11 @@
     <developerConnection>scm:git:ssh://git@github.com/r351574nc3/kfs-maven-plugin.git</developerConnection>
     <url>https://github.com/r351574nc3/kfs-maven-plugin</url>
   </scm>
-
+    
+    <repositories>
+        <repository>
+          <id>m.g.o-public</id>
+          <url>http://maven.glassfish.org/content/groups/public/</url>
+        </repository>
+    </repositories>
 </project>  

@@ -27,7 +27,7 @@ import java.util.Properties;
  * @requiresProject false
  * @goal migrate
  */
-public class CreatePrototypeMojo extends AbstractMojo {
+public class MigrateMojo extends AbstractMojo {
     /**
      * @component
      */
@@ -61,7 +61,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * @parameter expression="${kfs.local.path}"
      * @required
      */
-    private String kfsPath
+    private String kfsPath;
 
     /**
      * @parameter expression="${packageName}"
@@ -89,7 +89,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      */
     private MavenProject project;
     
-    protected void setupDefaults() {
+    protected void setupDefaults() throws Exception {
         if (project.getFile() != null && groupId == null) {
             groupId = project.getGroupId();
         }
@@ -97,8 +97,6 @@ public class CreatePrototypeMojo extends AbstractMojo {
         if(groupId==null) {
             groupId = prompter.prompt("Enter the groupId of your institution");
         }
-
-        String basedir = System.getProperty("user.dir");
 
         if (packageName == null) {
             getLog().info("Defaulting package to group ID: " + groupId);
@@ -131,7 +129,11 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * maven projects, but it is dynamically generated. Then, source files are copied to it.
      */
     public void execute() throws MojoExecutionException {
+        final String basedir = System.getProperty("user.dir");
+        
         try {
+            setupDefaults();
+    
             final Map<String, String> map = new HashMap<String, String>();
             map.put("basedir", basedir);
             map.put("package", packageName);
@@ -140,7 +142,8 @@ public class CreatePrototypeMojo extends AbstractMojo {
             map.put("artifactId", artifactId);
             map.put("version", version);
 
-            List archetypeRemoteRepositories = new ArrayList(pomRemoteRepositories);
+            List archetypeRemoteRepositories = new ArrayList();
+            /* TODO: Allow remote repositories later 
 
             if (remoteRepositories != null) {
                 getLog().info("We are using command line specified remote repositories: " + remoteRepositories);
@@ -152,7 +155,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
                 for (int i = 0; i < s.length; i++) {
                     archetypeRemoteRepositories.add(createRepository(s[i], "id" + i));
                 }
-            }
+            }*/
 
             Properties props = new Properties();
             props.load(getClass().getResourceAsStream("plugin.properties"));
@@ -174,7 +177,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * TODO: This method currently isn't used because files don't need to be copied yet, but it should probably get used
      * at some point
      */
-    protected void copyFilesFromArcheType() {    
+    protected void copyFilesFromArcheType(final String basedir) {    
         // copy view resource files. So far maven archetype doesn't seem to be able to handle it.
         File outDir = new File(basedir, artifactId);
         File viewDir = new File(outDir, "src/main/resources/"+groupId.replace('.','/'));
