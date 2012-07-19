@@ -143,25 +143,25 @@ public class CreatePrototypeMojo extends AbstractMojo {
     protected String kfsPath;
 
     /**
-     * @parameter expression="${packageName}"
+     * @parameter expression="${packageName}" default-value="org.kuali.kfs"
      */
     @Parameter(property="packageName",defaultValue="org.kuali.kfs")
     protected String packageName;
 
     /**
-     * @parameter expression="${groupId}"
+     * @parameter expression="${groupId}" default-value="org.kuali.kfs"
      */
     @Parameter(property="groupId",defaultValue="org.kuali.kfs")
     protected String groupId;
 
     /**
-     * @parameter expression="${artifactId}"
+     * @parameter expression="${artifactId}" default-value="kfs"
      */
     @Parameter(property="artifactId",defaultValue="kfs")
     protected String artifactId;
 
     /**
-     * @parameter expression="${version}" default-value="1.0-SNAPSHOT"
+     * @parameter expression="${version}" default-value="5.0"
      * @required
      */
     @Parameter(property="version",defaultValue="5.0")
@@ -169,6 +169,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
 
     /**
      * WAR file to create a prototype from. Only used when creating a prototype from a war.
+     * @parameter expression="${file}" 
      */
     @Parameter(property="file")
     protected File file;
@@ -360,19 +361,31 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * Executes the {@code install-file} goal with the new pom against the war file.
      */
     public void installWar() throws MojoExecutionException {
-        final String tempdir  = System.getProperty("java.io.tmpdir");
         final Invoker invoker = new DefaultInvoker().setMavenHome(getMavenHome());
         
         final String additionalArguments = "";
 
         final InvocationRequest req = new DefaultInvocationRequest()
                 .setInteractive(false)
-                .setPomFileName(tempdir + File.separator + "prototype-pom.xml");
+                .setProperties(new Properties() {{
+                        setProperty("groupId", groupId);
+                        setProperty("artifactId", artifactId);
+                        setProperty("version", version);
+                        setProperty("packaging", "war");
+                        setProperty("pomFile", getTempPomPath());
+                        try {
+                            setProperty("file", file.getCanonicalPath());
+                        }
+                        catch (Exception e) {
+                            throw new MojoExecutionException("Cannot get path for the war file ", e);
+                        }
+                        setProperty("updateReleaseInfo", "true");
+                    }});
 
         try {
             setupRequest(req, additionalArguments);
 
-            req.setGoals(new ArrayList<String>() {{ add("install-file"); }});
+            req.setGoals(new ArrayList<String>() {{ add("install:install-file"); }});
 
             try {
                 final InvocationResult invocationResult = invoker.execute(req);
@@ -417,7 +430,8 @@ public class CreatePrototypeMojo extends AbstractMojo {
     protected void extractTempPom() throws MojoExecutionException {
         getLog().info("Extracting the Temp POM");
         
-        final InputStream pom_is = getClass().getResourceAsStream("prototype-resources/pom.xml");
+        final InputStream pom_is = getClass().getClassLoader().getResourceAsStream("prototype-resources/pom.xml");
+        
         byte[] fileBytes = null;
         try {
             final DataInputStream dis = new DataInputStream(pom_is);
@@ -504,7 +518,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
             }*/
             
             extractTempPom();
-            // TODO: Get this done later. installWar();
+            installWar();
 
             /* TODO: Was this really necessary?
             Properties props = new Properties();
