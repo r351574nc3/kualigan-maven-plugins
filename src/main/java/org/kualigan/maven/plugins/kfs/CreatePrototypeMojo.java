@@ -32,7 +32,9 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -398,13 +400,55 @@ public class CreatePrototypeMojo extends AbstractMojo {
             */
         }
     }
+
+    /**
+     * Temporary POM location
+     * 
+     * @return String value the path of the temporary POM
+     */
+    protected String getTempPomPath() {
+        return System.getProperty("java.io.tmpdir") + File.separator + "prototype-pom.xml";
+    }
     
     /**
      * Puts a POM file in the system temp directory for prototype-pom.xml. prototype-pom.xml is extracted
      * from the plugin.
      */
-    protected void extractTempPom() {
+    protected void extractTempPom() throws MojoExecutionException {
         getLog().info("Extracting the Temp POM");
+        
+        final InputStream pom_is = getClass().getResourceAsStream("prototype-resources/");
+        byte[] fileBytes = null;
+        try {
+            final DataInputStream dis = new DataInputStream(pom_is);
+            fileBytes = new byte[dis.available()];
+            dis.readFully(fileBytes);
+            dis.close();
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Wasn't able to read in the prototype pom", e);
+        }
+        finally {
+            try {
+                pom_is.close();
+            }
+            catch (Exception e) {
+                // Ignore exceptions
+            }
+        }
+        
+        try {
+            final FileOutputStream fos = new FileOutputStream(getTempPomPath());
+            try {
+                fos.write(fileBytes);
+            }
+            finally {
+                fos.close();
+            }
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Could not write temporary pom file", e);
+        }
     }
 
     /**
@@ -434,7 +478,6 @@ public class CreatePrototypeMojo extends AbstractMojo {
      */ 
     public void execute() throws MojoExecutionException {
         final String basedir = System.getProperty("user.dir");
-        final String tempdir = System.getProperty("java.io.tmpdir");
         
         try {
             final Map<String, String> map = new HashMap<String, String>();
