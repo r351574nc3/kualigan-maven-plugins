@@ -8,6 +8,7 @@ import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.components.interactivity.Prompter;
@@ -35,6 +36,10 @@ import java.util.Properties;
  * @requiresProject false
  * @goal create-prototype
  */
+ @Mojo(
+     name="create-prototype",
+     requiresProject = false
+     )
 public class CreatePrototypeMojo extends AbstractMojo {
     /**
      * @component
@@ -155,6 +160,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      */ 
     public void execute() throws MojoExecutionException {
         final String basedir = System.getProperty("user.dir");
+        final String tempdir = System.getProperty("java.io.tmpdir");
         
         try {
             setupDefaults();
