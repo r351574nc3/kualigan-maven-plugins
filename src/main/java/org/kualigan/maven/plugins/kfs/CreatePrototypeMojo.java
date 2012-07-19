@@ -417,7 +417,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
     protected void extractTempPom() throws MojoExecutionException {
         getLog().info("Extracting the Temp POM");
         
-        final InputStream pom_is = getClass().getResourceAsStream("prototype-resources/");
+        final InputStream pom_is = getClass().getResourceAsStream("prototype-resources/pom.xml");
         byte[] fileBytes = null;
         try {
             final DataInputStream dis = new DataInputStream(pom_is);
