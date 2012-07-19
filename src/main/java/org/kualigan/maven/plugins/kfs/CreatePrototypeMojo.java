@@ -136,10 +136,8 @@ public class CreatePrototypeMojo extends AbstractMojo {
     /**
      * Path for where the KFS instance is we want to migrate
      * 
-     * @parameter expression="${kfs.local.path}"
-     * @required
      */
-    @Parameter(required=true,property="kfs.local.path")
+    @Parameter(property="kfs.local.path")
     protected String kfsPath;
 
     /**
@@ -406,6 +404,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * from the plugin.
      */
     protected void extractTempPom() {
+        getLog().info("Extracting the Temp POM");
     }
 
     /**
@@ -464,63 +463,16 @@ public class CreatePrototypeMojo extends AbstractMojo {
             extractTempPom();
             // TODO: Get this done later. installWar();
 
+            /* TODO: Was this really necessary?
             Properties props = new Properties();
             props.load(getClass().getResourceAsStream("plugin.properties"));
-
-            archetype.createArchetype(
-                props.getProperty("groupId"),
-                props.getProperty("artifactId"),
-                props.getProperty("version"), localRepository,
-                archetypeRemoteRepositories, map);
+            */
 
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to create a new Jenkins plugin",e);
         }
     }
     
-    /**
-     * Copy files from the archetype into the new project into the appropriate package directories.
-     * 
-     * TODO: This method currently isn't used because files don't need to be copied yet, but it should probably get used
-     * at some point
-     */
-    protected void copyFilesFromArcheType(final String basedir) {    
-        // copy view resource files. So far maven archetype doesn't seem to be able to handle it.
-        File outDir = new File(basedir, artifactId);
-        File viewDir = new File(outDir, "src/main/resources/"+groupId.replace('.','/'));
-        viewDir.mkdirs();
-
-        for( String s : new String[]{"config.jelly","global.jelly","help-name.html"} ) {
-            // TODO: Setup filtering artifactId replacement in source files
-            // FileWriter out = new FileWriter(new File(viewDir, s));
-            // out.write(IOUtil.toString(in).replace("@artifactId@", artifactId));
-            // in.close();
-            // out.close();
-        }
-    }
-
-    /**
-     * Creates an {@link ArtifactRepository} instance. This code was borrowed from the maven-hpi-plugin
-     *  
-     * @param url
-     * @param repositoryId
-     * @return ArtifactRepository
-     */ 
-    public ArtifactRepository createRepository(String url, String repositoryId) {
-
-        String updatePolicyFlag = ArtifactRepositoryPolicy.UPDATE_POLICY_ALWAYS;
-
-        String checksumPolicyFlag = ArtifactRepositoryPolicy.CHECKSUM_POLICY_WARN;
-
-        ArtifactRepositoryPolicy snapshotsPolicy =
-            new ArtifactRepositoryPolicy(true, updatePolicyFlag, checksumPolicyFlag);
-
-        ArtifactRepositoryPolicy releasesPolicy =
-            new ArtifactRepositoryPolicy(true, updatePolicyFlag, checksumPolicyFlag);
-
-        return artifactRepositoryFactory.createArtifactRepository(repositoryId, url, defaultArtifactRepositoryLayout,
-            snapshotsPolicy, releasesPolicy);
-    }
     
     public void setMavenHome(final File mavenHome) {
         this.mavenHome = mavenHome;
