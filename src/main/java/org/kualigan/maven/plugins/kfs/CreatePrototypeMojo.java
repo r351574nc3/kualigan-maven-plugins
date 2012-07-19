@@ -400,6 +400,13 @@ public class CreatePrototypeMojo extends AbstractMojo {
             */
         }
     }
+    
+    /**
+     * Puts a POM file in the system temp directory for prototype-pom.xml. prototype-pom.xml is extracted
+     * from the plugin.
+     */
+    protected void extractTempPom() {
+    }
 
     /**
      * <p>Create a prototype</p>
@@ -453,6 +460,9 @@ public class CreatePrototypeMojo extends AbstractMojo {
                     archetypeRemoteRepositories.add(createRepository(s[i], "id" + i));
                 }
             }*/
+            
+            extractTempPom();
+            // TODO: Get this done later. installWar();
 
             Properties props = new Properties();
             props.load(getClass().getResourceAsStream("plugin.properties"));
