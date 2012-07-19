@@ -7,6 +7,8 @@ import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.util.IOUtil;
@@ -37,21 +39,25 @@ public class CreatePrototypeMojo extends AbstractMojo {
     /**
      * @component
      */
+    @Component
     private Archetype archetype;
 
     /**
      * @component
      */
+    @Component
     private Prompter prompter;
 
     /**
      * @component
      */
+    @Component
     private ArtifactRepositoryFactory artifactRepositoryFactory;
 
     /**
      * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout" roleHint="default"
      */
+    @Component(role=org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout.class, hint="default")
     private ArtifactRepositoryLayout defaultArtifactRepositoryLayout;
 
 
@@ -59,6 +65,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * @parameter expression="${localRepository}"
      * @required
      */
+    @Parameter(property="localRepository")
     private ArtifactRepository localRepository;
     
     /**
@@ -67,32 +74,38 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * @parameter expression="${kfs.local.path}"
      * @required
      */
+    @Parameter(required=true,property="kfs.local.path")
     private String kfsPath;
 
     /**
      * @parameter expression="${packageName}"
      */
+    @Parameter(property="packageName")
     private String packageName;
 
     /**
      * @parameter expression="${groupId}"
      */
+    @Parameter(property="groupId")
     private String groupId;
 
     /**
      * @parameter expression="${artifactId}"
      */
+    @Parameter(property="artifactId")
     private String artifactId;
 
     /**
      * @parameter expression="${version}" default-value="1.0-SNAPSHOT"
      * @required
      */
+    @Parameter(property="version", defaultValue="1.0-SNAPSHOT")
     private String version;
 
     /**
      * @parameter expression="${project}"
      */
+    @Parameter(property="project")
     private MavenProject project;
     
     protected void setupDefaults() throws Exception {

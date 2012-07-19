@@ -2,16 +2,16 @@
 <archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="kfs"
     xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <fileSets>
-    <fileSet encoding="UTF-8">
-      <directory></directory>
-      <includes>
-        <include>README.org</include>
-      </includes>
-    </fileSet>
-  </fileSets>
   <modules>
-    <module id="rsmart-${rootArtifactId}-config" dir="config" name="rsmart-${rootArtifactId}-config">
+    <fileSets>
+        <fileSet encoding="UTF-8">
+          <directory></directory>
+          <includes>
+            <include>pom.xml</include>
+          </includes>
+        </fileSet>
+    </fileSets>
+    <module id="${rootArtifactId}-config" dir="config" name="${rootArtifactId}-config">
       <fileSets>
         <fileSet filtered="true" encoding="UTF-8">
           <directory>src/main/filters</directory>
@@ -34,7 +34,7 @@
         </fileSet>
       </fileSets>
     </module>
-    <module id="rsmart-${rootArtifactId}-core" dir="core" name="rsmart-${rootArtifactId}-core">
+    <module id="${rootArtifactId}-core" dir="core" name="${rootArtifactId}-core">
       <fileSets>
         <fileSet filtered="true" packaged="true" encoding="UTF-8">
           <directory>src/main/java</directory>
@@ -57,7 +57,7 @@
         </fileSet>
       </fileSets>
     </module>
-    <module id="rsmart-${rootArtifactId}-web" dir="web" name="rsmart-${rootArtifactId}-web">
+    <module id="${rootArtifactId}-web" dir="web" name="${rootArtifactId}-web">
       <fileSets>
         <fileSet filtered="true" encoding="UTF-8">
           <directory>src/main/filters</directory>
