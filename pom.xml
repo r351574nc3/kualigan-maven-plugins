@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.kuali.pom</groupId>
-    <artifactId>kuali-common</artifactId>
-    <version>1.3.12</version>
+    <artifactId>kuali-maven</artifactId>
+    <version>1.3.13</version>
   </parent>
   
   <groupId>org.kualigan.maven.plugins</groupId>
@@ -11,7 +11,7 @@
   <packaging>maven-plugin</packaging>
   
   <name>KFS Maven Plugin</name>
-  <version>1.0.4-SNAPSHOT</version>
+  <version>1.0.2-SNAPSHOT</version>
   <description>Maven plugin for creating KFS distributions</description>
 
   <licenses>
@@ -185,5 +185,21 @@
     <developerConnection>scm:git:ssh://git@github.com/r351574nc3/kfs-maven-plugin.git</developerConnection>
     <url>https://github.com/r351574nc3/kfs-maven-plugin</url>
   </scm>
-    
+
+  <distributionManagement>
+    <repository>
+      <id>sonatype-nexus-staging</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+    </repository>
+    <snapshotRepository>
+      <id>sonatype-nexus-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <site>
+      <id>kuali.site</id>
+      <name>Kuali Maven Site</name>
+      <url>${kuali.site.publish.url}/kuali-common/kfs-common</url>
+    </site>
+    <downloadUrl>${kuali.site.download.url}</downloadUrl>
+  </distributionManagement>  
 </project>  
