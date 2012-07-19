@@ -85,26 +85,26 @@ public class CreatePrototypeMojo extends AbstractMojo {
     /**
      * @parameter expression="${packageName}"
      */
-    @Parameter(property="packageName")
+    @Parameter(property="packageName",defaultValue="org.kuali.kfs")
     private String packageName;
 
     /**
      * @parameter expression="${groupId}"
      */
-    @Parameter(property="groupId")
+    @Parameter(property="groupId",defaultValue="org.kuali.kfs")
     private String groupId;
 
     /**
      * @parameter expression="${artifactId}"
      */
-    @Parameter(property="artifactId")
+    @Parameter(property="artifactId",defaultValue="kfs")
     private String artifactId;
 
     /**
      * @parameter expression="${version}" default-value="1.0-SNAPSHOT"
      * @required
      */
-    @Parameter(property="version", defaultValue="1.0-SNAPSHOT")
+    @Parameter(property="version",defaultValue="5.0")
     private String version;
 
     /**
