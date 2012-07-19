@@ -143,6 +143,33 @@
     </dependency>
   </dependencies>
 
+    <profiles>
+        <profile>
+            <id>kualigan-release</id>
+            <build>
+                <plugins>
+                  <plugin>
+                    <artifactId>maven-deploy-plugin</artifactId>
+                    <configuration>
+                      <updateReleaseInfo>true</updateReleaseInfo>
+                    </configuration>
+                  </plugin>
+                  <plugin>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <executions>
+                      <execution>
+                        <id>gpg</id>
+                        <phase>${kuali.gpg.phase}</phase>
+                        <goals>
+                          <goal>sign</goal>
+                        </goals>
+                      </execution>
+                    </executions>
+                  </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
   <reporting>
     <plugins>
       <plugin>
@@ -159,12 +186,4 @@
     <url>https://github.com/r351574nc3/kfs-maven-plugin</url>
   </scm>
     
-    <!--
-    <repositories>
-        <repository>
-          <id>m.g.o-public</id>
-          <url>http://maven.glassfish.org/content/groups/public/</url>
-        </repository>
-    </repositories>
-    -->
 </project>  
