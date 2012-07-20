@@ -19,12 +19,12 @@ limitations under the License.
     <artifactId>kfs-common</artifactId>
     <version>0.0.23</version>
   </parent>
-  <groupId>${groupId}</groupId>
-  <artifactId>${artifactId}</artifactId>
+  <groupId>com.rsmart.kuali.kfs</groupId>
+  <artifactId>kfs-tem</artifactId>
   <packaging>pom</packaging>
   <name>kfs</name>
   <inceptionYear>2012</inceptionYear>
-  <version>${version}</version>
+  <version>1.0-SNAPSHOT</version>
   <url>https://github.com/r351574nc3/kfs-overlay-reference/</url>
 
   <licenses>
@@ -59,7 +59,10 @@ limitations under the License.
 
   <!-- Properties later populated into configuration.properties -->
   <properties>
+    <log4j.version>1.2.17</log4j.version>
+    <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
     <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
+    <maven-jetty-plugin.version>7.0.0.pre5</maven-jetty-plugin.version>
     <jetty.version>7.5.1.v20110908</jetty.version>
     <security.directory>${user.home}/${base.security.directory}</security.directory>
     <!-- the directory that contains the non-secure property files that are nonetheless external to the deployed application -->
@@ -84,17 +87,24 @@ limitations under the License.
         <artifactId>rice-ldap</artifactId>
         <version>1.0.3</version>
       </dependency>
+      <!--
       <dependency>
-        <groupId>org.kualigan.kfs</groupId>
-        <artifactId>${rootArtifactId}-config</artifactId>
-        <version>${version}</version>
+        <groupId>org.kual</groupId>
+        <artifactId>kfs-tem-config</artifactId>
+        <version>1.0-SNAPSHOT</version>
         <classifier>src</classifier>
         <type>tar.bz2</type>
       </dependency>
-      <dependency>
-        <groupId>org.kualigan.kfs</groupId>
-        <artifactId>${rootArtifactId}-core</artifactId>
-        <version>${version}</version>
+      -->
+    <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.kuali.kfs</groupId>
+        <artifactId>kfs</artifactId>
+        <version>5.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -102,6 +112,55 @@ limitations under the License.
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+            <groupId>org.mortbay.jetty</groupId>
+            <artifactId>maven-jetty-plugin</artifactId>
+            <version>${maven-jetty-plugin.version}</version>
+            <configuration>
+                <scanIntervalSeconds>10</scanIntervalSeconds>
+                <stopKey>foo</stopKey>
+                <stopPort>9999</stopPort>
+            </configuration>
+            <executions>
+                <execution>
+                    <id>start-jetty</id>
+                    <phase>pre-integration-test</phase>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                    <configuration>
+                        <scanIntervalSeconds>0</scanIntervalSeconds>
+                        <daemon>true</daemon>
+                    </configuration>
+                </execution>
+                <execution>
+                    <id>stop-jetty</id>
+                    <phase>post-integration-test</phase>
+                    <goals>
+                        <goal>stop</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <dependencies>
+                <dependency>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                    <version>${log4j.version}</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.tomcat.maven</groupId>
+          <artifactId>tomcat7-maven-plugin</artifactId>
+          <version>${tomcat7-maven-plugin.version}</version>
+            <dependencies>
+                <dependency>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                    <version>${log4j.version}</version>
+                </dependency>
+            </dependencies>
+        </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
@@ -115,14 +174,16 @@ limitations under the License.
               </goals>
               <configuration>
                 <artifactItems>
+                <!--
                   <artifactItem>
                     <classifier>src</classifier>
-                    <groupId>org.kualigan.kfs</groupId>
+                    <groupId>org.kuali.kfs</groupId>
                     <artifactId>kfs-config</artifactId>
                     <version>${kfs.maven.version}</version>
                     <type>tar.bz2</type>
                     <overWrite>false</overWrite>
                   </artifactItem>
+                  -->
                 </artifactItems>
                 <includes>**/*</includes>
                 <excludes>**/spring.properties</excludes>
@@ -137,6 +198,7 @@ limitations under the License.
               </goals>
               <configuration>
                 <artifactItems>
+                <!--
                   <artifactItem>
                     <classifier>src</classifier>
                     <groupId>org.kualigan.kfs</groupId>
@@ -145,6 +207,7 @@ limitations under the License.
                     <type>tar.bz2</type>
                     <overWrite>false</overWrite>
                   </artifactItem>
+                  -->
                 </artifactItems>
                 <includes>**/*</includes>
                 <excludes>src/</excludes>
@@ -171,8 +234,8 @@ limitations under the License.
           <configuration>
             <overlays>
               <overlay>
-                <groupId>${kfs.maven.groupId}</groupId>
-                <artifactId>kfs-web</artifactId>
+                <groupId>org.kuali.kfs</groupId>
+                <artifactId>kfs</artifactId>
                 <excludes>
                   <exclude>WEB-INF/classes/ApplicationResources.properties</exclude>
                   <exclude>WEB-INF/classes/configuration.properties</exclude>
@@ -228,4 +291,9 @@ limitations under the License.
       <url>http://kualigan.github.com/repository</url>
     </repository>   
   </repositories>
+  <modules>
+    <module>config</module>
+    <module>core</module>
+    <module>web</module>
+  </modules>
 </project>
