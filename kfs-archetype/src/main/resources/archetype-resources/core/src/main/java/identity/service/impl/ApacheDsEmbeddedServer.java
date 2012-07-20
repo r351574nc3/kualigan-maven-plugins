@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-package ${package}.service.impl;
+package ${package}.identity.service.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;

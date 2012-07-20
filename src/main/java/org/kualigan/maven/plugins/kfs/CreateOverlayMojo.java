@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007 The Kuali Foundation
+ * 
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.opensource.org/licenses/ecl2.php
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kualigan.maven.plugins.kfs;
 
 import org.apache.maven.archetype.Archetype;
@@ -38,59 +53,61 @@ import java.util.Properties;
      )
 public class CreateOverlayMojo extends AbstractMojo {
     /**
-     * @component
      */
+    @Component
     private Archetype archetype;
 
     /**
-     * @component
      */
+    @Component
     private Prompter prompter;
 
     /**
-     * @component
      */
+    @Component
     private ArtifactRepositoryFactory artifactRepositoryFactory;
 
     /**
-     * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout" roleHint="default"
      */
+    @Component(role = org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout.class,
+                hint="default")
     private ArtifactRepositoryLayout defaultArtifactRepositoryLayout;
 
 
     /**
-     * @parameter expression="${localRepository}"
-     * @required
      */
+    @Parameter(property = "localRepository")
+    @Required
     private ArtifactRepository localRepository;
     
     /**
      * Path for where the KFS instance is we want to migrate
      * 
-     * @parameter expression="${kfs.local.path}"
-     * @required
      */
+    @Parameter(property = "kfs.local.path")
+    @Required
     private String kfsPath;
 
     /**
-     * @parameter expression="${groupId}"
      */
+    @Parameter(property = "groupId")
     private String groupId;
 
     /**
-     * @parameter expression="${artifactId}"
      */
+    @Parameter(property = "artifactId")
     private String artifactId;
 
     /**
-     * @parameter expression="${version}" default-value="1.0-SNAPSHOT"
-     * @required
      */
+    @Parameter(property="version", defaultValue="1.0-SNAPSHOT")
+    @Required
     private String version;
 
     /**
      * @parameter expression="${project}"
      */
+    @Parameter(property = "project")
     private MavenProject project;
 
     public void execute() throws MojoExecutionException {
