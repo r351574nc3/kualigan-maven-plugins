@@ -533,7 +533,9 @@ public class CreatePrototypeMojo extends AbstractMojo {
     }
     
     /**
-     * Executes the {@code install-file} goal with the new pom against the war file.
+     * Executes the {@code install-file} goal with the new pom against the artifact file.
+     * 
+     * @param artifact {@link File} instance to install
      */
     public void installArtifact(final File artifact) throws MojoExecutionException {
         final Invoker invoker = new DefaultInvoker().setMavenHome(getMavenHome());

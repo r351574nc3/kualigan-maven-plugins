@@ -27,6 +27,15 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import org.apache.maven.shared.invoker.DefaultInvocationRequest;
+import org.apache.maven.shared.invoker.DefaultInvoker;
+import org.apache.maven.shared.invoker.InvocationOutputHandler;
+import org.apache.maven.shared.invoker.InvocationRequest;
+import org.apache.maven.shared.invoker.InvocationResult;
+import org.apache.maven.shared.invoker.Invoker;
+import org.apache.maven.shared.invoker.InvokerLogger;
+import org.apache.maven.shared.invoker.MavenInvocationException;
+
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.util.IOUtil;
@@ -99,6 +108,31 @@ public class CreateOverlayMojo extends AbstractMojo {
      */
     @Parameter(property="version", defaultValue="1.0-SNAPSHOT")
     private String version;
+    
+    @Parameter(property = "kfs.prototype.groupId", defaultValue = "org.kuali.kfs")
+    protected String prototypeGroupId;
+    
+    @Parameter(property = "kfs.prototype.artifactId", defaultValue = "kfs")
+    protected String prototypeArtifactId;
+    
+    @Parameter(property = "kfs.prototype.version", defaultValue = "5.0")
+    protected String prototypeVersion;
+    
+    @Parameter(property = "archetypeGroupId", defaultValue = "org.kualigan.maven.archetypes")
+    protected String archetypeGroupId;
+    
+    @Parameter(property = "archetypeArtifactId", defaultValue = "kfs-archetype")
+    protected String archetypeArtifactId;
+    
+    @Parameter(property = "archetypeVersion", defaultValue = "0.0.13")
+    protected String archetypeVersion;
+    
+    /**
+     * The {@code M2_HOME} parameter to use for forked Maven invocations.
+     *
+     */
+    @Parameter(defaultValue = "${maven.home}")
+    protected File mavenHome;
 
     /**
      */
@@ -106,8 +140,72 @@ public class CreateOverlayMojo extends AbstractMojo {
     private MavenProject project;
 
     /**
-     * Produce an overlay from a given 
+     * Produce an overlay from a given prototype. 
      */
     public void execute() throws MojoExecutionException {
     }
+    
+    /**
+     * Invokes the maven goal {@code archetype:generate} with the appropriate properties.
+     * 
+     */
+    public void generateArcheType() throws MojoExecutionException {
+        final Invoker invoker = new DefaultInvoker().setMavenHome(getMavenHome());
+        
+        final String additionalArguments = "";
+
+        final InvocationRequest req = new DefaultInvocationRequest()
+                .setInteractive(false)
+                .setProperties(new Properties() {{
+                        setProperty("archetypeGroupId", archetypeGroupId);
+                        setProperty("archetypeArtifactId", archetypeArtifactId);
+                        setProperty("archetypeVersion", archetypeVersion);
+                        setProperty("groupId", groupId);
+                        setProperty("artifactId", artifactId);
+                        setProperty("version", version);
+                        setProperty("kfs.prototype.groupId", prototypeGroupId);
+                        setProperty("kfs.prototype.artifactId", prototypeArtifactId);
+                        setProperty("kfs.prototype.versionId", prototypeVersion);
+                    }});
+                    
+        try {
+            setupRequest(req, additionalArguments);
+
+            req.setGoals(new ArrayList<String>() {{ add("archetype:generate"); }});
+
+            try {
+                final InvocationResult invocationResult = invoker.execute(req);
+
+                if ( invocationResult.getExecutionException() != null ) {
+                    throw new MojoExecutionException("Error executing Maven.",
+                                                     invocationResult.getExecutionException());
+                }
+                    
+                if (invocationResult.getExitCode() != 0) {
+                    throw new MojoExecutionException(
+                        "Maven execution failed, exit code: \'" + invocationResult.getExitCode() + "\'");
+                }
+            }
+            catch (MavenInvocationException e) {
+                throw new MojoExecutionException( "Failed to invoke Maven build.", e );
+            }
+        }
+        finally {
+            /*
+            if ( settingsFile != null && settingsFile.exists() && !settingsFile.delete() )
+            {
+                settingsFile.deleteOnExit();
+            }
+            */
+        }
+    }
+    
+    public void setMavenHome(final File mavenHome) {
+        this.mavenHome = mavenHome;
+    }
+    
+    public File getMavenHome() {
+        return this.mavenHome;
+    }
+        
 }
