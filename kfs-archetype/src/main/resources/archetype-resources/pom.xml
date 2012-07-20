@@ -22,7 +22,7 @@ limitations under the License.
   <groupId>${groupId}</groupId>
   <artifactId>${artifactId}</artifactId>
   <packaging>pom</packaging>
-  <nameKuali Financial System</name>
+  <name>Kuali Financial System</name>
   <inceptionYear>2012</inceptionYear>
   <version>${version}</version>
   <url>https://github.com/r351574nc3/kfs-overlay-reference/</url>
