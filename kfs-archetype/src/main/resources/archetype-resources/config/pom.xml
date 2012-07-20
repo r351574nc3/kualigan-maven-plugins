@@ -18,11 +18,11 @@ limitations under the License.
 --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.rsmart.kuali.kfs</groupId>
-    <artifactId>kfs-tem</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>${groupId}</groupId>
+    <artifactId${rootArtifactId}</artifactId>
+    <version>${version}</version>
   </parent>
-  <artifactId>kfs-tem-config</artifactId>
+  <artifactId>${artifactId}</artifactId>
   <packaging>jar</packaging>
 
   <properties>
@@ -32,18 +32,6 @@ limitations under the License.
     <env.filter>${filter.directory}/${build.environment}-build.properties</env.filter>
   </properties>
 
-
-  <dependencies>
-  <!--
-    <dependency>
-      <groupId>${kfs.maven.groupId}</groupId>
-      <artifactId>kfs-tem-config</artifactId>
-      <version>1.0-SNAPSHOT</version>  
-      <type>tar.bz2</type>
-      <classifier>src</classifier>
-    </dependency>
-    -->
-  </dependencies>
 
   <profiles>
     <profile>
