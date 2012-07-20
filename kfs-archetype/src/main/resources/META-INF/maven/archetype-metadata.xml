@@ -11,7 +11,7 @@
           </includes>
         </fileSet>
     </fileSets>
-    <module id="${rootArtifactId}-it" dir="config" name="${rootArtifactId}-it">
+    <module id="${rootArtifactId}-it" dir="it" name="${rootArtifactId}-it">
         <fileSets>
         <fileSet filtered="true" encoding="UTF-8">
           <directory>src/main/resources</directory>
