@@ -5,8 +5,14 @@ import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+
+
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.util.IOUtil;
@@ -24,9 +30,12 @@ import java.util.Properties;
 /**
  * Creates a maven overlay for the given KFS prototype
  * 
- * @requiresProject false
- * @goal create-overlay
+ * @author Leo Przybylski (przybyls [at] arizona.edu)
  */
+ @Mojo(
+     name="create-prototype",
+     requiresProject = false
+     )
 public class CreateOverlayMojo extends AbstractMojo {
     /**
      * @component
