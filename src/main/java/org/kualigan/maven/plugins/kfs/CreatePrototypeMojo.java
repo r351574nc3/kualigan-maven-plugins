@@ -28,13 +28,16 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
+import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
+import org.codehaus.plexus.archiver.util.DefaultFileSet;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 
 import org.codehaus.plexus.components.interactivity.Prompter;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
@@ -216,9 +219,47 @@ public class CreatePrototypeMojo extends AbstractMojo {
     }
     
     /**
-     * Handles repacking of 
+     * Handles repacking of the war as a jar file with classes, etc... Basically makes a jar of everything
+     * in the war file's WEB-INF/classes path.
+     * 
+     * @param file is the war file to repackage
+     * @return {@link File} instance of the repacked jar
      */
-    protected void repack(final File file) {
+    protected File repack(final File file) throws MojoExecutionException {
+        final File workingDirectory = new File(System.getProperty("java.io.tmpdir") + File.separator
+                + artifactId + "-repack");
+        final File warDirectory     = new File(workingDirectory, "war");
+        final File repackDirectory  = new File(workingDirectory, artifactId);
+        final File classesDirectory = new File(warDirectory, "WEB-INF/classes");
+        final File retval           = new File(workingDirectory, artifactId + ".jar");
+        
+        try {
+            workingDirectory.mkdirs();
+            workingDirectory.mkdir();
+            workingDirectory.deleteOnExit();
+            warDirectory.mkdir();
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Unable to create working directory for repackaging", e);
+        }
+        
+        unpack(file, warDirectory, "**/classes/**", null);
+        
+        try {
+            FileUtils.copyDirectoryStructure(classesDirectory, repackDirectory);
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Unable to copy files into the repack directory");
+        }
+
+        try {
+            pack(retval, repackDirectory, "**/**", null);
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Was unable to create the jar", e);
+        }
+        
+        return retval;
     }
     
     /**
@@ -268,7 +309,45 @@ public class CreatePrototypeMojo extends AbstractMojo {
                 "Error unpacking file: " + file + " to: " + location + "\r\n" + e.toString(), e );
         }
     }
-    
+
+    /**
+     * Packs a jar
+     *
+     * @param file     Destination file.
+     * @param location Directory source.
+     * @param includes Comma separated list of file patterns to include i.e. <code>**&#47;.xml,
+     *                 **&#47;*.properties</code>
+     * @param excludes Comma separated list of file patterns to exclude i.e. <code>**&#47;*.xml,
+     *                 **&#47;*.properties</code>
+     */
+    protected void pack(final File file, final File location, final String includes, final String excludes) throws MojoExecutionException {
+        try {
+
+            final Archiver archiver;
+            archiver = archiverManager.getArchiver(file);
+            archiver.addFileSet(new DefaultFileSet() {{
+                    setDirectory(location);
+                    if (includes != null) {
+                        setIncludes(includes.split(","));
+                    }
+                    if (excludes != null) {
+                        setExcludes(excludes.split(","));
+                    }
+                }});
+            archiver.setDestFile(file);
+
+            archiver.createArchive();
+        }
+        catch ( NoSuchArchiverException e ) {
+            throw new MojoExecutionException("Unknown archiver type", e);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            throw new MojoExecutionException(
+                "Error packing directory: " + location + " to: " + file + "\r\n" + e.toString(), e );
+        }
+    }
+
     /**
      * 
      */
@@ -442,7 +521,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
     /**
      * Executes the {@code install-file} goal with the new pom against the war file.
      */
-    public void installWar() throws MojoExecutionException {
+    public void installArtifact(final File artifact) throws MojoExecutionException {
         final Invoker invoker = new DefaultInvoker().setMavenHome(getMavenHome());
         
         final String additionalArguments = "";
@@ -456,7 +535,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
                         setProperty("packaging", "war");
                         setProperty("pomFile", getTempPomPath());
                         try {
-                            setProperty("file", file.getCanonicalPath());
+                            setProperty("file", artifact.getCanonicalPath());
                         }
                         catch (Exception e) {
                             throw new MojoExecutionException("Cannot get path for the war file ", e);
@@ -599,8 +678,10 @@ public class CreatePrototypeMojo extends AbstractMojo {
                 }
             }*/
             
+            final File prototypeJar = repack(file);
             extractTempPom();
-            installWar();
+            installArtifact(file);
+            installArtifact(prototypeJar);
 
             /* TODO: Was this really necessary?
             Properties props = new Properties();
