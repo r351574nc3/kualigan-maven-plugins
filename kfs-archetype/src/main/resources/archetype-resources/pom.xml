@@ -87,24 +87,28 @@ limitations under the License.
         <artifactId>rice-ldap</artifactId>
         <version>1.0.3</version>
       </dependency>
-      <!--
-      <dependency>
-        <groupId>org.kual</groupId>
-        <artifactId>kfs-tem-config</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <classifier>src</classifier>
-        <type>tar.bz2</type>
-      </dependency>
-      -->
+      
     <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
         <version>${log4j.version}</version>
     </dependency>
-    <dependency>
-        <groupId>org.kuali.kfs</groupId>
-        <artifactId>kfs</artifactId>
-        <version>5.0</version>
+
+    <!--
+        These are the prototype dependencies. It is used by the overlay to refer back
+        to the classes in the prototype.
+      -->
+      <dependency>
+        <groupId>${kfs.prototype.groupId}</groupId>
+        <artifactId>${kfs.prototype.artifactId}</artifactId>
+        <version>${kfs.prototype.version}</version>
+        <type>war</type>
+      </dependency>
+      <dependency>
+        <groupId>${kfs.prototype.groupId}</groupId>
+        <artifactId>${kfs.prototype.artifactId}</artifactId>
+        <version>${kfs.prototype.version}</version>
+        <type>jar</type>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -162,61 +166,6 @@ limitations under the License.
             </dependencies>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <version>${maven-dependency-plugin.version}</version>
-          <executions>
-            <execution>
-              <id>unpack-external</id>
-              <phase>${kfs.external.unpack.phase}</phase>
-              <goals>
-                <goal>unpack</goal>
-              </goals>
-              <configuration>
-                <artifactItems>
-                <!--
-                  <artifactItem>
-                    <classifier>src</classifier>
-                    <groupId>org.kuali.kfs</groupId>
-                    <artifactId>kfs-config</artifactId>
-                    <version>${kfs.maven.version}</version>
-                    <type>tar.bz2</type>
-                    <overWrite>false</overWrite>
-                  </artifactItem>
-                  -->
-                </artifactItems>
-                <includes>**/*</includes>
-                <excludes>**/spring.properties</excludes>
-                <outputDirectory>${basedir}</outputDirectory>
-              </configuration>
-            </execution>
-            <execution>
-              <id>unpack-web</id>
-              <phase>${kfs.web.unpack.phase}</phase>
-              <goals>
-                <goal>unpack</goal>
-              </goals>
-              <configuration>
-                <artifactItems>
-                <!--
-                  <artifactItem>
-                    <classifier>src</classifier>
-                    <groupId>org.kualigan.kfs</groupId>
-                    <artifactId>kfs-web</artifactId>
-                    <version>${kfs.maven.version}</version>
-                    <type>tar.bz2</type>
-                    <overWrite>false</overWrite>
-                  </artifactItem>
-                  -->
-                </artifactItems>
-                <includes>**/*</includes>
-                <excludes>src/</excludes>
-                <outputDirectory>${basedir}</outputDirectory>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
           <groupId>org.mortbay.jetty</groupId>
           <artifactId>jetty-maven-plugin</artifactId>
           <version>${jetty.version}</version>
@@ -257,11 +206,6 @@ limitations under the License.
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
-        <artifactId>maven-dependency-plugin</artifactId>
-      </plugin>
-    </plugins>
   </build>
 
   <profiles>
