@@ -19,12 +19,12 @@ limitations under the License.
     <artifactId>kfs-common</artifactId>
     <version>0.0.23</version>
   </parent>
-  <groupId>com.rsmart.kuali.kfs</groupId>
-  <artifactId>kfs-tem</artifactId>
+  <groupId>${groupId}</groupId>
+  <artifactId>${artifactId}</artifactId>
   <packaging>pom</packaging>
-  <name>kfs</name>
+  <nameKuali Financial System</name>
   <inceptionYear>2012</inceptionYear>
-  <version>1.0-SNAPSHOT</version>
+  <version>${version}</version>
   <url>https://github.com/r351574nc3/kfs-overlay-reference/</url>
 
   <licenses>

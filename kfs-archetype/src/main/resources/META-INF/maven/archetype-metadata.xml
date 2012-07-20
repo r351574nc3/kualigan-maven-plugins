@@ -11,6 +11,23 @@
           </includes>
         </fileSet>
     </fileSets>
+    <module id="${rootArtifactId}-it" dir="config" name="${rootArtifactId}-config">
+        <fileSet filtered="true" encoding="UTF-8">
+          <directory>src/main/resources</directory>
+          <includes>
+            <include>**/*.txt</include>
+            <include>**/*.xml</include>
+            <include>**/*.properties</include>
+          </includes>
+        </fileSet>
+        <fileSet filtered="true" packaged="true" encoding="UTF-8">
+          <directory>src/main/java</directory>
+          <includes>
+            <include>**/*.java</include>
+          </includes>
+        </fileSet>
+      </fileSets>
+    </module>
     <module id="${rootArtifactId}-config" dir="config" name="${rootArtifactId}-config">
       <fileSets>
         <fileSet filtered="true" encoding="UTF-8">
@@ -23,6 +40,8 @@
           <directory>src/main/resources</directory>
           <includes>
             <include>**/*.txt</include>
+            <include>**/*.xml</include>
+            <include>**/*.properties</include>
           </includes>
         </fileSet>
         <fileSet encoding="UTF-8">
