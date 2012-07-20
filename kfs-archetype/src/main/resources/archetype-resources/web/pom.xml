@@ -139,26 +139,10 @@ limitations under the License.
     </build> 
   
   <dependencies>
-    <!--
     <dependency>
-      <groupId>${kfs.maven.groupId}</groupId>
-      <artifactId>kfs-tem-web</artifactId>
-      <version>1.0-SNAPSHOT</version>  
-      <type>tar.bz2</type>
-      <classifier>src</classifier>
-    </dependency>
-    -->
-    <dependency>
-      <groupId>org.kuali.kfs</groupId>
-      <artifactId>kfs</artifactId>
-      <version>5.0</version>  
+      <groupId>${kfs.prototype.groupId}</groupId>
+      <artifactId>${kfs.prototype.artifactId}</artifactId>
       <type>war</type>
-    </dependency>
-    <dependency>
-      <groupId>org.kuali.kfs</groupId>
-      <artifactId>kfs</artifactId>
-      <version>5.0</version>  
-      <type>jar</type>
     </dependency>
  </dependencies> 
 </project>
