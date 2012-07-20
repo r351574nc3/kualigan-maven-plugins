@@ -9,7 +9,7 @@
 
   <groupId>org.kualigan.maven.archetypes</groupId>
   <artifactId>kfs-archetype</artifactId>
-  <version>0.0.12</version>
+  <version>0.0.13-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
   <name>kfs-archetype</name>
