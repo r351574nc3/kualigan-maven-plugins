@@ -532,7 +532,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
                         setProperty("groupId", groupId);
                         setProperty("artifactId", artifactId);
                         setProperty("version", version);
-                        setProperty("packaging", "war");
+                        setProperty("packaging", artifact.getName().endsWith("jar") ? "jar" : "war");
                         setProperty("pomFile", getTempPomPath());
                         try {
                             setProperty("file", artifact.getCanonicalPath());
