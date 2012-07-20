@@ -27,7 +27,6 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.util.IOUtil;
@@ -48,7 +47,7 @@ import java.util.Properties;
  * @author Leo Przybylski (przybyls [at] arizona.edu)
  */
  @Mojo(
-     name="create-prototype",
+     name="create-overlay",
      requiresProject = false
      )
 public class CreateOverlayMojo extends AbstractMojo {
@@ -76,16 +75,14 @@ public class CreateOverlayMojo extends AbstractMojo {
 
     /**
      */
-    @Parameter(property = "localRepository")
-    @Required
+    @Parameter(property = "localRepository", required = true)
     private ArtifactRepository localRepository;
     
     /**
      * Path for where the KFS instance is we want to migrate
      * 
      */
-    @Parameter(property = "kfs.local.path")
-    @Required
+    @Parameter(property = "kfs.local.path", required = true)
     private String kfsPath;
 
     /**
@@ -101,15 +98,16 @@ public class CreateOverlayMojo extends AbstractMojo {
     /**
      */
     @Parameter(property="version", defaultValue="1.0-SNAPSHOT")
-    @Required
     private String version;
 
     /**
-     * @parameter expression="${project}"
      */
     @Parameter(property = "project")
     private MavenProject project;
 
+    /**
+     * Produce an overlay from a given 
+     */
     public void execute() throws MojoExecutionException {
     }
 }
