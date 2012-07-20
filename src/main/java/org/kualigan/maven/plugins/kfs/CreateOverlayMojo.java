@@ -43,8 +43,10 @@ import org.apache.maven.shared.invoker.MavenInvocationException;
 
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.components.interactivity.Prompter;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
+import org.codehaus.plexus.util.cli.CommandLineUtils;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -54,6 +56,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.StringTokenizer;
 
 /**
  * Creates a maven overlay for the given KFS prototype
@@ -65,6 +68,48 @@ import java.util.Properties;
      requiresProject = false
      )
 public class CreateOverlayMojo extends AbstractMojo {
+    private static final Options OPTIONS = new Options();
+
+    private static final char SET_SYSTEM_PROPERTY = 'D';
+
+    private static final char OFFLINE = 'o';
+
+    private static final char REACTOR = 'r';
+
+    private static final char QUIET = 'q';
+
+    private static final char DEBUG = 'X';
+
+    private static final char ERRORS = 'e';
+
+    private static final char NON_RECURSIVE = 'N';
+
+    private static final char UPDATE_SNAPSHOTS = 'U';
+
+    private static final char ACTIVATE_PROFILES = 'P';
+
+    private static final String FORCE_PLUGIN_UPDATES = "cpu";
+
+    private static final String FORCE_PLUGIN_UPDATES2 = "up";
+
+    private static final String SUPPRESS_PLUGIN_UPDATES = "npu";
+
+    private static final String SUPPRESS_PLUGIN_REGISTRY = "npr";
+
+    private static final char CHECKSUM_FAILURE_POLICY = 'C';
+
+    private static final char CHECKSUM_WARNING_POLICY = 'c';
+
+    private static final char ALTERNATE_USER_SETTINGS = 's';
+
+    private static final String FAIL_FAST = "ff";
+
+    private static final String FAIL_AT_END = "fae";
+
+    private static final String FAIL_NEVER = "fn";
+    
+    private static final String ALTERNATE_POM_FILE = "f";
+
     /**
      */
     @Component
