@@ -15,6 +15,11 @@
  */
 package org.kualigan.maven.plugins.kfs;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.OptionBuilder;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.PosixParser;
+
 import org.apache.maven.archetype.Archetype;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
@@ -199,7 +204,177 @@ public class CreateOverlayMojo extends AbstractMojo {
             */
         }
     }
-    
+ 
+     /**
+     * 
+     */
+    private void setupRequest(final InvocationRequest req,
+                              final String additionalArguments) throws MojoExecutionException {
+        try {
+            final String[] args = CommandLineUtils.translateCommandline(additionalArguments);
+            CommandLine cli = new PosixParser().parse(OPTIONS, args);
+
+            if (cli.hasOption( SET_SYSTEM_PROPERTY))
+            {
+                String[] properties = cli.getOptionValues( SET_SYSTEM_PROPERTY );
+                Properties props = new Properties();
+                for ( int i = 0; i < properties.length; i++ )
+                {
+                    String property = properties[i];
+                    String name, value;
+                    int sep = property.indexOf( "=" );
+                    if ( sep <= 0 )
+                    {
+                        name = property.trim();
+                        value = "true";
+                    }
+                    else
+                    {
+                        name = property.substring( 0, sep ).trim();
+                        value = property.substring( sep + 1 ).trim();
+                    }
+                    props.setProperty( name, value );
+                }
+
+                req.setProperties( props );
+            }
+
+            if ( cli.hasOption( OFFLINE ) )
+            {
+                req.setOffline( true );
+            }
+
+            if ( cli.hasOption( QUIET ) )
+            {
+                // TODO: setQuiet() currently not supported by InvocationRequest
+                req.setDebug( false );
+            }
+            else if ( cli.hasOption( DEBUG ) )
+            {
+                req.setDebug( true );
+            }
+            else if ( cli.hasOption( ERRORS ) )
+            {
+                req.setShowErrors( true );
+            }
+
+            if ( cli.hasOption( REACTOR ) )
+            {
+                req.setRecursive( true );
+            }
+            else if ( cli.hasOption( NON_RECURSIVE ) )
+            {
+                req.setRecursive( false );
+            }
+
+            if ( cli.hasOption( UPDATE_SNAPSHOTS ) )
+            {
+                req.setUpdateSnapshots( true );
+            }
+
+            if ( cli.hasOption( ACTIVATE_PROFILES ) )
+            {
+                String[] profiles = cli.getOptionValues( ACTIVATE_PROFILES );
+                List<String> activatedProfiles = new ArrayList<String>();
+                List<String> deactivatedProfiles = new ArrayList<String>();
+
+                if ( profiles != null )
+                {
+                    for ( int i = 0; i < profiles.length; ++i )
+                    {
+                        StringTokenizer profileTokens = new StringTokenizer( profiles[i], "," );
+
+                        while ( profileTokens.hasMoreTokens() )
+                        {
+                            String profileAction = profileTokens.nextToken().trim();
+
+                            if ( profileAction.startsWith( "-" ) || profileAction.startsWith( "!" ) )
+                            {
+                                deactivatedProfiles.add( profileAction.substring( 1 ) );
+                            }
+                            else if ( profileAction.startsWith( "+" ) )
+                            {
+                                activatedProfiles.add( profileAction.substring( 1 ) );
+                            }
+                            else
+                            {
+                                activatedProfiles.add( profileAction );
+                            }
+                        }
+                    }
+                }
+
+                if ( !deactivatedProfiles.isEmpty() )
+                {
+                    getLog().warn( "Explicit profile deactivation is not yet supported. "
+                                          + "The following profiles will NOT be deactivated: " + StringUtils.join(
+                        deactivatedProfiles.iterator(), ", " ) );
+                }
+
+                if ( !activatedProfiles.isEmpty() )
+                {
+                    req.setProfiles( activatedProfiles );
+                }
+            }
+
+            if ( cli.hasOption( FORCE_PLUGIN_UPDATES ) || cli.hasOption( FORCE_PLUGIN_UPDATES2 ) )
+            {
+                getLog().warn( "Forcing plugin updates is not supported currently." );
+            }
+            else if ( cli.hasOption( SUPPRESS_PLUGIN_UPDATES ) )
+            {
+                req.setNonPluginUpdates( true );
+            }
+
+            if ( cli.hasOption( SUPPRESS_PLUGIN_REGISTRY ) )
+            {
+                getLog().warn( "Explicit suppression of the plugin registry is not supported currently." );
+            }
+
+            if ( cli.hasOption( CHECKSUM_FAILURE_POLICY ) )
+            {
+                req.setGlobalChecksumPolicy( InvocationRequest.CHECKSUM_POLICY_FAIL );
+            }
+            else if ( cli.hasOption( CHECKSUM_WARNING_POLICY ) )
+            {
+                req.setGlobalChecksumPolicy( InvocationRequest.CHECKSUM_POLICY_WARN );
+            }
+
+            if ( cli.hasOption( ALTERNATE_USER_SETTINGS ) )
+            {
+                req.setUserSettingsFile( new File( cli.getOptionValue( ALTERNATE_USER_SETTINGS ) ) );
+            }
+
+            if ( cli.hasOption( FAIL_AT_END ) )
+            {
+                req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_AT_END );
+            }
+            else if ( cli.hasOption( FAIL_FAST ) )
+            {
+                req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_FAST );
+            }
+            if ( cli.hasOption( FAIL_NEVER ) )
+            {
+                req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_NEVER );
+            }
+            if ( cli.hasOption( ALTERNATE_POM_FILE ) )
+            {
+                if ( req.getPomFileName() != null )
+                {
+                    getLog().info( "pomFileName is already set, ignoring the -f argument" );
+                }
+                else
+                {
+                    req.setPomFileName( cli.getOptionValue( ALTERNATE_POM_FILE ) );
+                }
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new MojoExecutionException("Failed to re-parse additional arguments for Maven invocation.", e );
+        }
+    }
+
     public void setMavenHome(final File mavenHome) {
         this.mavenHome = mavenHome;
     }
