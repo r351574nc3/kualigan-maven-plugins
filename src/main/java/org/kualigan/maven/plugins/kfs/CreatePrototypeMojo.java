@@ -27,6 +27,13 @@ import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
+
+import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.archiver.UnArchiver;
+import org.codehaus.plexus.archiver.manager.ArchiverManager;
+import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
+import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
+
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
@@ -121,6 +128,8 @@ public class CreatePrototypeMojo extends AbstractMojo {
     @Component(role=org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout.class, hint="default")
     protected ArtifactRepositoryLayout defaultArtifactRepositoryLayout;
 
+    @Component
+    protected ArchiverManager archiverManager;
 
     /**
      */
@@ -171,6 +180,94 @@ public class CreatePrototypeMojo extends AbstractMojo {
      */
     @Parameter(defaultValue = "${maven.home}")
     protected File mavenHome;
+    
+
+    protected void logUnpack(final File file, final File location, final String includes, final String excludes ) {
+        if ( !getLog().isInfoEnabled() )
+        {
+            return;
+        }
+
+        StringBuffer msg = new StringBuffer();
+        msg.append( "Unpacking " );
+        msg.append( file );
+        msg.append( " to " );
+        msg.append( location );
+
+        if ( includes != null && excludes != null ) {
+            msg.append( " with includes \"" );
+            msg.append( includes );
+            msg.append( "\" and excludes \"" );
+            msg.append( excludes );
+            msg.append( "\"" );
+        }
+        else if (includes != null) {
+            msg.append( " with includes \"" );
+            msg.append( includes );
+            msg.append( "\"" );
+        }
+        else if (excludes != null) {
+            msg.append( " with excludes \"" );
+            msg.append( excludes );
+            msg.append( "\"" );
+        }
+
+        getLog().info( msg.toString() );
+    }
+    
+    /**
+     * Handles repacking of 
+     */
+    protected void repack(final File file) {
+    }
+    
+    /**
+     * Unpacks the archive file.
+     *
+     * @param file     File to be unpacked.
+     * @param location Location where to put the unpacked files.
+     * @param includes Comma separated list of file patterns to include i.e. <code>**&#47;.xml,
+     *                 **&#47;*.properties</code>
+     * @param excludes Comma separated list of file patterns to exclude i.e. <code>**&#47;*.xml,
+     *                 **&#47;*.properties</code>
+     */
+    protected void unpack(final File file, final File location, final String includes, final String excludes) throws MojoExecutionException {
+        try {
+            logUnpack(file, location, includes, excludes);
+
+            location.mkdirs();
+
+            final UnArchiver unArchiver;
+            unArchiver = archiverManager.getUnArchiver(file);
+            unArchiver.setSourceFile(file);
+            unArchiver.setDestDirectory(location);
+
+            if (StringUtils.isNotEmpty(excludes) || StringUtils.isNotEmpty(includes)) {
+                final IncludeExcludeFileSelector[] selectors =
+                    new IncludeExcludeFileSelector[]{ new IncludeExcludeFileSelector() };
+
+                if (StringUtils.isNotEmpty( excludes )) {
+                    selectors[0].setExcludes(excludes.split( "," ));
+                }
+
+                if (StringUtils.isNotEmpty( includes )) {
+                    selectors[0].setIncludes(includes.split( "," ));
+                }
+
+                unArchiver.setFileSelectors(selectors);
+            }
+
+            unArchiver.extract();
+        }
+        catch ( NoSuchArchiverException e ) {
+            throw new MojoExecutionException("Unknown archiver type", e);
+        }
+        catch (ArchiverException e) {
+            e.printStackTrace();
+            throw new MojoExecutionException(
+                "Error unpacking file: " + file + " to: " + location + "\r\n" + e.toString(), e );
+        }
+    }
     
     /**
      * 

@@ -66,6 +66,7 @@
   </build>
 
   <properties>
+    <plexus-archiver.version>2.1.1</plexus-archiver.version>
     <maven-plugin-plugin.version>3.1</maven-plugin-plugin.version>
     <mavenVersion>3.0.3</mavenVersion>
       <!-- used for escape -->
@@ -77,6 +78,11 @@
   </properties>
 
   <dependencies>
+    <dependency>
+        <groupId>org.codehaus.plexus</groupId>
+        <artifactId>plexus-archiver</artifactId>
+        <version>${plexus-archiver.version}</version>
+    </dependency>
     <dependency>
         <groupId>org.apache.maven.plugin-testing</groupId>
         <artifactId>maven-plugin-testing-harness</artifactId>
