@@ -53,8 +53,6 @@ import java.util.StringTokenizer;
  *   <li>KFS svn repo</li>
  * </ul>
  * 
- * @requiresProject false
- * @goal create-prototype
  */
  @Mojo(
      name="create-prototype",
@@ -104,33 +102,27 @@ public class CreatePrototypeMojo extends AbstractMojo {
     private static final String ALTERNATE_POM_FILE = "f";
     
     /**
-     * @component
      */
     @Component
     protected Archetype archetype;
 
     /**
-     * @component
      */
     @Component
     protected Prompter prompter;
 
     /**
-     * @component
      */
     @Component
     protected ArtifactRepositoryFactory artifactRepositoryFactory;
 
     /**
-     * @component role="org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout" roleHint="default"
      */
     @Component(role=org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout.class, hint="default")
     protected ArtifactRepositoryLayout defaultArtifactRepositoryLayout;
 
 
     /**
-     * @parameter expression="${localRepository}"
-     * @required
      */
     @Parameter(property="localRepository")
     protected ArtifactRepository localRepository;
@@ -143,39 +135,32 @@ public class CreatePrototypeMojo extends AbstractMojo {
     protected String kfsPath;
 
     /**
-     * @parameter expression="${packageName}" default-value="org.kuali.kfs"
      */
     @Parameter(property="packageName",defaultValue="org.kuali.kfs")
     protected String packageName;
 
     /**
-     * @parameter expression="${groupId}" default-value="org.kuali.kfs"
      */
     @Parameter(property="groupId",defaultValue="org.kuali.kfs")
     protected String groupId;
 
     /**
-     * @parameter expression="${artifactId}" default-value="kfs"
      */
     @Parameter(property="artifactId",defaultValue="kfs")
     protected String artifactId;
 
     /**
-     * @parameter expression="${version}" default-value="5.0"
-     * @required
      */
     @Parameter(property="version",defaultValue="5.0")
     protected String version;
 
     /**
      * WAR file to create a prototype from. Only used when creating a prototype from a war.
-     * @parameter expression="${file}" 
      */
     @Parameter(property="file")
     protected File file;
 
     /**
-     * @parameter expression="${project}"
      */
     @Parameter(property="project")
     protected MavenProject project;
