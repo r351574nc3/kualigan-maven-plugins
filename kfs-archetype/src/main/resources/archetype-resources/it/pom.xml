@@ -121,8 +121,94 @@ limitations under the License.
                   </execution>
                 </executions>
               </plugin>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                  <excludes>
+                    <exclude>**/it/*Test.java</exclude>
+                  </excludes>
+                </configuration>
+              </plugin>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                  <excludes>
+                    <exclude>**/it/*Test.java</exclude>
+                  </excludes>
+                </configuration>
+              </plugin>
+              <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven-failsafe-plugin.version}</version>
+                <configuration>
+                  <!-- Skip the normal tests, we'll run them in the integration-test phase -->
+                  <skip>true</skip>
+                </configuration>
+                
+                <executions>
+                  <execution>
+                    <id>integration-tests</id>
+                    <phase>integration-test</phase>
+                    <goals>
+                      <goal>integration-test</goal>
+                    </goals>
+                    <configuration>
+                      <systemPropertyVariables>
+                        <remote.public.url>${remote.public.url}</remote.public.url>
+                        <browsertype>${it.browser}</browsertype>
+                      </systemPropertyVariables>
+                      <skip>false</skip>
+                      <includes>
+                        <include>**/it/*Test.java</include>
+                      </includes>
+                    </configuration>
+                  </execution>
+                </executions>
+              </plugin>
+              <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>selenium-maven-plugin</artifactId>
+                <version>${selenium-maven-plugin.version}</version>
+                <configuration>
+                  <port>7055</port>
+                </configuration>
+                <executions>
+                  <execution>
+                    <id>xvfb</id>
+                    <phase>pre-integration-test</phase>
+                    <goals>
+                      <goal>xvfb</goal>
+                    </goals>
+                  </execution>
+                  <execution>
+                    <id>start-selenium-server</id>
+                    <phase>pre-integration-test</phase>
+                    <goals>
+                      <goal>start-server</goal>
+                    </goals>
+                    <configuration>
+                      <port>4444</port>
+                      <background>true</background>
+                      <logOutput>true</logOutput>
+                    </configuration>
+                  </execution>
+                  <execution>
+                    <id>stop-selenium-server</id>
+                    <phase>none</phase>
+                    <goals>
+                      <goal>stop-server</goal>
+                    </goals>
+                  </execution>
+                </executions>
+              </plugin>
             </plugins>
           </build>
+          
           <dependencies>
             <dependency>
                 <groupId>junit</groupId>
@@ -190,6 +276,7 @@ limitations under the License.
           </dependencies>
         </profile>
     </profiles>
+    
   <repositories>
     <repository>
       <id>kuali.nexus</id>
@@ -217,101 +304,4 @@ limitations under the License.
     </pluginRepository>
   </pluginRepositories>
 
-  <profiles>
-    <profile>
-      <id>default-test</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>${maven-surefire-plugin.version}</version>
-            <configuration>
-              <excludes>
-                <exclude>**/it/*Test.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>${maven-surefire-plugin.version}</version>
-            <configuration>
-              <excludes>
-                <exclude>**/it/*Test.java</exclude>
-              </excludes>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-failsafe-plugin</artifactId>
-            <version>${maven-failsafe-plugin.version}</version>
-            <configuration>
-              <!-- Skip the normal tests, we'll run them in the integration-test phase -->
-              <skip>true</skip>
-            </configuration>
-            
-            <executions>
-              <execution>
-                <id>integration-tests</id>
-                <phase>integration-test</phase>
-                <goals>
-                  <goal>integration-test</goal>
-                </goals>
-                <configuration>
-                  <systemPropertyVariables>
-                    <remote.public.url>${remote.public.url}</remote.public.url>
-                    <browsertype>${it.browser}</browsertype>
-                  </systemPropertyVariables>
-                  <skip>false</skip>
-                  <includes>
-                    <include>**/it/*Test.java</include>
-                  </includes>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>selenium-maven-plugin</artifactId>
-            <version>${selenium-maven-plugin.version}</version>
-            <configuration>
-              <port>7055</port>
-            </configuration>
-            <executions>
-              <execution>
-                <id>xvfb</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>xvfb</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>start-selenium-server</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>start-server</goal>
-                </goals>
-                <configuration>
-                  <port>4444</port>
-                  <background>true</background>
-                  <logOutput>true</logOutput>
-                </configuration>
-              </execution>
-              <execution>
-                <id>stop-selenium-server</id>
-                <phase>none</phase>
-                <goals>
-                  <goal>stop-server</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>

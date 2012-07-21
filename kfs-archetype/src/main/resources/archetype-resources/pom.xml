@@ -60,11 +60,11 @@ limitations under the License.
   <!-- Properties later populated into configuration.properties -->
   <properties>
     <bouncycastle.version>1.46</bouncycastle.version>
+    <jetty.version>8.1.5.v20120716</jetty.version>
+    <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
     <log4j.version>1.2.17</log4j.version>
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
-    <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
-    <maven-jetty-plugin.version>7.0.0.pre5</maven-jetty-plugin.version>
-    <jetty.version>7.5.1.v20110908</jetty.version>
+
     <security.directory>${user.home}/${base.security.directory}</security.directory>
     <!-- the directory that contains the non-secure property files that are nonetheless external to the deployed application -->
     <settings.directory>${user.home}/${base.settings.directory}</settings.directory>
@@ -122,43 +122,6 @@ limitations under the License.
   <build>
     <pluginManagement>
       <plugins>
-        <plugin>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>maven-jetty-plugin</artifactId>
-            <version>${maven-jetty-plugin.version}</version>
-            <configuration>
-                <scanIntervalSeconds>10</scanIntervalSeconds>
-                <stopKey>foo</stopKey>
-                <stopPort>9999</stopPort>
-            </configuration>
-            <executions>
-                <execution>
-                    <id>start-jetty</id>
-                    <phase>pre-integration-test</phase>
-                    <goals>
-                        <goal>run</goal>
-                    </goals>
-                    <configuration>
-                        <scanIntervalSeconds>0</scanIntervalSeconds>
-                        <daemon>true</daemon>
-                    </configuration>
-                </execution>
-                <execution>
-                    <id>stop-jetty</id>
-                    <phase>post-integration-test</phase>
-                    <goals>
-                        <goal>stop</goal>
-                    </goals>
-                </execution>
-            </executions>
-            <dependencies>
-                <dependency>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                    <version>${log4j.version}</version>
-                </dependency>
-            </dependencies>
-        </plugin>
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>
