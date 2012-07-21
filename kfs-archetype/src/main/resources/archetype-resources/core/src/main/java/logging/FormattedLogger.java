@@ -64,7 +64,7 @@ public class FormattedLogger {
      * 
      * @return Log for the calling class
      */
-    private static final Log getLog() {
+    private static final Logger getLog() {
         try {
             return Logger.getLogger(new Throwable().getStackTrace()[3].getClassName());
         }
@@ -143,7 +143,7 @@ public class FormattedLogger {
      * @param objs an array of objects used as parameters to the <code>pattern</code>
      */
     public static final void info(String pattern, Object ... objs) {
-        Log log = getLog();
+        Logger log = getLog();
         if (log.isLoggable(INFO)) {
             log.info(getMessage(pattern, objs));
         }
@@ -156,7 +156,7 @@ public class FormattedLogger {
      * @param objs an array of objects used as parameters to the <code>pattern</code>
      */
     public static final void config(String pattern, Object ... objs) {
-        Log log = getLog();
+        Logger log = getLog();
         if (log.isLoggable(CONFIG)) {
             log.config(getMessage(pattern, objs));
         }
@@ -170,7 +170,7 @@ public class FormattedLogger {
      * @param objs an array of objects used as parameters to the <code>pattern</code>
      */
     public static final void warn(String pattern, Object ... objs) {
-        Log log = getLog();
+        Logger log = getLog();
         if (log.isLoggable(WARNING)) {
             log.warning(getMessage(pattern, objs));
         }
@@ -183,7 +183,7 @@ public class FormattedLogger {
      * @param objs an array of objects used as parameters to the <code>pattern</code>
      */
     public static final void error(String pattern, Object ... objs) {
-        Log log = getLog();
+        Logger log = getLog();
         if (log.isErrorEnabled()) {
             log.severe(getMessage(pattern, objs));
         }
