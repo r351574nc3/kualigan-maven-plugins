@@ -61,6 +61,9 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.io.DefaultResourceLoader;
 
+import static ${package}.logging.FormattedLogger.*;
+
+
 public class PropertyLoadingFactoryBean implements FactoryBean {
     private static final String PROPERTY_FILE_NAMES_KEY         = "property.files";
     private static final String PROPERTY_TEST_FILE_NAMES_KEY    = "property.test.files";
@@ -82,6 +85,9 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
     private boolean testMode;
     private boolean secureMode;
 
+    /**
+     * Main entry method.
+     */
     public Object getObject() throws Exception {
         loadBaseProperties();
         props.putAll(BASE_PROPERTIES);
@@ -167,26 +173,18 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
             }
         }
         catch (FileNotFoundException fnfe) {
-            fnfe.printStackTrace();
             try {
-                try {
-                    propertyFileInputStream = new FileInputStream(propertyFileName);
-                    props.load(propertyFileInputStream);
-                }
-                finally {
-                    if (propertyFileInputStream != null) {
-                        propertyFileInputStream.close();
-                    }
-                }
+                propertyFileInputStream = new FileInputStream(propertyFileName);
+                props.load(propertyFileInputStream);
             }
-            catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("PropertyLoadingFactoryBean unable to load property file: " + propertyFileName);
+            finally {
+                if (propertyFileInputStream != null) {
+                    propertyFileInputStream.close();
+                }
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("PropertyLoadingFactoryBean unable to load property file: " + propertyFileName);
+            warn("PropertyLoadingFactoryBean unable to load property file: %s", propertyFileName);
         }
     }
 
