@@ -105,7 +105,7 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         else {
             props.put(KSB_REMOTING_URL_PROPERTY_NAME, new StringBuffer("http://").append(System.getProperty(HTTP_URL_PROPERTY_NAME)).append("/kfs-").append(props.getProperty(KFSConstants.ENVIRONMENT_KEY)).append(REMOTING_URL_SUFFIX).toString());
         }
-        System.out.println(KSB_REMOTING_URL_PROPERTY_NAME + " set to " + props.getProperty(KSB_REMOTING_URL_PROPERTY_NAME));
+        config("%s set to %s", KSB_REMOTING_URL_PROPERTY_NAME, props.getProperty(KSB_REMOTING_URL_PROPERTY_NAME));
 
         decryptProps(props);
 
@@ -152,14 +152,17 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
     }
 
     private static void loadPropertyList(Properties props, String listPropertyName) {
-        System.out.println("Loading property " + listPropertyName);
+        entering();
+        debug("Loading property %s", listPropertyName);
         for (String propertyFileName : getBaseListProperty(listPropertyName)) {
             loadProperties(props,propertyFileName);
         }
+        exiting();
     }
 
     private static void loadProperties(Properties props, String propertyFileName) {
-        System.out.println("Loading " + propertyFileName);
+        entering();
+        debug("Loading %s", propertyFileName);
         InputStream propertyFileInputStream = null;
         try {
             try {
@@ -186,6 +189,9 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         catch (IOException e) {
             warn("PropertyLoadingFactoryBean unable to load property file: %s", propertyFileName);
         }
+        finally {
+            exiting();
+        }
     }
 
     public static String getBaseProperty(String propertyName) {
@@ -197,9 +203,9 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         loadBaseProperties();
         try {
             if (BASE_PROPERTIES == null) {
-                System.out.println("BASE PROPERTIES IS NULL!!");
+                error("BASE PROPERTIES IS NULL!!");
             }
-            System.out.println("Returning list of " + BASE_PROPERTIES.getProperty(propertyName));
+            debug("Returning list of %s", BASE_PROPERTIES.getProperty(propertyName));
             return Arrays.asList(BASE_PROPERTIES.getProperty(propertyName).split(","));
         }
         catch (Exception e) {
@@ -218,15 +224,15 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
                 BASE_PROPERTIES.putAll(riceXmlConfigurer.getProperties());
             }
             catch (Exception e) {
-                // Couldn't load the rice configs
-                e.printStackTrace();
+                warn("Couldn't load the rice configs");
+                warn(e.getMessage());
             }
         }
 
         loadProperties(BASE_PROPERTIES, new StringBuffer("classpath:").append(CONFIGURATION_FILE_NAME).append(".properties").toString());
 
         final String additionalProps = BASE_PROPERTIES.getProperty("additional.config.locations");
-    System.out.println("Adding props from " + additionalProps);
+        config("Adding props from %s", additionalProps);
 
         final JAXBConfigImpl additionalConfigurer = new JAXBConfigImpl(java.util.Arrays.asList(additionalProps.split(",")));
         try {
