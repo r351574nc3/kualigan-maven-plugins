@@ -1,15 +1,35 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	${symbol_dollar}{distributable.tag}
+	
 	
     <!--  FILTER DEFINITIONS -->
-	${symbol_dollar}{authentication.filter.definition}
+    <filter>
+<filter-name>monitoring</filter-name>
+<filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+<init-param>
+<param-name>url-exclude-pattern</param-name>
+<param-value>/static/.*|/kr/static/.*|/kr/images/.*|/images-portal/.*</param-value>
+</init-param>
+<init-param>
+<param-name>system-actions-enabled</param-name>
+<param-value>true</param-value>
+</init-param>
+</filter>
+<filter-mapping>
+<filter-name>monitoring</filter-name>
+<url-pattern>/*</url-pattern>
+</filter-mapping>
+<listener>
+<listener-class>net.bull.javamelody.SessionListener</listener-class>
+</listener>
+
 	<filter>
-		<filter-name>SessionFilter</filter-name>
-		<filter-class>org.kuali.rice.kns.web.filter.SessionFilter</filter-class>
+		<filter-name>DummyLoginFilter</filter-name>
+		<filter-class>org.kuali.rice.kns.web.filter.DummyLoginFilter</filter-class>
+			<init-param>
+				<param-name>loginUser</param-name>
+				<param-value>khuntley</param-value>
+			</init-param>
 	</filter>
 	<filter>
 		<filter-name>ResponseOverrideFilter</filter-name>
@@ -31,10 +51,6 @@
     <!--  FILTER MAPPINGS  -->
   
 	<filter-mapping>
-		<filter-name>SessionFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	<filter-mapping>
 		<filter-name>ResponseOverrideFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
@@ -42,14 +58,21 @@
 		<filter-name>SetResponseBufferSizeFilter</filter-name>
 		<url-pattern>*.do</url-pattern>
 	</filter-mapping>
-	${symbol_dollar}{authentication.filter.mappings}
+	<filter-mapping>
+		<filter-name>DummyLoginFilter</filter-name>
+			<servlet-name>action</servlet-name>
+		</filter-mapping>
+		<filter-mapping>
+			<filter-name>DummyLoginFilter</filter-name>
+			<servlet-name>dwr-invoker</servlet-name>
+		</filter-mapping>
+		<filter-mapping>
+			<filter-name>DummyLoginFilter</filter-name>
+			<servlet-name>batchFileUpload</servlet-name>
+		</filter-mapping>
 	<filter-mapping>
 		<filter-name>UserLoginFilter</filter-name>
 		<servlet-name>action</servlet-name>
-	</filter-mapping>
-	<filter-mapping>
-		<filter-name>SessionFilter</filter-name>
-		<servlet-name>dwr-invoker</servlet-name>
 	</filter-mapping>
 	<filter-mapping>
 		<filter-name>UserLoginFilter</filter-name>
@@ -64,7 +87,7 @@
     <!-- SERVLET CONTEXT LISTENERS -->
 
 	<listener>
-		<listener-class>org.kuali.${parentArtifactId}.sys.context.WebApplicationInitListener</listener-class>
+		<listener-class>org.kuali.kfs.sys.context.WebApplicationInitListener</listener-class>
 	</listener>
 	<listener>
 	    	<listener-class>org.apache.commons.fileupload.servlet.FileCleanerCleanup</listener-class>
@@ -84,7 +107,7 @@
 		</init-param>
 		<init-param>
 			<param-name>config</param-name>
-			<param-value>${symbol_dollar}{struts.config.files}</param-value>
+			<param-value>/WEB-INF/struts-config.xml</param-value>
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
@@ -102,11 +125,11 @@
 	</servlet>
 	<servlet>
 		<servlet-name>heartbeat</servlet-name>
-		<servlet-class>org.kuali.${parentArtifactId}.sys.web.servlet.KualiHeartbeatServlet</servlet-class>
+		<servlet-class>org.kuali.kfs.sys.web.servlet.KualiHeartbeatServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>batchFileUpload</servlet-name>
-		<servlet-class>org.kuali.${parentArtifactId}.sys.web.servlet.BatchFileUploadServlet</servlet-class>
+		<servlet-class>org.kuali.kfs.sys.web.servlet.BatchFileUploadServlet</servlet-class>
 	</servlet>
 
 	<!-- Embedded KEW Servlets -->
@@ -183,13 +206,13 @@
 
 	<servlet-mapping>
 		<servlet-name>edoclite</servlet-name>
-		<url-pattern>/${symbol_dollar}{kew.application}/EDocLite</url-pattern>
+		<url-pattern>/kew/EDocLite</url-pattern>
 	</servlet-mapping>
 
 	<!-- ******************* END Embedded KEW Servlet Mappings ********************* -->
 
 	<session-config>
-		<session-timeout>${symbol_dollar}{http.session.timeout.minutes}</session-timeout>
+		<session-timeout>15</session-timeout>
 	</session-config>
 	<welcome-file-list>
 		<welcome-file>index.jsp</welcome-file>
