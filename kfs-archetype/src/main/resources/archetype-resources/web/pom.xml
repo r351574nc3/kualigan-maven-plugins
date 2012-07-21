@@ -36,7 +36,7 @@ limitations under the License.
   </properties>
 
   <build>
-    <finalName>${project.parent.name}-${environment}</finalName>
+    <finalName>${project.parent.artifactId}-${environment}</finalName>
     
     <resources>
       <resource>
