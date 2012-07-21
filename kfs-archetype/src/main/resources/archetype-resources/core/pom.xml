@@ -34,6 +34,10 @@
       <artifactId>${kfsPrototypeArtifactId}</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk16</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.kuali.rice</groupId>
       <artifactId>rice-ldap</artifactId>
     </dependency>

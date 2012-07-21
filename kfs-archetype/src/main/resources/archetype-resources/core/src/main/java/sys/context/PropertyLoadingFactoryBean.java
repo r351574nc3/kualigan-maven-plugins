@@ -18,16 +18,41 @@
  */
 package ${package}.sys.context;
 
-import java.lang.System;
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+
+import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.Security;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateFactory;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
+
+import javax.security.auth.x500.X500Principal;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.openssl.PEMReader;
+import org.bouncycastle.openssl.PEMWriter;
+import org.bouncycastle.x509.X509V1CertificateGenerator;
+import org.bouncycastle.x509.X509V3CertificateGenerator;
+
+import javax.crypto.Cipher;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.kfs.sys.KFSConstants;
@@ -73,14 +98,14 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         return props;
     }
 
-    protected void decryptProps(final Properties props) {
-        final String keystore = props.getProperty("keystore.filename");
+    protected void decryptProps(final Properties props) throws Exception {
+        final String keystore  = props.getProperty("keystore.filename");
+        final String storepass = props.getProperty("keystore.password");
         final FileInputStream fs = new FileInputStream(keystore);
         final KeyStore jks = KeyStore.getInstance("JCEKS");
         jks.load(fs, storepass.toCharArray());                
         fs.close();
 
-        final String storepass = props.getProperty("keystore.password");
         
         final Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
         cipher.init(Cipher.DECRYPT_MODE, (PrivateKey) jks.getKey("rice-rsa-key", storepass.toCharArray()));
@@ -187,7 +212,7 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         loadProperties(BASE_PROPERTIES, new StringBuffer("classpath:").append(CONFIGURATION_FILE_NAME).append(".properties").toString());
 
         final String additionalProps = BASE_PROPERTIES.getProperty("additional.config.locations");
-	System.out.println("Adding props from " + additionalProps);
+    System.out.println("Adding props from " + additionalProps);
 
         final JAXBConfigImpl additionalConfigurer = new JAXBConfigImpl(java.util.Arrays.asList(additionalProps.split(",")));
         try {
