@@ -140,8 +140,8 @@ limitations under the License.
   
   <dependencies>
     <dependency>
-      <groupId>${kfs.prototype.groupId}</groupId>
-      <artifactId>${kfs.prototype.artifactId}</artifactId>
+      <groupId>${kfsPrototypeGroupId}</groupId>
+      <artifactId>${kfsPrototypeArtifactId}</artifactId>
       <type>war</type>
     </dependency>
  </dependencies> 

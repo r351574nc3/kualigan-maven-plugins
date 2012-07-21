@@ -30,8 +30,8 @@
 
   <dependencies>
     <dependency>
-      <groupId>${kfs.prototype.groupId}</groupId>
-      <artifactId>${kfs.prototype.artifactId}</artifactId>
+      <groupId>${kfsPrototypeGroupId}</groupId>
+      <artifactId>${kfsPrototypeArtifactId}</artifactId>
     </dependency>
     <dependency>
       <groupId>org.kuali.rice</groupId>

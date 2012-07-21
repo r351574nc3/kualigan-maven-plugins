@@ -99,15 +99,15 @@ limitations under the License.
         to the classes in the prototype.
       -->
       <dependency>
-        <groupId>${kfs.prototype.groupId}</groupId>
-        <artifactId>${kfs.prototype.artifactId}</artifactId>
-        <version>${kfs.prototype.version}</version>
+        <groupId>${kfsPrototypeGroupId}</groupId>
+        <artifactId>${kfsPrototypeArtifactId}</artifactId>
+        <version>${kfsPrototypeVersion}</version>
         <type>war</type>
       </dependency>
       <dependency>
-        <groupId>${kfs.prototype.groupId}</groupId>
-        <artifactId>${kfs.prototype.artifactId}</artifactId>
-        <version>${kfs.prototype.version}</version>
+        <groupId>${kfsPrototypeGroupId}</groupId>
+        <artifactId>${kfsPrototypeArtifactId}</artifactId>
+        <version>${kfsPrototypeVersion}</version>
         <type>jar</type>
       </dependency>
     </dependencies>
