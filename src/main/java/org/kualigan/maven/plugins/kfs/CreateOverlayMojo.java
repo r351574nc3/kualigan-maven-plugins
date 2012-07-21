@@ -207,9 +207,9 @@ public class CreateOverlayMojo extends AbstractMojo {
                         setProperty("groupId", groupId);
                         setProperty("artifactId", artifactId);
                         setProperty("version", version);
-                        setProperty("kfs.prototype.groupId", prototypeGroupId);
-                        setProperty("kfs.prototype.artifactId", prototypeArtifactId);
-                        setProperty("kfs.prototype.versionId", prototypeVersion);
+                        setProperty("kfsPrototypeGroupId", prototypeGroupId);
+                        setProperty("kfsPrototypeArtifactId", prototypeArtifactId);
+                        setProperty("kfsPrototypeVersionId", prototypeVersion);
                     }});
                     
         try {

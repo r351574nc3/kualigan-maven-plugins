@@ -220,7 +220,7 @@ limitations under the License.
           <dependency>
             <groupId>org.apache.directory.server</groupId>
             <artifactId>apacheds-all</artifactId>
-            <version>${apacheds.version}</version>
+            <version>${apachedsVersion}</version>
           </dependency>
         </dependencies>
       </dependencyManagement>
