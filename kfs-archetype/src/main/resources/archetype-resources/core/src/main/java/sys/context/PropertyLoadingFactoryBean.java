@@ -62,14 +62,22 @@ import org.springframework.beans.factory.FactoryBean;
 import org.springframework.core.io.DefaultResourceLoader;
 
 public class PropertyLoadingFactoryBean implements FactoryBean {
-    private static final String PROPERTY_FILE_NAMES_KEY = "property.files";
-    private static final String PROPERTY_TEST_FILE_NAMES_KEY = "property.test.files";
+    private static final String PROPERTY_FILE_NAMES_KEY         = "property.files";
+    private static final String PROPERTY_TEST_FILE_NAMES_KEY    = "property.test.files";
     private static final String SECURITY_PROPERTY_FILE_NAME_KEY = "security.property.file";
-    private static final String CONFIGURATION_FILE_NAME = "configuration";
-    private static final Properties BASE_PROPERTIES = new Properties();
-    private static final String HTTP_URL_PROPERTY_NAME = "http.url";
-    private static final String KSB_REMOTING_URL_PROPERTY_NAME = "ksb.remoting.url";
-    private static final String REMOTING_URL_SUFFIX = "/remoting";
+    private static final String CONFIGURATION_FILE_NAME         = "configuration";
+    private static final Properties BASE_PROPERTIES             = new Properties();
+    private static final String HTTP_URL_PROPERTY_NAME          = "http.url";
+    private static final String KSB_REMOTING_URL_PROPERTY_NAME  = "ksb.remoting.url";
+    private static final String REMOTING_URL_SUFFIX             = "/remoting";
+    protected static final String ENCRYPTION_STRATEGY           = "RSA/ECB/PKCS1Padding";
+    protected static final String KEYSTORE_TYPE                 = "JCEKS";
+    protected static final String KEYSTORE_PASSWORD_PROPERTY    = "keystore.password";
+    protected static final String KEYSTORE_LOCATION_PROPERTY    = "keystore.filename";
+    protected static final String ENCRYPTED_PROPERTY_EXTENSION  = ".encrypted";
+    protected static final String PASSWORD_PROPERTY_EXTENSION   = ".password";
+    protected static final String RICE_RSA_KEY_NAME             = "rice-rsa-key";
+    
     private Properties props = new Properties();
     private boolean testMode;
     private boolean secureMode;
@@ -98,23 +106,31 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         return props;
     }
 
+    /**
+     * Decrypts encrypted values in properties. Interprets that any property in the {@link Properties} instance
+     * provided with a key ending with the {@code ENCRYPTED_PROPERTY_EXTENSION} is considered to be encrypted.
+     * It is then decrypted and replaced with a key of the same name only using the {@code PASSWORD_PROPERTY_EXTENSION}
+     * 
+     * @param props the {@link Properties} to decrypt
+     * @throws {@link Exception} if there's any problem decrypting/encrypting properties.
+     */
     protected void decryptProps(final Properties props) throws Exception {
-        final String keystore  = props.getProperty("keystore.filename");
-        final String storepass = props.getProperty("keystore.password");
+        final String keystore  = props.getProperty(KEYSTORE_LOCATION_PROPERTY);
+        final String storepass = props.getProperty(KEYSTORE_PASSWORD_PROPERTY);
         final FileInputStream fs = new FileInputStream(keystore);
-        final KeyStore jks = KeyStore.getInstance("JCEKS");
+        final KeyStore jks = KeyStore.getInstance(KEYSTORE_TYPE);
         jks.load(fs, storepass.toCharArray());                
         fs.close();
 
         
-        final Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-        cipher.init(Cipher.DECRYPT_MODE, (PrivateKey) jks.getKey("rice-rsa-key", storepass.toCharArray()));
+        final Cipher cipher = Cipher.getInstance(ENCRYPTION_STRATEGY);
+        cipher.init(Cipher.DECRYPT_MODE, (PrivateKey) jks.getKey(RICE_RSA_KEY_NAME, storepass.toCharArray()));
 
         for (final String key : props.stringPropertyNames()) {
-            if (key.endsWith(".encrypted")) {
-                final String prefix = key.substring(0, key.indexOf(".encrypted"));
+            if (key.endsWith(ENCRYPTED_PROPERTY_EXTENSION)) {
+                final String prefix = key.substring(0, key.indexOf(ENCRYPTED_PROPERTY_EXTENSION));
                 final String encrypted_str = props.getProperty(key);
-                props.setProperty(prefix + ".password",
+                props.setProperty(prefix + PASSWORD_PROPERTY_EXTENSION,
                                   new String(cipher.doFinal(new BASE64Decoder().decodeBuffer(encrypted_str))));
             }
         }
