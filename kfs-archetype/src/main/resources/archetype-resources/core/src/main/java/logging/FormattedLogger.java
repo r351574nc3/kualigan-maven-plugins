@@ -32,12 +32,11 @@ import static java.util.logging.Level.*;
  *  
  * To use these just do
  * <code>
- * import edu.uconn.logging.FormattedLogger.*
+ * import ${package}.logging.FormattedLogger.*
  * </code>
  * 
- * @see org.apache.commons.logging.Log
- * 
- * @see org.apache.commons.logging.LogFactory
+ * @see java.util.logging.Logger
+ * @see java.util.logging.Level
  */
 public class FormattedLogger {
     
