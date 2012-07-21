@@ -32,7 +32,7 @@
 
   <bean id="properties" class="${package}.sys.context.PropertyLoadingFactoryBean" />
 
-  <bean id="securityProperties" class="${package|.sys.context.PropertyLoadingFactoryBean"
+  <bean id="securityProperties" class="${package}.sys.context.PropertyLoadingFactoryBean"
     p:secureMode="true" />
 
   <bean id="propertyPlaceholderConfigurer"
