@@ -184,7 +184,7 @@ public class FormattedLogger {
      */
     public static final void error(String pattern, Object ... objs) {
         Logger log = getLog();
-        if (log.isErrorEnabled()) {
+        if (log.isLoggable(SEVERE)) {
             log.severe(getMessage(pattern, objs));
         }
     }
