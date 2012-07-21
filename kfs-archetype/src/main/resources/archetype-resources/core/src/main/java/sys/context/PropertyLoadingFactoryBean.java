@@ -169,6 +169,10 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
                 propertyFileInputStream = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader()).getResource(propertyFileName).getInputStream();
                 props.load(propertyFileInputStream);
             }
+            catch (Exception e) {
+                warn("Could not load property file %s", propertyFileName);
+                throwing(e);
+            }
             finally {
                 if (propertyFileInputStream != null) {
                     propertyFileInputStream.close();
@@ -180,6 +184,11 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
                 propertyFileInputStream = new FileInputStream(propertyFileName);
                 props.load(propertyFileInputStream);
             }
+            catch (Exception e) {
+                warn("Could not load property file %s", propertyFileName);
+                throwing(e);
+            }
+                
             finally {
                 if (propertyFileInputStream != null) {
                     propertyFileInputStream.close();
