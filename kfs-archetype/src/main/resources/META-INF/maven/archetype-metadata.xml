@@ -2,6 +2,19 @@
 <archetype-descriptor xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd" name="kfs"
     xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!--
+    <requiredProperties>
+        <requiredProperty key="kfs.prototype.groupId">
+            <defaultValue>org.kuali.kfs</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="kfs.prototype.artifactId">
+            <defaultValue>kfs</defaultValue>
+        </requiredProperty>
+        <requiredProperty key="kfs.prototype.version">
+            <defaultValue>5.0</defaultValue>
+        </requiredProperty>
+    </requiredProperties>
+    -->
   <modules>
     <fileSets>
         <fileSet encoding="UTF-8">

@@ -138,13 +138,6 @@ public class CreateOverlayMojo extends AbstractMojo {
     private ArtifactRepository localRepository;
     
     /**
-     * Path for where the KFS instance is we want to migrate
-     * 
-     */
-    @Parameter(property = "kfs.local.path", required = true)
-    private String kfsPath;
-
-    /**
      */
     @Parameter(property = "groupId")
     private String groupId;
@@ -193,13 +186,14 @@ public class CreateOverlayMojo extends AbstractMojo {
      * Produce an overlay from a given prototype. 
      */
     public void execute() throws MojoExecutionException {
+        generateArchetype();
     }
     
     /**
      * Invokes the maven goal {@code archetype:generate} with the appropriate properties.
      * 
      */
-    public void generateArcheType() throws MojoExecutionException {
+    public void generateArchetype() throws MojoExecutionException {
         final Invoker invoker = new DefaultInvoker().setMavenHome(getMavenHome());
         
         final String additionalArguments = "";
