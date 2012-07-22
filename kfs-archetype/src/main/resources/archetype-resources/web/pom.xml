@@ -54,6 +54,11 @@ limitations under the License.
       <plugin>
         <groupId>org.apache.tomcat.maven</groupId>
         <artifactId>tomcat7-maven-plugin</artifactId>
+        <configuration>
+            <systemProperties>
+                <java.util.logging.config.file>logging.properties</java.util.logging.config.file>
+            </systemProperties>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
