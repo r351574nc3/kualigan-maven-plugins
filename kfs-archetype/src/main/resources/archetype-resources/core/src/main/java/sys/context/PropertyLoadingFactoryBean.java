@@ -253,7 +253,7 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         }
         catch (Exception e) {
             warn("Unable to load additional configs");
-            warn("e.getMessage());
+            warn(e.getMessage());
             // e.printStackTrace();
         }
     }
