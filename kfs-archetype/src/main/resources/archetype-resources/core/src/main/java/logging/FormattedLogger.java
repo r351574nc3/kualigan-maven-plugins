@@ -124,7 +124,7 @@ public class FormattedLogger {
         }
     }
     
-    public static final void isDebuggingEnabled() {
+    public static final boolean isDebuggingEnabled() {
         return getLog().isLoggable(FINE);
     }
     
