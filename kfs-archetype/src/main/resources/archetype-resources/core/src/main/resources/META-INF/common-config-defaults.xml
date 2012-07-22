@@ -43,7 +43,7 @@
     <param name="kim.url">${symbol_dollar}{appserver.url}/kim</param>
     <param name="kc.application.url">http://test.kc.kuali.org/kc-trunk</param>
     <param name="workflow.url">${symbol_dollar}{appserver.url}/kew</param>
-    <param name="workflow.documentsearch.base.url">${symbol_dollar}{appserver.url}/kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&docFormKey=88888888&returnLocation=${symbol_dollar}{appserver.url}/portal.do&hideReturnLink=true</param>
+    <param name="workflow.documentsearch.base.url">${symbol_dollar}{appserver.url}/kr/lookup.do?methodToCall=start&amp;businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&amp;docFormKey=88888888&amp;returnLocation=${symbol_dollar}{appserver.url}/portal.do&amp;hideReturnLink=true</param>
     <param name="kr.externalizable.images.url">${symbol_dollar}{appserver.url}/kr/static/images/</param>
 
 
@@ -183,7 +183,7 @@
     <param name="kfs.rice.override.spring.files">spring-kfs-rice-overrides.xml,org/kuali/kfs/sec/spring-sec-rice-overrides.xml,spring-kfs-batch.xml</param>
 
     <param name="current.year">2012</param>
-    <param name="feedback.link.url">https://test.kuali.org/jira/secure/CreateIssue.jspa?pid=10091&amp;issuetype=1</param>
+    <param name="feedback.link.url">https://test.kuali.org/jira/secure/CreateIssue.jspa?pid=10091&amp;amp;issuetype=1</param>
     <param name="licensing.contact.email">license@kuali.org</param>
     <param name="report.writer.service.new.line.characters">\n</param>
     <param name="encrypt.attributes.properties.file">work/db/fieldsToEncrypt.properties</param>
