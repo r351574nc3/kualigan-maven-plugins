@@ -63,6 +63,7 @@ limitations under the License.
     <jetty.version>8.1.5.v20120716</jetty.version>
     <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
     <log4j.version>1.2.17</log4j.version>
+    <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
     <ojdbc6.version>11.2.0.2</ojdbc6.version>
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
 
@@ -186,6 +187,25 @@ limitations under the License.
       </dependencyManagement>
     </profile>
 
+   <profile>
+     <id>mysql</id>
+     <activation>
+        <activeByDefault>true</activeByDefault>
+     </activation>
+     <properties>
+         <driver.groupId>mysql</driver.groupId>
+         <driver.artifactId>mysql-connector-java</driver.artifactId>
+         <driver.version>${mysql-connector-java.version}</driver.version>
+     </properties>
+   </profile>
+   <profile>
+     <id>oracle</id>
+     <properties>
+         <driver.groupId>com.oracle</driver.groupId>
+         <driver.artifactId>ojdbc6</driver.artifactId>
+         <driver.version>${ojdbc6.version}</driver.version>
+     </properties>
+   </profile>
   </profiles>
 
   <repositories>
