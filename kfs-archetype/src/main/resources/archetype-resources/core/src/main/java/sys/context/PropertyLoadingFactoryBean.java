@@ -81,6 +81,10 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
     protected static final String PASSWORD_PROPERTY_EXTENSION   = ".password";
     protected static final String RICE_RSA_KEY_NAME             = "rice-rsa-key";
     
+    static  {
+        Security.addProvider(new BouncyCastleProvider());
+    }
+    
     private Properties props = new Properties();
     private boolean testMode;
     private boolean secureMode;
