@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 /*
  * Copyright 2007 The Kuali Foundation
  * 
@@ -16,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ${package}.sys.context;
+package org.kuali.kfs.sys.context;
 
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
