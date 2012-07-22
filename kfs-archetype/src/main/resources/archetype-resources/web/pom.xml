@@ -58,6 +58,7 @@ limitations under the License.
             <systemProperties>
                 <java.util.logging.config.file>logging.properties</java.util.logging.config.file>
                 <environment>${build.environment}</environment>
+                <log4j.settings.file>${user.home}/main/${build.environment}/j2ee/log4j.properties</log4j.settings.file>
             </systemProperties>
         </configuration>
         <dependencies>
