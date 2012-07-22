@@ -124,6 +124,10 @@ public class FormattedLogger {
         }
     }
     
+    public static final void isDebuggingEnabled() {
+        return getLog().isLoggable(FINE);
+    }
+    
     /**
      * Wraps {@link Logger#throwing(String)}
      * 

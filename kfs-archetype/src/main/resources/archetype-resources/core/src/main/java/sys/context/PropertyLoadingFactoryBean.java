@@ -249,7 +249,10 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         try {
             additionalConfigurer.parseConfig();
             BASE_PROPERTIES.putAll(additionalConfigurer.getProperties());
-            BASE_PROPERTIES.list(System.out);
+            
+            if (isDebuggingEnabled()) {
+                BASE_PROPERTIES.list(System.out);
+            }
         }
         catch (Exception e) {
             warn("Unable to load additional configs");
