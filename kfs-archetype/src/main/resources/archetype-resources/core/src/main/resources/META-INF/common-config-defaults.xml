@@ -5,7 +5,7 @@
     <param name="module.name">${artifactId}</param>
     <param name="additional.config.locations">${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/common-config.xml,${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/${symbol_dollar}{module.name}-config.xml</param>
 
-    <param name="appserver.url">http://localhost:8080/</appserver.url>
+    <param name="appserver.url">http://localhost:8080/</param>
     <param name="external.directory">${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/${symbol_dollar}{module.name}</param>
 
     <param name="mail.relay.server"></param>
