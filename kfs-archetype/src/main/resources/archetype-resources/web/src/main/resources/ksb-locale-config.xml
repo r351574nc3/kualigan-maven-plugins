@@ -1,3 +1,6 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  Copyright 2007-2008 The Kuali Foundation
@@ -29,7 +32,7 @@
   <bean id="properties" class="org.kuali.kfs.sys.context.PropertyLoadingFactoryBean" />
 
   <bean id="securityProperties"
-    class="org.kuali.kfs.sys.context.PropertyLoadingFactoryBean">
+    class="${package}.sys.context.PropertyLoadingFactoryBean">
     <property name="secureMode" value="true" />
   </bean>
 
@@ -127,7 +130,7 @@
 
 	<bean id="transactionAttributeSource" class="org.kuali.rice.kns.util.spring.AnnotationAndNameMatchingTransactionAttributeSource">
 		<property name="annotationTransactionAttributeSource" ref="annotationTransactionAttributeSource" />
-		<property name="transactionTimeout" value="${transaction.timeout}" />
+		<property name="transactionTimeout" value="${symbol_dollar}{transaction.timeout}" />
 	</bean>
 
 	<bean id="annotationTransactionAttributeSource" class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
@@ -167,14 +170,14 @@
 	<bean id="methodCacheInterceptor" class="org.kuali.rice.kns.util.cache.MethodCacheInterceptor">
 		<property name="cache" ref="methodCache" />
 		<property name="expirationTimeInSeconds">
-			<value>${kns.cache.methodresult.max.age.seconds}</value>
+			<value>${symbol_dollar}{kns.cache.methodresult.max.age.seconds}</value>
 		</property>
 	</bean>
 
     <bean id="methodCacheNoCopyInterceptor" class="org.kuali.rice.kns.util.cache.MethodCacheNoCopyInterceptor">
         <property name="cache" ref="methodCacheNoCopy" />
         <property name="expirationTimeInSeconds">
-            <value>${kns.cache.methodresult.nocopy.max.age.seconds}</value>
+            <value>${symbol_dollar}{kns.cache.methodresult.nocopy.max.age.seconds}</value>
 		</property>
 	</bean>
 
@@ -186,7 +189,7 @@
 				<prop key="cache.memory">true</prop>
 				<prop key="cache.key">__oscache_mrcache</prop>
 				<prop key="cache.persistence.overflow.only">false</prop>
-				<prop key="cache.capacity">${kns.cache.methodresult.max.size}</prop>
+				<prop key="cache.capacity">${symbol_dollar}{kns.cache.methodresult.max.size}</prop>
 				<prop key="cache.event.listeners">org.kuali.rice.kns.util.cache.MethodResultsCacheMonitor</prop>
 			</props>
 		</constructor-arg>
@@ -200,7 +203,7 @@
                 <prop key="cache.memory">true</prop>
                 <prop key="cache.key">__oscache_mrcache</prop>
                 <prop key="cache.persistence.overflow.only">false</prop>
-                <prop key="cache.capacity">${kns.cache.methodresult.nocopy.max.size}</prop>
+                <prop key="cache.capacity">${symbol_dollar}{kns.cache.methodresult.nocopy.max.size}</prop>
                 <prop key="cache.event.listeners">org.kuali.rice.kns.util.cache.MethodResultsCacheNoCopyMonitor</prop>
             </props>
         </constructor-arg>
@@ -227,23 +230,23 @@
 	
 	<bean id="encryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl">
 		<property name="secretKey">
-			<value>${encryption.key}</value>
+			<value>${symbol_dollar}{encryption.key}</value>
 		</property>
 	</bean>	
 	
 	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">      
 		<property name="secretKey">
-			<value>${encryption.key}</value>
+			<value>${symbol_dollar}{encryption.key}</value>
 		</property>
 	</bean>
 	
 	<bean id="ksbJavaSecurityManagementService" class="org.kuali.rice.ksb.security.admin.service.impl.JavaSecurityManagementServiceImpl" lazy-init="true" >
-		<property name="moduleKeyStoreAlias" value="${keystore.alias}" />
-		<property name="moduleKeyStorePassword" value="${keystore.password}" />
+		<property name="moduleKeyStoreAlias" value="${symbol_dollar}{keystore.alias}" />
+		<property name="moduleKeyStorePassword" value="${symbol_dollar}{keystore.password}" />
 	</bean>	
 	
 	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.FixedLocaleResolver">
-		<property name="defaultLocale" value="${kfs.locale}" />
+		<property name="defaultLocale" value="${symbol_dollar}{kfs.locale}" />
 	</bean>
 	
 </beans>
