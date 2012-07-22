@@ -76,7 +76,7 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
     protected static final String ENCRYPTION_STRATEGY           = "RSA/ECB/PKCS1Padding";
     protected static final String KEYSTORE_TYPE                 = "JCEKS";
     protected static final String KEYSTORE_PASSWORD_PROPERTY    = "keystore.password";
-    protected static final String KEYSTORE_LOCATION_PROPERTY    = "keystore.filename";
+    protected static final String KEYSTORE_LOCATION_PROPERTY    = "keystore.file";
     protected static final String ENCRYPTED_PROPERTY_EXTENSION  = ".encrypted";
     protected static final String PASSWORD_PROPERTY_EXTENSION   = ".password";
     protected static final String RICE_RSA_KEY_NAME             = "rice-rsa-key";
