@@ -233,7 +233,6 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
             try {
                 riceXmlConfigurer.parseConfig();
                 BASE_PROPERTIES.putAll(riceXmlConfigurer.getProperties());
-                BASE_PROPERTIES.list(System.out);
             }
             catch (Exception e) {
                 warn("Couldn't load the rice configs");
@@ -250,6 +249,7 @@ public class PropertyLoadingFactoryBean implements FactoryBean {
         try {
             additionalConfigurer.parseConfig();
             BASE_PROPERTIES.putAll(additionalConfigurer.getProperties());
+            BASE_PROPERTIES.list(System.out);
         }
         catch (Exception e) {
             warn("Unable to load additional configs");
