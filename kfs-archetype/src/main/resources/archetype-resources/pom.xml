@@ -65,16 +65,6 @@ limitations under the License.
     <log4j.version>1.2.17</log4j.version>
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
 
-    <security.directory>${user.home}/${base.security.directory}</security.directory>
-    <!-- the directory that contains the non-secure property files that are nonetheless external to the deployed application -->
-    <settings.directory>${user.home}/${base.settings.directory}</settings.directory>
-    <!-- used as the working deployment directory by the dist target -->
-    <deploy.working.directory>${user.home}/${base.deploy.directory}/</deploy.working.directory>
-    <!-- the directory containing the log files output by the application -->
-    <logs.directory>${user.home}/${base.logs.directory}/</logs.directory>
-    <!-- the working directory that is external to the application -->
-    <external.work.directory>${user.home}/${base.work.directory}/</external.work.directory>
-    <spring.source.files>${core.spring.source.files}${internal.access.security.core.spring.files}${integration.spring.files}${optional.module.spring.source.files}${institution.spring.source.files}${ldap.spring.source.files}</spring.source.files>
     <kfs.maven.groupId>org.kualigan.kfs</kfs.maven.groupId>
     <kfs.maven.version>4.1.1-7</kfs.maven.version>
     <kfs.external.unpack.phase>none</kfs.external.unpack.phase>
