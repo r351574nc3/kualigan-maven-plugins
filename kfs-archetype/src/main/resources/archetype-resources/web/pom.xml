@@ -57,6 +57,7 @@ limitations under the License.
         <configuration>
             <systemProperties>
                 <java.util.logging.config.file>logging.properties</java.util.logging.config.file>
+                <environment>${build.environment}</environment>
             </systemProperties>
         </configuration>
       </plugin>
