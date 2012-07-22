@@ -62,7 +62,7 @@
     <param name="datasource.ojb.sequenceManager.className">org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl</param>
     <param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="rice.custom.ojb.properties">OJB.properties</param>
-    <param name="transaction.timeout">${symbol_dollar}{datasource.connection.timeout}</param>
+    <param name="transaction.timeout">100000</param>
     <param name="batch.transaction.timeout">500000</param>
 
     <param name="batch.schedule.cron.expression">00 00 23 ? * *</param>
