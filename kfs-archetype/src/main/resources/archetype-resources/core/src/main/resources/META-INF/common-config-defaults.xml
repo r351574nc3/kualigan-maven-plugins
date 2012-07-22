@@ -2,7 +2,7 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 <config>
-    <param name="module.name">${artifactId}</param>
+    <param name="module.name">${rootArtifactId}</param>
     <param name="additional.config.locations">${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/common-config.xml,${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/${symbol_dollar}{module.name}-config.xml</param>
 
     <param name="appserver.url">http://localhost:8080/</param>
