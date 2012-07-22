@@ -38,6 +38,12 @@
             <include>**/*.java</include>
           </includes>
         </fileSet>
+        <fileSet filtered="false" packaged="false" encoding="UTF-8">
+          <directory>src/main/java-unpackaged</directory>
+          <includes>
+            <include>**/*.java</include>
+          </includes>
+        </fileSet>
       </fileSets>
     </module>
     <module id="${rootArtifactId}-config" dir="config" name="${rootArtifactId}-config">
