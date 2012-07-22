@@ -60,6 +60,13 @@ limitations under the License.
                 <environment>${build.environment}</environment>
             </systemProperties>
         </configuration>
+        <dependencies>
+            <dependency>
+                <groupId>${driver.groupId}</groupId>
+                <artifactId>${driver.artifactId}</artifactId>
+                <version>${driver.version}</version>
+            </dependency>
+        </dependencies>
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
@@ -158,5 +165,27 @@ limitations under the License.
         <artifactId>${rootArtifactId}-core</artifactId>
         <version>${version}</version>
     </dependency>
- </dependencies> 
+ </dependencies>
+ 
+ <profiles>
+   <profile>
+     <id>mysql</id>
+     <activation>
+        <activeByDefault>true</activeByDefault>
+     </activation>
+     <properties>
+         <driver.groupId>mysql</driver.groupId>
+         <driver.artifactId>mysql-connector-java</driver.artifactId>
+         <driver.version>${mysql-connector-java.version}</driver.version>
+     </properties>
+   </profile>
+   <profile>
+     <id>oracle</id>
+     <properties>
+         <driver.groupId>com.oracle</driver.groupId>
+         <driver.artifactId>ojdbc6</driver.artifactId>
+         <driver.version>${ojdbc6.version}</driver.version>
+     </properties>
+   </profile>
+ </profiles>
 </project>
