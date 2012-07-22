@@ -3,5 +3,5 @@
 #set( $symbol_escape = '\' )
 <config>
     <param name="module.name">${rootArtifactId}</param>
-    <param name="additional.config.locations">classpath:META-INF/kfsconfig-defaults.xml,${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/common-config.xml,${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/${symbol_dollar}{module.name}-config.xml</param>
+    <param name="additional.config.locations">classpath:META-INF/kfs-config-defaults.xml,${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/common-config.xml,${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/${symbol_dollar}{module.name}-config.xml</param>
 </config>
