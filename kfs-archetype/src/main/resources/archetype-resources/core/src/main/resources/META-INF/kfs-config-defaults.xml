@@ -158,7 +158,7 @@
     <param name="kns.cache.methodresult.nocopy.max.size">1000</param>
     <param name="kns.cache.methodresult.nocopy.max.age.seconds">600</param>
 
-    <param name="session.document.cache.size ">1000</param>
+    <param name="session.document.cache.size">1000</param>
 
     <param name="periodic.thread.dump">true</param>
     <param name="periodic.thread.dump.seconds">300</param>
