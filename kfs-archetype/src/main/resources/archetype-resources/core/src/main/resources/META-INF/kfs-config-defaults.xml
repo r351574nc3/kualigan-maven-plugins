@@ -5,10 +5,10 @@
     <param name="appserver.url">http://localhost:8080/</param>
     <param name="external.directory">${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/${symbol_dollar}{module.name}</param>
 
-    <param name="mail.relay.server"></param>
-    <param name="mailing.list.batch"></param>
+    <param name="mail.relay.server">localhost</param>
+    <param name="mailing.list.batch">nobody@localhost</param>
     <param name="kr.incident.mailing.list">KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST</param>
-    <param name="mail.smtp.host"></param>
+    <param name="mail.smtp.host">localhost</param>
     <param name="mail.transport.protocol">smtp</param>
 
     <param name="use.quartz.scheduling">true</param>
