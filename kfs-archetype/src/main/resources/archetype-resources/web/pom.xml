@@ -34,6 +34,8 @@ limitations under the License.
     <env.filter>${filter.directory}/${build.environment}-build.properties</env.filter>
     <login.user>williamh</login.user>
   </properties>
+  
+  
 
   <build>
     <finalName>${project.parent.artifactId}-${environment}</finalName>
@@ -143,6 +145,12 @@ limitations under the License.
       <groupId>${kfsPrototypeGroupId}</groupId>
       <artifactId>${kfsPrototypeArtifactId}</artifactId>
       <type>war</type>
+    </dependency>
+    
+    <dependency>
+        <groupId>${groupId}</groupId>
+        <artifactId>${rootArtifactId}-core</artifactId>
+        <version>${version}</version>
     </dependency>
  </dependencies> 
 </project>
