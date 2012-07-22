@@ -1,0 +1,228 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<config>
+    <param name="appserver.url">http://localhost:8080/</param>
+    <param name="external.directory">${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/${symbol_dollar}{module.name}</param>
+
+    <param name="mail.relay.server"></param>
+    <param name="mailing.list.batch"></param>
+    <param name="kr.incident.mailing.list">KualiExceptionIncidentServiceImpl.REPORT_MAIL_LIST</param>
+    <param name="mail.smtp.host"></param>
+    <param name="mail.transport.protocol">smtp</param>
+
+    <param name="use.quartz.scheduling">true</param>
+    <param name="use.quartz.jdbc.jobstore">true</param>
+
+    <!-- Default configuration below -->
+    <param name="app.namespace">KFS</param>
+    <param name="environment">${symbol_dollar}{environment}</param>
+    <param name="build.environment">${symbol_dollar}{environment}</param>
+    <param name="production.environment.code">prd</param>
+    <param name="kfs.locale">en_US</param>
+
+    <param name="module.access.security.enabled">true</param>
+    <param name="module.labor.distribution.enabled">true</param>
+    <param name="module.contracts.and.grants.enabled">true</param>
+    <param name="module.external.kuali.coeus.enabled">false</param>
+    <param name="module.accounts.receivable.enabled">true</param>
+    <param name="module.purchasing.enabled">true</param>
+    <param name="module.capital.asset.enabled">true</param>
+    <param name="module.endowment.enabled">true</param>
+    <param name="module.travel.enabled">true</param>
+
+    <param name="application.url">${symbol_dollar}{appserver.url}/${symbol_dollar}{module.name}/</param>
+    <param name="externalizable.help.url">${symbol_dollar}{appserver.url}/static/help/</param>
+    <param name="externalizable.images.url">${symbol_dollar}{appserver.url}/static/images/</param>
+    <param name="externalizable.static.content.url">${symbol_dollar}{appserver.url}/static</param>
+    <param name="kr.url">${symbol_dollar}{appserver.url}/kr</param>
+    <param name="ksb.url">${symbol_dollar}{appserver.url}/ksb</param>
+    <param name="kim.url">${symbol_dollar}{appserver.url}/kim</param>
+    <param name="kc.application.url">http://test.kc.kuali.org/kc-trunk</param>
+    <param name="workflow.url">${symbol_dollar}{appserver.url}/kew</param>
+    <param name="workflow.documentsearch.base.url">${symbol_dollar}{appserver.url}/kr/lookup.do?methodToCall=start&amp;businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&amp;docFormKey=88888888&amp;returnLocation=${symbol_dollar}{appserver.url}/portal.do&amp;hideReturnLink=true</param>
+    <param name="kr.externalizable.images.url">${symbol_dollar}{appserver.url}/kr/static/images/</param>
+
+
+    <param name="logs.directory">${symbol_dollar}{external.directory}/logs/</param>
+    <param name="attachments.directory">${symbol_dollar}{external.directory}/work/attachments</param>
+    <param name="attachments.pending.directory">${symbol_dollar}{external.directory}/work/attachments/pending</param>
+    <param name="reports.directory">${symbol_dollar}{external.directory}/work/reports</param>
+    <param name="staging.directory">${symbol_dollar}{external.directory}/work/staging</param>
+    <param name="temp.directory">${symbol_dollar}{external.directory}/work/temp</param>
+    <param name="batch.file.lookup.root.directories">${symbol_dollar}{external.directory}/work/staging;${symbol_dollar}{external.directory}/work/reports</param>
+    <param name="attachment.dir.location">${symbol_dollar}{external.directory}/work/attachments</param>
+    <param name="data.xml.root.location">${symbol_dollar}{external.directory}/work/staging/workflow</param>
+    <param name="data.xml.pending.location">${symbol_dollar}{external.directory}/work/staging/workflow/pending</param>
+    <param name="data.xml.loaded.location">${symbol_dollar}{external.directory}/work/staging/workflow/loaded</param>
+    <param name="data.xml.problem.location">${symbol_dollar}{external.directory}/work/staging/workflow/problem</param>
+
+    <param name="datasource.ojb.platform">Oracle9i</param>
+    <param name="datasource.ojb.sequence.manager">org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl</param>
+    <param name="datasource.ojb.sequenceManager.className">org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl</param>
+    <param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+    <param name="transaction.timeout">100000</param>
+    <param name="rice.custom.ojb.properties">OJB.properties</param>
+    <param name="batch.transaction.timeout">500000</param>
+
+    <param name="batch.schedule.cron.expression">00 00 23 ? * *</param>
+    <param name="batch.quartz.thread.pool.size">8</param>
+    <param name="batch.quartz.trigger.check.interval">30000</param>
+
+    <param name="javascript.files">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js,scripts/rice-overrides.js</param>
+    <param name="css.files">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
+    <param name="portal.javascript.files">kr/scripts/my_common.js</param>
+    <param name="portal.css.files">css/portal.css</param>
+
+    <param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources,org.kuali.kfs.coa.coa-resources,org.kuali.kfs.fp.fp-resources,org.kuali.kfs.gl.gl-resources,org.kuali.kfs.pdp.pdp-resources,org.kuali.kfs.sys.sys-resources,org.kuali.kfs.vnd.vnd-resources,org.kuali.kfs.sec.messages-sec,org.kuali.kfs.module.ar.ar-resources,org.kuali.kfs.module.bc.bc-resources,org.kuali.kfs.module.cab.cab-resources,org.kuali.kfs.module.cam.cam-resources,org.kuali.kfs.module.cg.cg-resources,org.kuali.kfs.module.ec.ec-resources,org.kuali.kfs.module.endow.endow-resources,org.kuali.kfs.module.external.kc.kc-resources,org.kuali.kfs.module.ld.ld-resources,org.kuali.kfs.module.tem.tem-resources,org.kuali.kfs.module.purap.purap-resources</param>
+
+    <param name="rice.struts.config.files">/kr/WEB-INF/struts-config.xml</param>
+    <param name="rice.kns.struts.config.files">/kr/WEB-INF/struts-config.xml</param>
+    <param name="rice.kew.struts.config.files">/kew/WEB-INF/struts-config.xml</param>
+    <param name="rice.ksb.struts.config.files">/ksb/WEB-INF/struts-config.xml</param>
+    <param name="rice.kim.struts.config.files">/kim/WEB-INF/struts-config.xml</param>
+
+
+    <param name="keystore.file">${symbol_dollar}{external.directory}/sa_forms/java/dev/kfs/rice.keystore</param>
+
+    <param name="dev.mode">false</param>
+    <param name="kim.mode">local</param>
+    <param name="kew.mode">local</param>
+    <param name="email.reminder.lifecycle.enabled">false</param>
+
+    <param name="enable.nonproduction.data.unmasking">true</param>
+
+    <param name="message.persistence">true</param>
+    <param name="message.delivery">async</param>
+    <param name="useQuartzDatabase">true</param>
+    <param name="threadPool.size">20</param>
+    <param name="RouteQueue.maxRetryAttempts">3</param>
+    <param name="RouteQueue.timeIncrement">1000</param>
+
+    <param name="rice.ksb.batch.mode">false</param>
+    <param name="bus.refresh.rate">120</param>
+    <param name="rice.cxf.client.connectionTimeout">30000</param>
+    <param name="rice.cxf.client.receiveTimeout">120000</param>
+    <param name="rice.cxf.client.allowChunking">false</param>
+
+
+    <param name="rice.kew.enableKENNotification">false</param>
+    <param name="actionlist.outbox">false</param>
+    <param name="data.xml.pollIntervalSecs">30</param>
+    <param name="initialDelaySecs">60</param>
+    <param name="secure.workflowdocument.javaservice.endpoint">true</param>
+    <param name="secure.workflowutility.javaservice.endpoint">true</param>
+    <param name="secure.workflowutility.soapservice.endpoint">true</param>
+    <param name="simpleDocumentActionsService.security">true</param>
+    <param name="Routing.ImmediateExceptionRouting">false</param>
+
+    <param name="dailyEmail.active">false</param>
+    <param name="weeklyEmail.active">false</param>
+    <param name="dailyEmail.cronExpression">0 0 1 * * ?</param>
+    <param name="weeklyEmail.cronExpression">0 0 2 ? * 2</param>
+
+
+    <param name="kim.soapExposedService.jaxws.security">true</param>
+
+    <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds">600</param>
+    <param name="kim.identityArchiveServiceImpl.maxWriteQueueSize">300</param>
+    <param name="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo.hidden">baseSalaryAmount</param>
+    <param name="kim.hide.PersonDocumentAddress.type">HM</param>
+    <param name="kim.hide.PersonDocumentPhone.type">HM</param>
+    <param name="kim.show.blank.qualifiers">true</param>
+
+
+    <param name="kim.cache.entity.max.size">3000</param>
+    <param name="kim.cache.entity.max.age.seconds">3600</param>
+    <param name="kim.cache.group.max.size">3000</param>
+    <param name="kim.cache.group.max.age.seconds">3600</param>
+    <param name="kim.cache.role.max.size">3000</param>
+    <param name="kim.cache.role.max.age.seconds">300</param>
+    <param name="kim.cache.permission.max.size">3000</param>
+    <param name="kim.cache.permission.max.age.seconds">30</param>
+    <param name="kim.cache.responsibility.max.size">3000</param>
+    <param name="kim.cache.responsibility.max.age.seconds">30</param>
+    <param name="kim.cache.person.max.size">3000</param>
+    <param name="kim.cache.person.max.age.seconds">3600</param>
+
+    <param name="kim.cache.permission.refresh.period.seconds">3600</param>
+    <param name="kim.cache.role.refresh.period.seconds">3600</param>
+
+    <param name="kns.cache.parameter.max.size">1000</param>
+    <param name="kns.cache.parameter.max.age.seconds">3600</param>
+    <param name="kns.cache.nonDatabaseComponent.max.size">2000</param>
+    <param name="kns.cache.nonDatabaseComponent.max.age.seconds">3600</param>
+
+    <param name="kns.cache.methodresult.max.size">1000</param>
+    <param name="kns.cache.methodresult.max.age.seconds">60</param>
+    <param name="kns.cache.methodresult.nocopy.max.size">1000</param>
+    <param name="kns.cache.methodresult.nocopy.max.age.seconds">600</param>
+
+    <param name="session.document.cache.size "> 1000</param>
+
+    <param name="periodic.thread.dump">true</param>
+    <param name="periodic.thread.dump.seconds">300</param>
+    <param name="log4j.reload.minutes">5</param>
+    <param name="memory.monitor.threshold">.85</param>
+    <param name="log4j.settings.file">${symbol_dollar}{external.directory}/j2ee/log4j.properties</param>
+    <param name="log4j.settings.path">${symbol_dollar}{external.directory}/j2ee/log4j.properties</param>
+
+    <param name="b2b.environment">test</param>
+    <param name="b2b.purchase.order.url">https://usertest.sciquest.com/apps/Router/POXMLImport</param>
+    <param name="b2b.punch.back.url">${symbol_dollar}{appserver.url}/b2b.do?methodToCall=returnFromShopping</param>
+    <param name="b2b.punch.out.url">http://usertest.sciquest.com/apps/Router/ExternalAuth/cXML/KualiDemo</param>
+
+    <param name="spring.transaction.bean.file">spring-jta.xml</param>
+    <param name="spring.datasource.bean.file">spring-datasources.xml</param>
+
+    <param name="spring.source.files">net/bull/javamelody/monitoring-spring.xml,org/kuali/kfs/sys/spring-sys.xml,org/kuali/kfs/coa/spring-coa.xml,org/kuali/kfs/fp/spring-fp.xml,org/kuali/kfs/gl/spring-gl.xml,org/kuali/kfs/pdp/spring-pdp.xml,org/kuali/kfs/vnd/spring-vnd.xml,org/kuali/kfs/sec/spring-sec.xml,org/kuali/kfs/sec/spring-sec-gl-overrides.xml,org/kuali/kfs/integration/spring-integration.xml,org/kuali/kfs/module/cg/spring-cg.xml,org/kuali/kfs/module/ar/spring-ar.xml,org/kuali/kfs/module/purap/spring-purap.xml,org/kuali/kfs/module/purap/spring-sec-purap-overrides.xml,org/kuali/kfs/module/cam/spring-cam.xml,org/kuali/kfs/module/cab/spring-cab.xml,org/kuali/kfs/module/ld/spring-ld.xml,org/kuali/kfs/module/bc/spring-bc.xml,org/kuali/kfs/module/ec/spring-ec.xml,org/kuali/kfs/module/ld/spring-sec-ld-overrides.xml,org/kuali/kfs/module/endow/spring-endow.xml,org/kuali/kfs/module/tem/spring-tem.xml</param>
+
+    <param name="kfs.rice.override.spring.files">spring-kfs-rice-overrides.xml,org/kuali/kfs/sec/spring-sec-rice-overrides.xml,spring-kfs-batch.xml</param>
+
+    <param name="current.year">2012</param>
+    <param name="feedback.link.url">https://test.kuali.org/jira/secure/CreateIssue.jspa?pid=10091&amp;amp;issuetype=1</param>
+    <param name="licensing.contact.email">license@kuali.org</param>
+    <param name="report.writer.service.new.line.characters">\n</param>
+    <param name="encrypt.attributes.properties.file">work/db/fieldsToEncrypt.properties</param>
+    <param name="property.files">classpath:KR-ApplicationResources.properties,classpath:org/kuali/kfs/coa/coa-resources.properties,classpath:org/kuali/kfs/fp/fp-resources.properties,classpath:org/kuali/kfs/gl/gl-resources.properties,classpath:org/kuali/kfs/pdp/pdp-resources.properties,classpath:org/kuali/kfs/sys/sys-resources.properties,classpath:org/kuali/kfs/vnd/vnd-resources.properties,classpath:org/kuali/kfs/sec/messages-sec.properties,classpath:org/kuali/kfs/module/ar/ar-resources.properties,classpath:org/kuali/kfs/module/bc/bc-resources.properties,classpath:org/kuali/kfs/module/cab/cab-resources.properties,classpath:org/kuali/kfs/module/cam/cam-resources.properties,classpath:org/kuali/kfs/module/cg/cg-resources.properties,classpath:org/kuali/kfs/module/ec/ec-resources.properties,classpath:org/kuali/kfs/module/endow/endow-resources.properties,classpath:org/kuali/kfs/module/ld/ld-resources.properties,classpath:org/kuali/kfs/module/tem/tem-resources.properties,classpath:org/kuali/kfs/module/external/kc/kc-resources.properties,classpath:org/kuali/kfs/module/purap/purap-resources.properties</param>
+    <param name="security.property.file">file:${symbol_dollar}{external.directory}/sa_forms/java/security.properties</param>
+    <param name="jstl.constants.classnames">org.kuali.kfs.sys.KFSConstants,org.kuali.kfs.sys.KfsAuthorizationConstants,org.kuali.kfs.gl.GeneralLedgerConstants,org.kuali.kfs.sec.SecConstants,org.kuali.kfs.module.cg.CGConstants,org.kuali.kfs.module.purap.PurapConstants,org.kuali.kfs.module.bc.BCConstants,org.kuali.kfs.module.ec.EffortConstants,org.kuali.kfs.module.cam.CamsConstants,org.kuali.kfs.module.endow.EndowConstants,org.kuali.kfs.module.tem.TemKeyConstants,org.kuali.kfs.module.tem.TemConstants</param>
+    <param name="jstl.constants.main.class">org.kuali.kfs.sys.KFSConstants</param>
+
+    <param name="message.queue.url">MessageQueue.do</param>
+    <param name="service.registry.url">ServiceRegistry.do</param>
+    <param name="thread.pool.url">ThreadPool.do</param>
+    <param name="data.dictionary.validate">true</param>
+    <param name="validate.ebo.references">true</param>
+    <param name="classpath.resource.prefix">/WEB-INF/classes/</param>
+
+    <param name="core.spring.source.files">net/bull/javamelody/monitoring-spring.xml,org/kuali/kfs/sys/spring-sys.xml,org/kuali/kfs/coa/spring-coa.xml,org/kuali/kfs/fp/spring-fp.xml,org/kuali/kfs/gl/spring-gl.xml,org/kuali/kfs/pdp/spring-pdp.xml,org/kuali/kfs/vnd/spring-vnd.xml</param>
+    <param name="core.spring.test.files">org/kuali/kfs/sys/spring-sys-test.xml,org/kuali/kfs/gl/spring-gl-test.xml</param>
+    <param name="spring.test.files">org/kuali/kfs/sys/spring-sys-test.xml,org/kuali/kfs/gl/spring-gl-test.xml,org/kuali/kfs/module/ar/spring-ar-test.xml,org/kuali/kfs/module/purap/spring-purap-test.xml,org/kuali/kfs/module/cam/spring-cam-test.xml,org/kuali/kfs/module/endow/spring-endow-test.xml</param>
+    <param name="property.test.files">classpath:test-configuration.properties</param>
+
+    <param name="accountCreationServiceSOAP.expose">true</param>
+
+    <param name="userOptions.default.color">white</param>
+    <param name="userOptions.default.email">immediate</param>
+    <param name="userOptions.default.notifyPrimary">yes</param>
+    <param name="userOptions.default.notifySecondary">no</param>
+    <param name="userOptions.default.openNewWindow">yes</param>
+    <param name="userOptions.default.actionListSize">10</param>
+    <param name="userOptions.default.refreshRate">15</param>
+    <param name="userOptions.default.showActionRequired">yes</param>
+    <param name="userOptions.default.showDateCreated">yes</param>
+    <param name="userOptions.default.showDocumentType">yes</param>
+    <param name="userOptions.default.showDocumentStatus">yes</param>
+    <param name="userOptions.default.showInitiator">yes</param>
+    <param name="userOptions.default.showDelegator">yes</param>
+    <param name="userOptions.default.showTitle">yes</param>
+    <param name="userOptions.default.showWorkgroupRequest">yes</param>
+    <param name="userOptions.default.showClearFYI">yes</param>
+    <param name="userOptions.default.showLastApprovedDate">no</param>
+    <param name="userOptions.default.showCurrentNode">no</param>
+    <param name="userOptions.default.useOutBox">yes</param>
+
+    <param name="userOptions.default.delegatorFilterOnActionList">Secondary Delegators on Action List Page</param>
+    <param name="userOptions.default.primaryDelegatorFilterOnActionList">Primary Delegates on Action List Page</param>
+</config>
