@@ -71,6 +71,58 @@ limitations under the License.
     <kfs.maven.version>4.1.1-7</kfs.maven.version>
     <kfs.external.unpack.phase>none</kfs.external.unpack.phase>
     <kfs.web.unpack.phase>none</kfs.web.unpack.phase>
+    
+    <!-- KFS Properties -->
+    <distributable.tag></distributable.tag>
+    <monitoring.filter.definitions><![CDATA[
+        <filter>
+                <filter-name>monitoring</filter-name>
+                <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+                    <init-param>
+                            <param-name>url-exclude-pattern</param-name>
+                            <param-value>/static/.*|/kr/static/.*|/kr/images/.*|/images-portal/.*</param-value>
+                    </init-param>
+                    <init-param>
+                            <param-name>system-actions-enabled</param-name>
+                            <param-value>${javamelody.system.actions.enabled}</param-value>
+                    </init-param>
+        </filter>
+        <filter-mapping>
+                <filter-name>monitoring</filter-name>
+                <url-pattern>/*</url-pattern>
+        </filter-mapping>
+        <listener>
+                <listener-class>net.bull.javamelody.SessionListener</listener-class>
+        </listener>]]>
+    </monitoring.filter.definitions>
+    <authentication.filter.definition>
+        <![CDATA[
+        <filter>
+                <filter-name>DummyLoginFilter</filter-name>
+                <filter-class>org.kuali.rice.kns.web.filter.DummyLoginFilter</filter-class>
+                        <init-param>
+                                <param-name>loginUser</param-name>
+                                <param-value>khuntley</param-value>
+                        </init-param>
+        </filter>
+        ]]>
+    </authentication.filter.definition>
+
+    <authentication.filter.mappings>
+    <![CDATA[
+        <filter-name>DummyLoginFilter</filter-name>
+                <servlet-name>action</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+                <filter-name>DummyLoginFilter</filter-name>
+                <servlet-name>dwr-invoker</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+                <filter-name>DummyLoginFilter</filter-name>
+                <servlet-name>batchFileUpload</servlet-name>
+        </filter-mapping>
+    ]]>
+    </authentication.filter.mappings>
   </properties>
   
   <dependencyManagement>
@@ -150,6 +202,7 @@ limitations under the License.
                   <exclude>WEB-INF/classes/ApplicationResources.properties</exclude>
                   <exclude>WEB-INF/classes/configuration.properties</exclude>
                   <exclude>WEB-INF/tags/portal/</exclude>
+                  <exclude>WEB-INF/web.xml</exclude>
                 </excludes>
               </overlay>
             </overlays>
@@ -157,7 +210,7 @@ limitations under the License.
               <resource>
                 <filtering>true</filtering>
                 <!-- this is relative to the pom.xml directory -->
-                <directory>src/main/webapp/</directory>
+                <directory>src/main/resources/</directory>
                 <includes>
                   <include>**/web.xml</include>
                 </includes>
@@ -187,6 +240,89 @@ limitations under the License.
       </dependencyManagement>
     </profile>
 
+    <profile>
+      <id>clustered</id>
+      <properties>
+        <distributable.tag><![CDATA[<distributable />]]></distributable.tag>
+      </properties>
+    </profile>
+    <profile>
+      <id>cas</id>
+      <properties>
+        <authentication.filter.definition>
+        <![CDATA[
+            <filter-name>CAS Authentication Filter</filter-name>
+                <filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
+                <init-param>
+                    <param-name>casServerLoginUrl</param-name>
+                    <param-value>${cas.url}/login</param-value>
+                </init-param>
+                <init-param>
+                    <param-name>serverName</param-name>
+                    <param-value>${appserver.url}</param-value>
+                </init-param>
+            </filter>
+            <filter>
+                <filter-name>CAS Validation Filter</filter-name>
+                <filter-class>org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</filter-class>
+                <init-param>
+                    <param-name>casServerUrlPrefix</param-name>
+                    <param-value>${cas.url}</param-value>
+                </init-param>
+                <init-param>
+                    <param-name>serverName</param-name>
+                    <param-value>${appserver.url}</param-value>
+                </init-param>
+            </filter>
+            <filter>
+                <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+                <filter-class>org.jasig.cas.client.util.HttpServletRequestWrapperFilter</filter-class>
+            </filter>
+        ]]>
+        </authentication.filter.definition>
+    
+        <authentication.filter.mappings>
+        <![CDATA[
+            <filter-mapping>
+                <filter-name>CAS Authentication Filter</filter-name>
+                <servlet-name>action</servlet-name>
+            </filter-mapping>
+            <filter-mapping>
+                <filter-name>CAS Validation Filter</filter-name>
+                <servlet-name>action</servlet-name>
+            </filter-mapping>
+            <filter-mapping>
+                <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+                <servlet-name>action</servlet-name>
+            </filter-mapping>
+            <filter-mapping>
+                <filter-name>CAS Authentication Filter</filter-name>
+                <servlet-name>dwr-invoker</servlet-name>
+            </filter-mapping>
+            <filter-mapping>
+                <filter-name>CAS Validation Filter</filter-name>
+                <servlet-name>dwr-invoker</servlet-name>
+            </filter-mapping>
+            <filter-mapping>
+                <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+                <servlet-name>dwr-invoker</servlet-name>
+            </filter-mapping>
+            <filter-mapping>
+                <filter-name>CAS Authentication Filter</filter-name>
+                <servlet-name>batchFileUpload</servlet-name>
+            </filter-mapping>
+            <filter-mapping>
+                <filter-name>CAS Validation Filter</filter-name>
+                <servlet-name>batchFileUpload</servlet-name>
+            </filter-mapping>
+            <filter-mapping>
+                <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+                <servlet-name>batchFileUpload</servlet-name>
+            </filter-mapping>
+        ]]>
+        </authentication.filter.mappings>
+      </properties>
+    </profile>
    <profile>
      <id>mysql</id>
      <activation>

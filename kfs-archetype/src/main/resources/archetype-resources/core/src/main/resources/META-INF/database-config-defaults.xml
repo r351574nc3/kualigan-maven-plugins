@@ -22,7 +22,6 @@
 
     <param name="datasource.maximum.cached.preparedstatements">25</param>
     <param name="datasource.connection.timeout">100000</param>
-    <param name="transaction.timeout">${symbol_dollar}{datasource.connection.timeout}</param>
 
     <param name="datasource.validating.query">select 1 from dual</param>
 
