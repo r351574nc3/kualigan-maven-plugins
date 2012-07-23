@@ -67,6 +67,7 @@ limitations under the License.
     <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
     <ojdbc6.version>11.2.0.2</ojdbc6.version>
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
+    <jetty.phase>none</jetty.phase>
 
     <kfs.maven.groupId>org.kualigan.kfs</kfs.maven.groupId>
     <kfs.maven.version>4.1.1-7</kfs.maven.version>
@@ -206,6 +207,15 @@ limitations under the License.
                     <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
                 </webApp>
             </configuration>
+            <executions>
+                <execution>
+                  <id>jetty-run</id>
+                  <phase>${jetty.phase}</phase>
+                  <goals>
+                    <goal>run</goal>
+                  </goals>
+                </execution>
+            </executions>
             <dependencies>
                 <dependency>
                     <groupId>${driver.groupId}</groupId>
@@ -369,6 +379,12 @@ limitations under the License.
          <driver.artifactId>ojdbc6</driver.artifactId>
          <driver.version>${ojdbc6.version}</driver.version>
      </properties>
+   </profile>
+   <profile>
+    <id>jetty</id>
+    <properties>
+        <jetty.phase>verify</jetty.phase>
+    </properties>
    </profile>
   </profiles>
 
