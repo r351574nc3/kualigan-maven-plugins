@@ -95,35 +95,33 @@ limitations under the License.
 
       <!-- Unpacks the datadictionary because KFS has trouble accessing the datadictionary from a jar -->       
       <!-- When we add modules, make sure we unpack the DD -->
-                <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>${maven-dependency-plugin.version}</version>
         <executions>
           <execution>
-            <id>unpack-datadictionary</id>
-            <phase>generate-sources</phase>
+            <id>unpack-rice</id>
+            <phase>generate-resources</phase>
             <goals>
               <goal>unpack</goal>
             </goals>
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>${project.groupId}</groupId>
-                  <artifactId>${project.parent.artifactId}-core</artifactId>
-                  <version>${project.version}</version>  
-                  <type>jar</type>
-                  <overWrite>true</overWrite>
-                  <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                  <excludes>**/*.class</excludes>
+                  <groupId>${kfsPrototypeGroupId}</groupId>
+                  <artifactId>${kfsPrototypeArtifactId}</artifactId>
+                  <version>${kfsPrototypeVersion}</version>  
+                  <type>war</type>
+                  <overWrite>false</overWrite>
+                  <outputDirectory>${project.build.warSourceDirectory}</outputDirectory>
+                  <includes>kr/,ksb/,kcb/,kim/,ken/,kew/</includes>
                 </artifactItem>
               </artifactItems>
             </configuration>
             </execution>
           </executions>
       </plugin>
-                -->
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
