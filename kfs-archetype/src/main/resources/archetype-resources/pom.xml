@@ -75,6 +75,7 @@ limitations under the License.
     <kfs.web.unpack.phase>none</kfs.web.unpack.phase>
     
     <!-- KFS Properties -->
+    <struts.config.files>/WEB-INF/struts-config.xml</struts.config.files>
     <http.session.timeout.minutes>60</http.session.timeout.minutes>
     <default.context.path>${project.artifactId}</default.context.path>
     <distributable.tag></distributable.tag>
