@@ -30,13 +30,6 @@
 <%@ attribute name="sessionDocument" required="false"
               description="boolean that indicates whether the sessionDocument declared in DD" %>
 
-<%
-    Object formObj = request.getAttribute("KualiForm");
-    if (formObj != null) {
-        request.setAttribute("formClassName", formObj.getClass().getName());
-    }
-%>
-
 <c:if test="${empty depth}">
     <c:set var="depth" value="0" />
 </c:if>
@@ -48,7 +41,8 @@
 <c:set var="isInquiry" value="${maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY}" />
 
 <%-- Is the screen a view of a mantenance document? --%>
-<c:set var="isMaintenance" value="${formClassName eq 'org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm' || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
+<c:set var="isMaintenanceForm" value='<%= jspContext.findAttribute("KualiForm") == org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm.class %>' />
+<c:set var="isMaintenance" value="${isMaintenanceForm || maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE}" />
 
 <%-- Is the screen a lookup? --%>
 <c:set var="isLookup" value="${maintenanceViewMode eq Constants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP}" />
@@ -76,10 +70,10 @@
 
     <c:set var="rowHidden" value="${rowsHidden || row.hidden}" />
 
-    <c:choose>
-        <c:when test="${rowHidden}"><tr style="display: none;"></c:when>
-        <c:otherwise><tr></c:otherwise>
-    </c:choose>
+	<c:choose>
+		<c:when test="${rowHidden}"><tr style="display: none;"></c:when>
+		<c:otherwise><tr></c:otherwise>
+	</c:choose>
 
         <c:forEach items="${row.fields}" var="field" varStatus="fieldVarStatus">
             <c:set var="isFieldAContainer" value="${field.fieldType eq field.CONTAINER}" />
@@ -158,7 +152,7 @@
 
             <c:if test="${!(empty field.webOnBlurHandler)}">
 
-                <c:set var="onblurParameters" value="" />
+				<c:set var="onblurParameters" value="" />
                 <c:choose>
 
                     <c:when test="${!(empty field.webOnBlurHandlerCallback)}">
@@ -171,10 +165,10 @@
 
                 </c:choose>
                 <c:if test="${!(empty field.webUILeaveFieldFunctionParameters)}">
-                    <c:set var="onblurParameters" value="${onblurParameters},${field.webUILeaveFieldFunctionParametersString}" />                   
-                </c:if>
+					<c:set var="onblurParameters" value="${onblurParameters},${field.webUILeaveFieldFunctionParametersString}" />					
+				</c:if>
                 
-                <c:set var="onblur" value="${field.webOnBlurHandler}( ${onblurParameters} );" />
+				<c:set var="onblur" value="${field.webOnBlurHandler}( ${onblurParameters} );" />
                 <c:set var="onblurcall" value='onblur="${onblur}"' />
 
             </c:if>
@@ -250,10 +244,10 @@
                         <%-- Only show the show/hide button on collection entries that
                         contain data (i.e. those that aren't adding --%>
                         <kul:subtab noShowHideButton="${isFieldAddingToACollection or empty field.containerRows}" subTabTitle="${kfunc:scrubWhitespace(subTabTitle)}" buttonAlt="${kfunc:scrubWhitespace(subTabButtonAlt)}" width="${width}" highlightTab="${tabHighlight}"
-                                boClassName="${field.multipleValueLookupClassName}" lookedUpBODisplayName="${field.multipleValueLookupClassLabel}" lookedUpCollectionName="${field.multipleValueLookedUpCollectionName}" useCurrentTabIndexAsKey="true" open="${!rowHidden}" >  
+                                boClassName="${field.multipleValueLookupClassName}" lookedUpBODisplayName="${field.multipleValueLookupClassLabel}" lookedUpCollectionName="${field.multipleValueLookedUpCollectionName}" useCurrentTabIndexAsKey="true" open="${!rowHidden}" >	
                             <table style="width: ${width}; text-align: left; margin-left: auto; margin-right: auto;" class="datatable" cellpadding="0" cellspacing="0" align="center">
                                 <%-- cannot refer to recursive tag (containerRowDisplay) using kul alias or Jetty 7 will have jsp compilation errors on Linux --%>
-                                <%-- this tag ends up being recursive b/c it calls rowDisplay--%>
+    							<%-- this tag ends up being recursive b/c it calls rowDisplay--%>
                                 <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul2"%>
                                 <kul2:containerRowDisplay rows="${field.containerRows}" numberOfColumns="${isMaintenance ? numberOfColumns : field.numberOfColumnsForCollection}" depth="${depth + 1}" rowsReadOnly="${rowsReadOnly}"/>
                             </table>
@@ -703,19 +697,11 @@
                                         </c:when>
                                         <c:otherwise>
                                         <div id="replaceDiv" style="display:block;">
-                                            <html:image property="methodToCall.downloadAttachment" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
+                                            <%-- TODO: Replace clip with call to getAttachmentIconPathByMimeType? --%>
+                                            <html:image property="methodToCall.downloadAttachment.${field.propertyName}" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                             <c:out value="${fieldValue}"/>
                                             &nbsp;&nbsp;
-                                                                                        <input type="hidden" name='methodToCall' />
-                                            <script type="text/javascript">
-                                                function replaceAttachment() {
-                                                    excludeSubmitRestriction=true;
-                                                    showHide('replaceFileDiv','replaceDiv');
-                                                    document.forms[0].methodToCall.value='replaceAttachment';
-                                                    submitForm();
-                                                }
-                                            </script>
-                                            <html:link linkName="replaceAttachment" onclick="javascript: replaceAttachment();" href="" anchor="" property="methodToCall.replaceAttachment">replace</html:link>
+                                            <html:image property="methodToCall.replaceAttachment.${field.propertyName}" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-replace.gif" alt="replace attachment" onclick="excludeSubmitRestriction=true"/>
                                         </div>
                                         <div id="replaceFileDiv" valign="middle" style="display:none;">
                                             ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}

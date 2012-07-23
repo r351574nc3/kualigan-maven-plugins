@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2010 The Kuali Foundation
  
@@ -18,5 +15,5 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <kul:checkTabHighlight
-    rows="${symbol_dollar}{_rows}"
-    addHighlighting="${symbol_dollar}{_addHighlighting}" />
+    rows="${_rows}"
+    addHighlighting="${_addHighlighting}" />

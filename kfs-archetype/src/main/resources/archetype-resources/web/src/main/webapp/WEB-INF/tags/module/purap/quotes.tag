@@ -24,13 +24,13 @@
 <c:set var="tabindexOverrideBase" value="20" />
 
 <c:set var="fullEntryMode" value="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-<c:set var="poInProcess" value="${KualiForm.document.statusCode eq 'INPR'}" />
-<c:set var="poOpen" value="${KualiForm.document.statusCode eq 'OPEN'}" />
-<c:set var="poOutForQuote" value="${KualiForm.document.statusCode eq 'QUOT'}" />
+<c:set var="poInProcess" value="${KualiForm.document.appDocStatus eq 'In Process'}" />
+<c:set var="poOpen" value="${KualiForm.document.appDocStatus eq 'Open'}" />
+<c:set var="poOutForQuote" value="${KualiForm.document.appDocStatus eq 'Out for Quote'}" />
 
 <c:set var="quoteOpen" value="${poOutForQuote || poOpen || isPurchaseOrderAwarded}" />
 <c:set var="quoteEditable" value="${poOutForQuote && !isPurchaseOrderAwarded && fullEntryMode}" />
-<c:set var="quoteInitable" value="${poInProcess && fullEntryMode}" />
+<c:set var="quoteInitable" value="${poInProcess && fullEntryMode && !isPurchaseOrderAwarded}" />
 
 <kul:tab tabTitle="Quote" defaultOpen="false" tabErrorKey="${PurapConstants.QUOTE_TAB_ERRORS}">
 	<div class="tab-container" align=center>

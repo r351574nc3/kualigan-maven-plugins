@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2009 The Kuali Foundation
 
@@ -21,55 +18,55 @@
 <html>
   <head>
     <title>Login</title>
-	<c:forEach items="${symbol_dollar}{fn:split(ConfigProperties.portal.css.files, ',')}" var="cssFile">
-		<c:if test="${symbol_dollar}{fn:length(fn:trim(cssFile)) > 0}">
-	        <link href="${symbol_dollar}{pageContext.request.contextPath}/${symbol_dollar}{fn:trim(cssFile)}" rel="stylesheet" type="text/css" />
+	<c:forEach items="${fn:split(ConfigProperties.portal.css.files, ',')}" var="cssFile">
+		<c:if test="${fn:length(fn:trim(cssFile)) > 0}">
+	        <link href="${pageContext.request.contextPath}/${fn:trim(cssFile)}" rel="stylesheet" type="text/css" />
 		</c:if>
 	</c:forEach>
-	<c:forEach items="${symbol_dollar}{fn:split(ConfigProperties.portal.javascript.files, ',')}" var="javascriptFile">
-		<c:if test="${symbol_dollar}{fn:length(fn:trim(javascriptFile)) > 0}">
-	        <script language="JavaScript" type="text/javascript" src="${symbol_dollar}{ConfigProperties.application.url}/${symbol_dollar}{fn:trim(javascriptFile)}"></script>
+	<c:forEach items="${fn:split(ConfigProperties.portal.javascript.files, ',')}" var="javascriptFile">
+		<c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
+	        <script language="JavaScript" type="text/javascript" src="${ConfigProperties.application.url}/${fn:trim(javascriptFile)}"></script>
 		</c:if>
 	</c:forEach>
 
     <style type="text/css">
         div.body {
-            background-image: url("${symbol_dollar}{ConfigProperties.application.url}/rice-portal/images/os-guy.gif");
+            background-image: url("${ConfigProperties.application.url}/rice-portal/images/os-guy.gif");
             background-repeat: no-repeat;
             padding-top: 5em;
         }
 
-        table${symbol_pound}login {
+        table#login {
             margin: auto;
-            background-color: ${symbol_pound}dfdda9;
-            border: .5em solid ${symbol_pound}fffdd8;
+            background-color: #dfdda9;
+            border: .5em solid #fffdd8;
             /* simple rounded corners for mozilla & webkit */
             -moz-border-radius: 10px;
             -webkit-border-radius: 10px;
         }
 
-        table${symbol_pound}login th {
+        table#login th {
             height: 30 px;
             padding-top: .8em;
             padding-bottom: .8em;
-            color: ${symbol_pound}a02919;
+            color: #a02919;
             font-size: 2em;
         }
 
-        ${symbol_pound}login td {
+        #login td {
             padding: .2em;
             height: 20px;
         }
 
-        ${symbol_pound}login .rightTd {
+        #login .rightTd {
             padding-right: 1.2em;
         }
 
-        ${symbol_pound}login .leftTd {
+        #login .leftTd {
             padding-left: 1.2em;
         }
 
-        table${symbol_pound}login td${symbol_pound}buttonRow {
+        table#login td#buttonRow {
             padding-top: 1em;
             padding-bottom: .6em;
         }
@@ -96,7 +93,7 @@
 	            </td>
             </tr>
             <c:set var="invalidAuthMsg" value="Invalid username" />
-            <c:if test="${symbol_dollar}{requestScope.showPasswordField}">
+            <c:if test="${requestScope.showPasswordField}">
             <c:set var="invalidAuthMsg" value="Invalid username or password" />
             <tr>
             <td class="leftTd" width="Infinity%" align="right">
@@ -105,14 +102,14 @@
               <td class="rightTd" align="left"><input type="password" name="__login_pw" value="" size="20"/></td>
             </tr>
             </c:if>
-            <c:if test="${symbol_dollar}{requestScope.invalidAuth}">
+            <c:if test="${requestScope.invalidAuth}">
             <tr>
-              <td align="center" colspan="2"><strong>${symbol_dollar}{invalidAuthMsg}</strong></td>
+              <td align="center" colspan="2"><strong>${invalidAuthMsg}</strong></td>
             </tr>
             </c:if>
             <tr>
               <td id="buttonRow" height="30" colspan="2" align="center"><input type="submit" value="Login"/>
-              <!-- input type="image" title="Click to login." value="login" name="imageField" src="${symbol_dollar}{pageContext.request.contextPath}/rice-portal/images/tinybutton-login.gif"/ -->
+              <!-- input type="image" title="Click to login." value="login" name="imageField" src="${pageContext.request.contextPath}/rice-portal/images/tinybutton-login.gif"/ -->
               </td>
             </tr>
           </tbody>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2010 The Kuali Foundation
  
@@ -18,8 +15,8 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 <kul:rowDisplay
-  rows="${symbol_dollar}{_rows}"
-  numberOfColumns="${symbol_dollar}{_numberOfColumns}"
-  depth="${symbol_dollar}{_depth}"
-  rowsHidden="${symbol_dollar}{_rowsHidden}"
-  rowsReadOnly="${symbol_dollar}{_rowsReadOnly}"/>
+  rows="${_rows}"
+  numberOfColumns="${_numberOfColumns}"
+  depth="${_depth}"
+  rowsHidden="${_rowsHidden}"
+  rowsReadOnly="${_rowsReadOnly}"/>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2010 The Kuali Foundation
  
@@ -16,16 +13,16 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <form action="batchFileUpload" method="POST"
       enctype="multipart/form-data">
     
-    ${symbol_dollar}{message}<br />
+    ${message}<br />
     <br />
 	<select name="uploadDir">
-		<c:forEach var="dir" items="${symbol_dollar}{directories}">
-			<option value="${symbol_dollar}{dir}">${symbol_dollar}{dir}</option>option>
+		<c:forEach var="dir" items="${directories}">
+			<option value="${dir}">${dir}</option>option>
 		</c:forEach>
 	</select>
 	<br />

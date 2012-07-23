@@ -47,13 +47,6 @@
 <c:set var="_isInquiry"
 	value="${requestScope[Constants.PARAM_MAINTENANCE_VIEW_MODE] eq Constants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY}" />
 
-<%
-    Object formObj = request.getAttribute("KualiForm");
-    if (formObj != null) {
-        request.setAttribute("formClassName", formObj.getClass().getName());
-    }
-%>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html:html>
 
@@ -123,16 +116,16 @@
 </head>
 <c:choose>
 	<c:when test="${lookup}" >
-        <c:set var="extraOnLoad" value="" />
-		<c:if test="${formClassName eq &quot;org.kuali.rice.kns.web.struts.form.LookupForm&quot;}">
-			<c:set var="extraOnLoad" value ="${KualiForm.lookupable.extraOnLoad}" />
+		<body onload="placeFocus();
+        <c:if test='<%= jspContext.findAttribute("KualiForm") == org.kuali.rice.kns.web.struts.form.LookupForm.class %>'>
+			<c:out value ="${KualiForm.lookupable.extraOnLoad}" />
 		</c:if>
-		<body onload="placeFocus();${extraOnLoad}">
+		">
 		<kul:backdoor />
 
 			<c:if
 				test="${! empty headerMenuBar and !_isInquiry and KualiForm.showMaintenanceLinks}">
-				<div class="lookupcreatenew" title="Create a new record">
+				<div class="lookupcreatenew">
 					${headerMenuBar}
 				</div>
 		</c:if>

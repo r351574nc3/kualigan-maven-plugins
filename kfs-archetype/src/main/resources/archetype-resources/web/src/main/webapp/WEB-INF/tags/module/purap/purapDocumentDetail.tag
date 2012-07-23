@@ -27,6 +27,8 @@
 			  description="Is fundingsourcecode editable?."%>
 <%@ attribute name="tabErrorKey" required="false"
 			  description="error map to display"%>
+<%@ attribute name="editableAccountDistributionMethod" required="false"
+			  description="Is editableAccountDistributionMethod editable?"%>
 			
 <c:set var="fullEntryMode" value="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] && (empty KualiForm.editingMode['restrictFiscalEntry'])}" />
 <c:if test="${empty editableFundingSource}">
@@ -48,7 +50,7 @@
 <c:set var="contentReadOnly" value="${(not empty KualiForm.editingMode['lockContentEntry'])}" />
 <c:set var="internalPurchasingReadOnly" value="${(not empty KualiForm.editingMode['lockInternalPurchasingEntry'])}" />
 <c:set var="tabindexOverrideBase" value="10" />
-<c:set var="poOutForQuote" value="${KualiForm.document.statusCode eq 'QUOT'}" />
+<c:set var="poOutForQuote" value="${KualiForm.document.appDocStatus eq 'Out for Quote'}" />
 
 <h3><c:out value="${detailSectionLabel}"/> </h3>
 <div class="tab-container-error"><div class="left-errmsg-tab"><kul:errors keyMatch="document.assignedUserPrincipalName"/></div></div>		        
@@ -96,16 +98,16 @@
                 not (contentReadOnly or internalPurchasingReadOnly)}"
                 tabindexOverride="${tabindexOverrideBase + 0}"/>
         </td>
-	    <th align=right valign=middle class="bord-l-b">
-	        <div align="right"><kul:htmlAttributeLabel attributeEntry="${documentAttributes.paymentRequestPositiveApprovalIndicator}" /></div>
-	    </th>
-	    <td align=left valign=middle class="datacell">
-	        <kul:htmlControlAttribute
-	            property="document.paymentRequestPositiveApprovalIndicator"
-	            attributeEntry="${documentAttributes.paymentRequestPositiveApprovalIndicator}"
-	            readOnly="${paymentRequest or not(fullEntryMode or amendmentEntry) and not (contentReadOnly or internalPurchasingReadOnly)}"
-	            tabindexOverride="${tabindexOverrideBase + 5}"/>
-	    </td>
+        <th align=right valign=middle class="bord-l-b">
+            <div align="right"><kul:htmlAttributeLabel attributeEntry="${documentAttributes.accountDistributionMethod}" /></div>
+        </th>
+        <td align=left valign=middle class="datacell">
+            <kul:htmlControlAttribute
+                property="document.accountDistributionMethod"
+                attributeEntry="${documentAttributes.accountDistributionMethod}"
+                readOnly="${editableAccountDistributionMethod or not(fullEntryMode or amendmentEntry)}"
+                tabindexOverride="${tabindexOverrideBase + 0}"/>
+        </td>
 	</tr>  
 
 	<c:if test="${purchaseOrder}">
@@ -195,8 +197,16 @@
 	            </td>                   
 			</c:if>
 	        <c:if test="${not purchaseOrder}">
-	            <th align=right valign=middle class="bord-l-b">&nbsp;</th>
-	            <td align=left valign=middle class="datacell">&nbsp;</td>
+			    <th align=right valign=middle class="bord-l-b">
+			        <div align="right"><kul:htmlAttributeLabel attributeEntry="${documentAttributes.paymentRequestPositiveApprovalIndicator}" /></div>
+			    </th>
+			    <td align=left valign=middle class="datacell">
+			        <kul:htmlControlAttribute
+			            property="document.paymentRequestPositiveApprovalIndicator"
+			            attributeEntry="${documentAttributes.paymentRequestPositiveApprovalIndicator}"
+			            readOnly="${paymentRequest or not(fullEntryMode or amendmentEntry) and not (contentReadOnly or internalPurchasingReadOnly)}"
+			            tabindexOverride="${tabindexOverrideBase + 5}"/>
+			    </td>
 	        </c:if>
 	    </tr>  
      </c:if>
