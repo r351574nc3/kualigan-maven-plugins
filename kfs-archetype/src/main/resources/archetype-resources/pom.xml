@@ -200,20 +200,29 @@ limitations under the License.
                     <systemProperty>
                         <name>log4j.settings.file</name><value>${user.home}/main/${build.environment}/j2ee/log4j.properties</value>
                     </systemProperty>
-                </systemProperties>
+                </systemProperties>
                 <contextPath>/${default.context.path}</contextPath>
                 <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
                 <webApp>
                     <contextPath>/${default.context.path}</contextPath>
                     <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
                 </webApp>
+                <classesDirectory>src/main/webapp/WEB-INF/classes</classesDirectory>
+                <scanTargetPatterns>
+                    <scanTargetPattern>
+                        <directory>../core/target/classes</directory>
+                        <includes>
+                            <include>**/*</include>
+                        </includes>
+                    </scanTargetPattern>
+                </scanTargetPatterns>
             </configuration>
             <executions>
                 <execution>
                   <id>jetty-run</id>
                   <phase>${jetty.phase}</phase>
                   <goals>
-                    <goal>run</goal>
+                    <goal>run-exploded</goal>
                   </goals>
                 </execution>
             </executions>

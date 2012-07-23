@@ -33,6 +33,7 @@ limitations under the License.
     <build.environment>dev</build.environment>
     <env.filter>${filter.directory}/${build.environment}-build.properties</env.filter>
     <login.user>williamh</login.user>
+    <default.context.path>${project.parent.artifactId}</default.context.path>
   </properties>
   
   
@@ -95,6 +96,7 @@ limitations under the License.
 
       <!-- Unpacks the datadictionary because KFS has trouble accessing the datadictionary from a jar -->       
       <!-- When we add modules, make sure we unpack the DD -->
+      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -122,6 +124,7 @@ limitations under the License.
             </execution>
           </executions>
       </plugin>
+      -->
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-clean-plugin</artifactId>
@@ -138,6 +141,7 @@ limitations under the License.
                         <include>kim/**</include>
                         <include>ken/**</include>
                         <include>kew/**</include>
+                        <include>WEB-INF/classes/**</include>
                     </includes>
                   </fileset>
                 </filesets>

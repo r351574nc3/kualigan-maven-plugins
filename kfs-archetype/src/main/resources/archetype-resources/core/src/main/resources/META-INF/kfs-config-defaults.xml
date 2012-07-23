@@ -122,7 +122,8 @@
     <param name="kim.show.blank.qualifiers">true</param>
 
 
-    <param name="kim.cache.entity.max.size">3000</param>
+
+<param name="kim.cache.entity.max.size">3000</param>
     <param name="kim.cache.entity.max.age.seconds">3600</param>
     <param name="kim.cache.group.max.size">3000</param>
     <param name="kim.cache.group.max.age.seconds">3600</param>
