@@ -110,7 +110,7 @@
                 </property>
             </activation>
             <build>
-                <outputDirectory>../web/target/</outputDirectory>
+                <directory>../web/target/</directory>
             </build>
         </profile>
     </profiles>
