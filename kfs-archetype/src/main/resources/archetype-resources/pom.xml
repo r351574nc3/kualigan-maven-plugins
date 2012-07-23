@@ -199,11 +199,20 @@ limitations under the License.
                         <name>log4j.settings.file</name><value>${user.home}/main/${build.environment}/j2ee/log4j.properties</value>
                     </systemProperty>
                 </systemProperties>
-                <webAppConfig>
+                <contextPath>/${default.context.path}</contextPath>
+                <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
+                <webApp>
                     <contextPath>/${default.context.path}</contextPath>
                     <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
-                </webAppConfig>
+                </webApp>
             </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>${driver.groupId}</groupId>
+                    <artifactId>${driver.artifactId}</artifactId>
+                    <version>${driver.version}</version>
+                </dependency>
+            </dependencies>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
