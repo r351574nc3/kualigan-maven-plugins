@@ -142,7 +142,11 @@ limitations under the License.
         <artifactId>rice-ldap</artifactId>
         <version>1.0.3</version>
       </dependency>
-      
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>2.0.6.RELEASE</version>
+    </dependency>
     <dependency>
         <groupId>log4j</groupId>
         <artifactId>log4j</artifactId>
@@ -222,7 +226,7 @@ limitations under the License.
                   <id>jetty-run</id>
                   <phase>${jetty.phase}</phase>
                   <goals>
-                    <goal>run-exploded</goal>
+                    <goal>run</goal>
                   </goals>
                 </execution>
             </executions>
