@@ -59,13 +59,7 @@
     <param name="data.xml.pending.location">${symbol_dollar}{external.directory}/work/staging/workflow/pending</param>
     <param name="data.xml.loaded.location">${symbol_dollar}{external.directory}/work/staging/workflow/loaded</param>
     <param name="data.xml.problem.location">${symbol_dollar}{external.directory}/work/staging/workflow/problem</param>
-
-    <param name="datasource.ojb.platform">Oracle9i</param>
-    <param name="datasource.ojb.sequence.manager">org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl</param>
-    <param name="datasource.ojb.sequenceManager.className">org.apache.ojb.broker.util.sequence.SequenceManagerNextValImpl</param>
-    <param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="rice.custom.ojb.properties">OJB.properties</param>
-    <param name="transaction.timeout">100000</param>
     <param name="batch.transaction.timeout">500000</param>
 
     <param name="batch.schedule.cron.expression">00 00 23 ? * *</param>
@@ -79,14 +73,7 @@
 
     <param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources,org.kuali.kfs.coa.coa-resources,org.kuali.kfs.fp.fp-resources,org.kuali.kfs.gl.gl-resources,org.kuali.kfs.pdp.pdp-resources,org.kuali.kfs.sys.sys-resources,org.kuali.kfs.vnd.vnd-resources,org.kuali.kfs.sec.messages-sec,org.kuali.kfs.module.ar.ar-resources,org.kuali.kfs.module.bc.bc-resources,org.kuali.kfs.module.cab.cab-resources,org.kuali.kfs.module.cam.cam-resources,org.kuali.kfs.module.cg.cg-resources,org.kuali.kfs.module.ec.ec-resources,org.kuali.kfs.module.endow.endow-resources,org.kuali.kfs.module.external.kc.kc-resources,org.kuali.kfs.module.ld.ld-resources,org.kuali.kfs.module.tem.tem-resources,org.kuali.kfs.module.purap.purap-resources</param>
 
-    <param name="rice.struts.config.files">/kr/WEB-INF/struts-config.xml</param>
-    <param name="rice.kns.struts.config.files">/kr/WEB-INF/struts-config.xml</param>
-    <param name="rice.kew.struts.config.files">/kew/WEB-INF/struts-config.xml</param>
-    <param name="rice.ksb.struts.config.files">/ksb/WEB-INF/struts-config.xml</param>
-    <param name="rice.kim.struts.config.files">/kim/WEB-INF/struts-config.xml</param>
-
-
-    <param name="keystore.file">${symbol_dollar}{external.directory}/sa_forms/java/dev/kfs/rice.keystore</param>
+    <param name="keystore.file">${symbol_dollar}{external.directory}/rice.keystore</param>
 
     <param name="dev.mode">false</param>
     <param name="kim.mode">local</param>
