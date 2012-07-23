@@ -112,7 +112,8 @@ limitations under the License.
 
     <authentication.filter.mappings>
     <![CDATA[
-        <filter-name>DummyLoginFilter</filter-name>
+        <filter-mapping>
+                <filter-name>DummyLoginFilter</filter-name>
                 <servlet-name>action</servlet-name>
         </filter-mapping>
         <filter-mapping>
