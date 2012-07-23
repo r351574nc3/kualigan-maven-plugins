@@ -75,6 +75,7 @@ limitations under the License.
     <kfs.web.unpack.phase>none</kfs.web.unpack.phase>
     
     <!-- KFS Properties -->
+    <build.environment>dev</build.environment>
     <struts.config.files>/WEB-INF/struts-config.xml</struts.config.files>
     <http.session.timeout.minutes>60</http.session.timeout.minutes>
     <default.context.path>${project.artifactId}</default.context.path>
@@ -212,15 +213,7 @@ limitations under the License.
                     <contextPath>/${default.context.path}</contextPath>
                     <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
                 </webApp>
-                <classesDirectory>src/main/webapp/WEB-INF/classes</classesDirectory>
-                <scanTargetPatterns>
-                    <scanTargetPattern>
-                        <directory>../core/target/classes</directory>
-                        <includes>
-                            <include>**/*</include>
-                        </includes>
-                    </scanTargetPattern>
-                </scanTargetPatterns>
+                <classesDirectory>target/classes</classesDirectory>
             </configuration>
             <executions>
                 <execution>

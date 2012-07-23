@@ -99,4 +99,19 @@
       </exclusions>
     </dependency>
   </dependencies>
+  
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <property>
+                    <name>build.environment</name>
+                    <value>dev</value>
+                </property>
+            </activation>
+            <build>
+                <outputDirectory>../web/target/</outputDirectory>
+            </build>
+        </profile>
+    </profiles>
 </project>
