@@ -46,6 +46,17 @@
 
 <%@ taglib tagdir="/WEB-INF/tags/module/endow" prefix="endow" %>
 
+<%@ taglib tagdir="/WEB-INF/tags/module/tem" prefix="tem" %>
+<%@ taglib tagdir="/WEB-INF/tags/module/tem/noscript" prefix="tem-noscript" %>
+<%@ taglib tagdir="/WEB-INF/tags/module/tem/ta" prefix="tem-ta" %>
+<%@ taglib tagdir="/WEB-INF/tags/module/tem/tr" prefix="tem-tr" %>
+<%@ taglib tagdir="/WEB-INF/tags/module/tem/ent" prefix="tem-ent" %>
+<%@ taglib tagdir="/WEB-INF/tags/module/tem/relo" prefix="tem-relo" %>
+<%@ taglib tagdir="/WEB-INF/tags/module/tem/expenses" prefix="tem-exp" %>
+<%@ taglib tagdir="/WEB-INF/tags/module/tem/arranger" prefix="tem-arranger" %>
+<%@ taglib uri="/WEB-INF/tlds/tem-html.tld" prefix="tem-html"%>
+
+
 <%@ taglib tagdir="/WEB-INF/tags/portal" prefix="portal"%>
 <%@ taglib tagdir="/WEB-INF/tags/portal/channel" prefix="channel"%>
 <%@ taglib tagdir="/WEB-INF/tags/portal/channel/administration" prefix="admininstrationChannel"%>
@@ -54,6 +65,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/portal/channel/maintenance" prefix="maintenanceChannel"%>
 
 <%-- utility web functions --%>
-<%@ taglib uri="/WEB-INF/tlds/${parentArtifactId}func.tld" prefix="${parentArtifactId}func" %>
+<%@ taglib uri="/WEB-INF/tlds/kfsfunc.tld" prefix="kfsfunc" %>
 
-<%@ taglib uri="/WEB-INF/tlds/${parentArtifactId}sys.tld" prefix="sys-java" %>
+<%@ taglib uri="/WEB-INF/tlds/kfssys.tld" prefix="sys-java" %>
