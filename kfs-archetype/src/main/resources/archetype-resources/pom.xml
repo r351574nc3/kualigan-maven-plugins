@@ -63,6 +63,7 @@ limitations under the License.
     <jetty.version>8.1.5.v20120716</jetty.version>
     <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
     <log4j.version>1.2.17</log4j.version>
+    <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
     <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
     <ojdbc6.version>11.2.0.2</ojdbc6.version>
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
@@ -166,6 +167,11 @@ limitations under the License.
   <build>
     <pluginManagement>
       <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>${maven-clean-plugin.version}</version>
+        </plugin>
         <plugin>
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>

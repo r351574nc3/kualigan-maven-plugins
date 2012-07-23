@@ -114,14 +114,34 @@ limitations under the License.
                   <version>${kfsPrototypeVersion}</version>  
                   <type>war</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>${project.build.warSourceDirectory}</outputDirectory>
-                  <includes>kr/,ksb/,kcb/,kim/,ken/,kew/</includes>
+                  <outputDirectory>src/main/webapp</outputDirectory>
+                  <includes>kr/**,ksb/**,kcb/**,kim/**,ken/**,kew/**</includes>
                 </artifactItem>
               </artifactItems>
             </configuration>
             </execution>
           </executions>
       </plugin>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <configuration>
+                <filesets>
+                  <fileset>
+                    <directory>src/main/webapp</directory>
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <includes>
+                        <include>kr/**</include>
+                        <include>ksb/**</include>
+                        <include>kcb/**</include>
+                        <include>kim/**</include>
+                        <include>ken/**</include>
+                        <include>kew/**</include>
+                    </includes>
+                  </fileset>
+                </filesets>
+            </configuration>
+        </plugin>
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
