@@ -28,9 +28,6 @@
 
     <param name="rice.ksb.url">${symbol_dollar}{application.url}/${symbol_dollar}{ksb.application}</param>
 
-    <param name="# To use, make the value of the property "http.url">host:port/context-name" </param>
-    <param name="rice.ksb.http.url.expression"># http.url=.... -- Set dynamically via a -Dhttp.url property on tomcat startup</param>
-
     <param name="keystore.alias">rice</param>
     <param name="keystore.password">r1c3pw</param>
     <param name="encryption.key">7IC64w6ksLU</param>
