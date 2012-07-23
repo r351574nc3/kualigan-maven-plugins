@@ -29,18 +29,7 @@ org.kuali.kfs.module.ld.ld-resources,
 org.kuali.kfs.module.tem.tem-resources,
 org.kuali.kfs.module.purap.purap-resources]]></param>
 
-    <param name="core.jstl.constants.classnames"><![CDATA[org.kuali.kfs.sys.KFSConstants,
-org.kuali.kfs.sys.KfsAuthorizationConstants,
-org.kuali.kfs.gl.GeneralLedgerConstants,
-org.kuali.kfs.sec.SecConstants,
-org.kuali.kfs.module.cg.CGConstants,
-org.kuali.kfs.module.purap.PurapConstants,
-org.kuali.kfs.module.bc.BCConstants,
-org.kuali.kfs.module.ec.EffortConstants,
-org.kuali.kfs.module.cam.CamsConstants,
-org.kuali.kfs.module.endow.EndowConstants,
-org.kuali.kfs.module.tem.TemKeyConstants,
-org.kuali.kfs.module.tem.TemConstants]]></param>
+    <param name="core.jstl.constants.classnames">org.kuali.kfs.sys.KFSConstants,org.kuali.kfs.sys.KfsAuthorizationConstants,org.kuali.kfs.gl.GeneralLedgerConstants,org.kuali.kfs.sec.SecConstants,org.kuali.kfs.module.cg.CGConstants,org.kuali.kfs.module.purap.PurapConstants,org.kuali.kfs.module.bc.BCConstants,org.kuali.kfs.module.ec.EffortConstants,org.kuali.kfs.module.cam.CamsConstants,org.kuali.kfs.module.endow.EndowConstants,org.kuali.kfs.module.tem.TemKeyConstants,org.kuali.kfs.module.tem.TemConstants</param>
 
     <param name="jstl.constants.main.class">org.kuali.kfs.sys.KFSConstants</param>
 
