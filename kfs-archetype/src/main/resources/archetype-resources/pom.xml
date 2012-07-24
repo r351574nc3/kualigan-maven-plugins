@@ -87,7 +87,7 @@ limitations under the License.
     <build.environment>dev</build.environment>
     <struts.config.files>/WEB-INF/struts-config.xml</struts.config.files>
     <http.session.timeout.minutes>60</http.session.timeout.minutes>
-    <default.context.path>${project.artifactId}</default.context.path>
+    <default.context.path>${project.parent.artifactId}</default.context.path>
     <distributable.tag></distributable.tag>
     <monitoring.filter.definitions><![CDATA[
         <filter>
@@ -660,8 +660,14 @@ limitations under the License.
                 </dependency>
                 <dependency>
                     <groupId>${project.groupId}</groupId>
-                    <artifactId>${project.artifactId}-core</artifactId>
+                    <artifactId>${project.parent.artifactId}-core</artifactId>
                     <version>${project.version}</version>
+                    <scope>runtime</scope>
+                </dependency>
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                    <version>${servlet.version}</version>
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>
