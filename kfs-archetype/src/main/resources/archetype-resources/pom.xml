@@ -69,6 +69,7 @@ limitations under the License.
     <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
     <log4j.version>1.2.17</log4j.version>
     <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
+    <maven-resources-plugin.version>2.5</maven-resources-plugin>
     <mysql-connector-java.version>5.1.16</mysql-connector-java.version>
     <ojdbc6.version>11.2.0.2</ojdbc6.version>
     <rice.version>1.0.3</rice.version>
@@ -638,16 +639,6 @@ limitations under the License.
                 </excludes>
               </overlay>
             </overlays>
-            <webResources>
-              <resource>
-                <filtering>true</filtering>
-                <!-- this is relative to the pom.xml directory -->
-                <directory>src/main/resources/</directory>
-                <includes>
-                  <include>**/web.xml</include>
-                </includes>
-              </resource>
-            </webResources>
           </configuration>
         </plugin>
       </plugins>

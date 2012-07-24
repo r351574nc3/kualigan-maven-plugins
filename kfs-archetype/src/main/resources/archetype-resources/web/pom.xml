@@ -47,7 +47,16 @@ limitations under the License.
         <filtering>true</filtering>
         <excludes>
           <exclude>**/*.zip</exclude>
+          <exclude>**/WEB-INF/**</exclude>
         </excludes>
+      </resource>
+      <resource>
+        <targetPath>${basedir}/src/main/webapp/</targetPath>
+        <directory>src/main/resources/</directory>
+        <filtering>true</filtering>
+        <includes>
+           <include>**/WEB-INF/**</include>
+        </includes>        
       </resource>
     </resources>
     
@@ -206,5 +215,11 @@ limitations under the License.
             <artifactId>${rootArtifactId}-core</artifactId>
             <version>${version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>net.bull.javamelody</groupId>
+            <artifactId>javamelody-core</artifactId>
+        </dependency>
+
     </dependencies>
 </project>

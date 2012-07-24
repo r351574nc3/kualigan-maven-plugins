@@ -67,14 +67,6 @@
       <artifactId>${kfsPrototypeArtifactId}</artifactId>
     </dependency>
     <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>net.bull.javamelody</groupId>
-        <artifactId>javamelody-core</artifactId>
-    </dependency>
-    <dependency>
        <groupId>jasperreports</groupId>
        <artifactId>jasperreports</artifactId>
     </dependency>
@@ -101,23 +93,6 @@
     <dependency>
       <groupId>org.springframework.ldap</groupId>
       <artifactId>spring-ldap-test</artifactId>
-    </dependency>
-
-    <dependency>        
-      <groupId>org.apache.struts</groupId>
-      <artifactId>struts-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.struts</groupId>
-      <artifactId>struts-el</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.struts</groupId>
-      <artifactId>struts-extras</artifactId>
-    </dependency>
-    <dependency>
-	      <groupId>org.apache.struts</groupId>
-	      <artifactId>struts-taglib</artifactId>
     </dependency>
     <dependency>
         <groupId>org.springframework.security</groupId>
