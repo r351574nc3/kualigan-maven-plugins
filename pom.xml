@@ -11,7 +11,7 @@
   <packaging>maven-plugin</packaging>
   
   <name>KFS Maven Plugin</name>
-  <version>1.0.7</version>
+  <version>1.0.8-SNAPSHOT</version>
   <description>Maven plugin for creating KFS distributions</description>
 
   <licenses>
