@@ -60,17 +60,23 @@ limitations under the License.
   <!-- Properties later populated into configuration.properties -->
   <properties>
     <bouncycastle.version>1.46</bouncycastle.version>
+    <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
+    <cxf.version>2.3.8</cxf.version>
     <jetty.version>8.1.5.v20120716</jetty.version>
+    <jsp-api.version>2.1</jsp-api.version>
+    <jstl.version>1.2</jstl.version>
     <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
     <log4j.version>1.2.17</log4j.version>
     <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
-    <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
+    <mysql-connector-java.version>5.1.16</mysql-connector-java.version>
     <ojdbc6.version>11.2.0.2</ojdbc6.version>
-    <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
-    <jetty.phase>none</jetty.phase>
-    <struts.version>1.3.10</struts.version> 
     <rice.version>1.0.3</rice.version>
+    <servlet.version>2.5</servlet.version>
+    <slf4j.version>1.6.4</slf4j.version>
+    <struts.version>1.3.10</struts.version> 
+    <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
 
+    <jetty.phase>none</jetty.phase>
     <kfs.maven.groupId>org.kualigan.kfs</kfs.maven.groupId>
     <kfs.maven.version>4.1.1-7</kfs.maven.version>
     <kfs.external.unpack.phase>none</kfs.external.unpack.phase>

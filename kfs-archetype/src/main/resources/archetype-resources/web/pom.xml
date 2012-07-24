@@ -505,50 +505,6 @@ limitations under the License.
  	 	 	 	</exclusion>
 			</exclusions>
 		</dependency>
-	   <dependency>		
-	      <groupId>org.apache.struts</groupId>
-	      <artifactId>struts-core</artifactId>
-	      <version>${struts.version}</version>
-	      <exclusions>
-	        <exclusion>
-	          <artifactId>commons-logging</artifactId>
-	          <groupId>commons-logging</groupId>
-	        </exclusion>
-	        <exclusion>
-	          <artifactId>antlr</artifactId>
-	          <groupId>antlr</groupId>
-	        </exclusion>
-	        <exclusion>
-	          <artifactId>commons-beanutils</artifactId>
-	          <groupId>commons-beanutils</groupId>
-	        </exclusion>
-	      </exclusions>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.apache.struts</groupId>
-	      <artifactId>struts-el</artifactId>
-	      <version>${struts.version}</version>
-	      <exclusions>
-	        <exclusion>
-	          <artifactId>standard</artifactId>
-	          <groupId>taglibs</groupId>
-	        </exclusion>
-	        <exclusion>
-	          <artifactId>jstl</artifactId>
-	          <groupId>javax.servlet</groupId>
-	        </exclusion>
-	      </exclusions>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.apache.struts</groupId>
-	      <artifactId>struts-extras</artifactId>
-	      <version>${struts.version}</version>
-	    </dependency>
-	    <dependency>
-	      <groupId>org.apache.struts</groupId>
-	      <artifactId>struts-taglib</artifactId>
-	      <version>${struts.version}</version>
-	    </dependency>
 	    <dependency>
 		    <groupId>xalan</groupId>
 		    <artifactId>xalan</artifactId>
