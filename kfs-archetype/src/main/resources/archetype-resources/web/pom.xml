@@ -102,7 +102,7 @@ limitations under the License.
         <version>${maven-dependency-plugin.version}</version>
         <executions>
           <execution>
-            <id>unpack-nonjava</id>
+            <id>unpack-rice-web</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>unpack</goal>
@@ -115,10 +115,8 @@ limitations under the License.
                   <version>${kfsPrototypeVersion}</version>  
                   <type>war</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>target/classes</outputDirectory>
-                  <!--
+                  <outputDirectory>src/main/webapp</outputDirectory>
                   <includes>jsp/**,kr/**,ksb/**,kcb/**,kim/**,ken/**,kew/**</includes>
-                  -->
                 </artifactItem>
               </artifactItems>
             </configuration>
