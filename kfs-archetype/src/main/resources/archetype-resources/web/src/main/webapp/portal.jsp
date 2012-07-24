@@ -32,7 +32,7 @@
 %>
 
 <portal:portalTop />
-<portal:portalTabs selectedTab="${symbol_dollar}{sessionScope.selectedTab}" />
-<portal:portalBody selectedTab="${symbol_dollar}{sessionScope.selectedTab}"
-	channelTitle="${symbol_dollar}{param.channelTitle}" channelUrl="${symbol_dollar}{gotoUrl}" />
+<portal:portalTabs selectedTab="${sessionScope.selectedTab}" />
+<portal:portalBody selectedTab="${sessionScope.selectedTab}"
+	channelTitle="${param.channelTitle}" channelUrl="${gotoUrl}" />
 <portal:portalBottom />

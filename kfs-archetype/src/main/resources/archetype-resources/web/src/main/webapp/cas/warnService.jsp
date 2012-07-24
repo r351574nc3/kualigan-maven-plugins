@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -27,11 +24,11 @@
   else
     service = serviceId + "&ticket=" + token;
   service =
-    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "${symbol_escape}n", "");
+    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "\n", "");
   service =
-    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "${symbol_escape}r", "");
+    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "\r", "");
   service =
-    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "${symbol_escape}"", "");
+    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "\"", "");
 %>
 
             <table width="100%"
@@ -40,14 +37,14 @@
                    cellpadding="10"
                    height="100%">
               <tr>
-                <td bgcolor="${symbol_pound}FFFFFF" valign="top">
+                <td bgcolor="#FFFFFF" valign="top">
                   <font face="Arial, Helvetica, sans-serif"
                         size="4"
-                        color="${symbol_pound}003399">
+                        color="#003399">
                 <b>Privacy notice</b></font></td>
               </tr>
               <tr>
-                <td bgcolor="${symbol_pound}FFFFFF" valign="top" height="363">
+                <td bgcolor="#FFFFFF" valign="top" height="363">
                   <p><font face="Arial, Helvetica, sans-serif" size="2">
 
 A service claiming to have the following URL has asked the Central
@@ -64,7 +61,7 @@ Authentication Service to log you in:
 <p>Click <b>Proceed</b> below to proceed.</p>
 
 <p align="center">
-  <a href="<%= service %>"><font color="${symbol_pound}336699">Proceed</font></a>
+  <a href="<%= service %>"><font color="#336699">Proceed</font></a>
 </p>
 
 </td>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -27,11 +24,11 @@
   else
     service = serviceId + "&ticket=" + token;
   service =
-    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "${symbol_escape}n", "");
+    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "\n", "");
   service = 
-    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "${symbol_escape}r", "");
+    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "\r", "");
   service =
-    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "${symbol_escape}"", "");
+    edu.yale.its.tp.cas.util.StringUtil.substituteAll(service, "\"", "");
 
   // Set Refresh header on initial login only if user isn't using Safari.
   // Fixes security bug where Safari would repost login credentials to the
@@ -52,7 +49,7 @@
 <% } %>
 </head>
 
-<body bgcolor="${symbol_pound}0044AA" link="${symbol_pound}ffffff" alink="${symbol_pound}ffffff" vlink="${symbol_pound}ffffff">
+<body bgcolor="#0044AA" link="#ffffff" alink="#ffffff" vlink="#ffffff">
 <% if (!safari) { %>
 <noscript>
 <% } %>

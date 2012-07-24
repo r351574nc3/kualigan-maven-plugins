@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -22,17 +19,17 @@
 <title>Central Authentication Service</title>
 </head>
 
-<body bgcolor="${symbol_pound}0044AA">
+<body bgcolor="#0044AA">
 
 <table border="0" valign="center" cellpadding="0" cellspacing="0" height="100%" width="100%">
 <tr><td align="center">
 
-<table width="480" bgcolor="${symbol_pound}FFFFFF" border="2" cellpadding="0" cellspacing="0">
+<table width="480" bgcolor="#FFFFFF" border="2" cellpadding="0" cellspacing="0">
         <tr><td>
 
 <table width="100%" border="0" cellpadding="5" cellspacing="5">
 
-<tr><td align="center" colspan="2" bgcolor="${symbol_pound}0044AA">
+<tr><td align="center" colspan="2" bgcolor="#0044AA">
 <font color="white" face="Arial,Helvetica" size="5">
 <b><i>Central Authentication Service</i></b>
 </font>

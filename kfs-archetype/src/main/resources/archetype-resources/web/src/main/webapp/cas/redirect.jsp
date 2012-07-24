@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -28,7 +25,7 @@
  </script>
 </head>
 
-<body bgcolor="${symbol_pound}0044AA">
+<body bgcolor="#0044AA">
  <noscript>
   <p>
    Click <a href="<%= serviceId %>">here</a>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -17,7 +14,7 @@
  limitations under the License.
 --%>
 <%@ include file="header.jsp" %>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <%-- NOTE THAT THIS PAGE NOW REQUIRES A TRANSACTION ID TO BE PART OF THE
      LOGIN FORM!  IF YOU HAVE A CUSTOM login.jsp, YOU MUST ADD THIS
@@ -47,7 +44,7 @@ button to continue.  A password is not required, because this is a </font><font 
 
         <form method="post" name="login_form">
 
-        <table bgcolor="${symbol_pound}FFFFAA" align="center"><tr><td>
+        <table bgcolor="#FFFFAA" align="center"><tr><td>
 
         <table border="0" cellpadding="0" cellspacing="5">
 
@@ -57,7 +54,7 @@ button to continue.  A password is not required, because this is a </font><font 
         <td>
         <input type="text" id="username" name="username" maxlength="8"></td>
         </tr>
-		<c:if test="${symbol_dollar}{requestScope.showPasswordField}">
+		<c:if test="${requestScope.showPasswordField}">
 	        <tr>
 	        <td><font face="Arial,Helvetica"><b><label for="password">Password</label>:</b></td>
 	        <td>
