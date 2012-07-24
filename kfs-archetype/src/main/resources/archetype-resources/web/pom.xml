@@ -96,14 +96,13 @@ limitations under the License.
 
       <!-- Unpacks the datadictionary because KFS has trouble accessing the datadictionary from a jar -->       
       <!-- When we add modules, make sure we unpack the DD -->
-      <!--
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <version>${maven-dependency-plugin.version}</version>
         <executions>
           <execution>
-            <id>unpack-rice</id>
+            <id>unpack-nonjava</id>
             <phase>generate-resources</phase>
             <goals>
               <goal>unpack</goal>
@@ -116,16 +115,17 @@ limitations under the License.
                   <version>${kfsPrototypeVersion}</version>  
                   <type>war</type>
                   <overWrite>false</overWrite>
-                  <outputDirectory>src/main/webapp</outputDirectory>
+                  <outputDirectory>target/classes</outputDirectory>
+                  <!--
                   <includes>jsp/**,kr/**,ksb/**,kcb/**,kim/**,ken/**,kew/**</includes>
+                  -->
                 </artifactItem>
               </artifactItems>
             </configuration>
             </execution>
           </executions>
       </plugin>
-      -->
-        <plugin>
+      <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-clean-plugin</artifactId>
             <configuration>
@@ -151,11 +151,6 @@ limitations under the License.
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
       </plugin>
-
-        <plugin>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
-        </plugin>
     </plugins>
 
 
