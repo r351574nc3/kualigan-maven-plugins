@@ -73,6 +73,7 @@ limitations under the License.
     <rice.version>1.0.3</rice.version>
     <servlet.version>2.5</servlet.version>
     <slf4j.version>1.6.4</slf4j.version>
+    <spring.ldap.version>1.3.1.RELEASE</spring.ldap.version>
     <struts-framework.version>1.3.10</struts-framework.version> 
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
 
@@ -141,7 +142,22 @@ limitations under the License.
   </properties>
   
   <dependencyManagement>
-    <dependencies>    
+    <dependencies>
+        <dependency>
+           <groupId>jasperreports</groupId>
+           <artifactId>jasperreports</artifactId>
+           <version>2.0.4</version>
+        </dependency>
+        <dependency>
+           <groupId>org.apache.velocity</groupId>
+           <artifactId>velocity</artifactId>
+           <version>1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>net.bull.javamelody</groupId>
+            <artifactId>javamelody-core</artifactId>
+            <version>1.39.0</version>
+        </dependency>
     <!--
         These are the prototype dependencies. It is used by the overlay to refer back
         to the classes in the prototype.
@@ -483,7 +499,12 @@ limitations under the License.
     				<groupId>stax</groupId>
     			</exclusion>
     		</exclusions>
-    	</dependency>		
+    	</dependency>
+        <dependency>
+    		<groupId>org.kuali.rice</groupId>
+    		<artifactId>rice-ldap</artifactId>
+    		<version>1.0.3</version>
+        </dependency>
     	<dependency>
     		<groupId>org.kuali.rice</groupId>
     		<artifactId>rice-impl</artifactId>
@@ -600,9 +621,6 @@ limitations under the License.
     </dependencies>
   </dependencyManagement>
   
-    <dependencies>
-    </dependencies>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -620,6 +638,31 @@ limitations under the License.
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
                     <version>${log4j.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>${driver.groupId}</groupId>
+                    <artifactId>${driver.artifactId}</artifactId>
+                    <version>${driver.version}</version>
+                    <scope>runtime</scope>
+                </dependency>
+            </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.mortbay.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+          <version>${jetty.version}</version>
+            <dependencies>
+                <dependency>
+                    <groupId>${driver.groupId}</groupId>
+                    <artifactId>${driver.artifactId}</artifactId>
+                    <version>${driver.version}</version>
+                    <scope>runtime</scope>
+                </dependency>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}-core</artifactId>
+                    <version>${project.version}</version>
+                    <scope>runtime</scope>
                 </dependency>
             </dependencies>
         </plugin>
@@ -658,62 +701,6 @@ limitations under the License.
         </plugin>
       </plugins>
     </pluginManagement>
-    
-    <plugins>
-        <plugin>
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>${jetty.version}</version>
-            <configuration>
-                <systemProperties>
-                    <systemProperty>
-                        <name>environment</name><value>${build.environment}</value>
-                    </systemProperty>
-                    <systemProperty>
-                        <name>log4j.settings.file</name><value>${user.home}/main/${build.environment}/j2ee/log4j.properties</value>
-                    </systemProperty>
-                </systemProperties>
-                <webAppSourceDirectory>web/src/main/webapp</webAppSourceDirectory>
-                <contextPath>/${default.context.path}</contextPath>
-                <descriptor>web/src/main/webapp/WEB-INF/web.xml</descriptor>
-                <webApp>
-                    <contextPath>/${default.context.path}</contextPath>
-                    <descriptor>web/src/main/webapp/WEB-INF/web.xml</descriptor>
-                </webApp>
-                <classesDirectory>web/target/classes</classesDirectory>
-            </configuration>
-            <executions>
-                <execution>
-                  <id>jetty-run</id>
-                  <phase>${jetty.phase}</phase>
-                  <goals>
-                    <goal>run</goal>
-                  </goals>
-                </execution>
-            </executions>
-            <dependencies>
-                <dependency>
-                    <groupId>${driver.groupId}</groupId>
-                    <artifactId>${driver.artifactId}</artifactId>
-                    <version>${driver.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                    <groupId>${kfsPrototypeGroupId}</groupId>
-                    <artifactId>${kfsPrototypeArtifactId}</artifactId>
-                    <version>${kfsPrototypeVersion}</version>
-                    <type>jar</type>
-                    <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                    <groupId>org.kuali.rice</groupId>
-                    <artifactId>rice-impl</artifactId>
-                    <version>${rice.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
-        </plugin>
-    </plugins>
   </build>
 
   <profiles>

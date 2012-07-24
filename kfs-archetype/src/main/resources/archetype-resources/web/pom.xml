@@ -149,6 +149,29 @@ limitations under the License.
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
       </plugin>
+      
+      <plugin>
+          <groupId>org.mortbay.jetty</groupId>
+          <artifactId>jetty-maven-plugin</artifactId>
+            <configuration>
+                <systemProperties>
+                    <systemProperty>
+                        <name>environment</name><value>${build.environment}</value>
+                    </systemProperty>
+                    <systemProperty>
+                        <name>log4j.settings.file</name><value>${user.home}/main/${build.environment}/j2ee/log4j.properties</value>
+                    </systemProperty>
+                </systemProperties>
+                <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
+                <contextPath>/${default.context.path}</contextPath>
+                <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
+                <webApp>
+                    <contextPath>/${default.context.path}</contextPath>
+                    <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
+                </webApp>
+                <classesDirectory>target/classes</classesDirectory>
+            </configuration>
+        </plugin>
     </plugins>
 
 

@@ -67,6 +67,38 @@
       <artifactId>${kfsPrototypeArtifactId}</artifactId>
     </dependency>
     <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>commons-lang</groupId>
+        <artifactId>commons-lang</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>net.bull.javamelody</groupId>
+        <artifactId>javamelody-core</artifactId>
+    </dependency>
+    <dependency>
+       <groupId>jasperreports</groupId>
+       <artifactId>jasperreports</artifactId>
+    </dependency>
+    <dependency>
+       <groupId>org.apache.velocity</groupId>
+       <artifactId>velocity</artifactId>
+    </dependency>
+    <dependency>
+    	<groupId>org.kuali.rice</groupId>
+		<artifactId>rice-ldap</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.kuali.rice</groupId>
+		<artifactId>rice-impl</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.ldap</groupId>
       <artifactId>spring-ldap-ldif-core</artifactId>
     </dependency>
