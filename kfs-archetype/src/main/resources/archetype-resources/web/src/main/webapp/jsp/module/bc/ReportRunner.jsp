@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false"
 	htmlFormAction="budgetReportRunner" renderMultipart="true"
@@ -40,9 +37,9 @@
 
     <div id="globalbuttons" class="globalbuttons">
 <%--
-        <html:image src="${symbol_dollar}{ConfigProperties.externalizable.images.url}buttonsmall_genpdf.gif" styleClass="globalbuttons" property="methodToCall.performReport" title="Perform Report" alt="Perform Report" onclick="excludeSubmitRestriction=true"/>
+        <html:image src="${ConfigProperties.externalizable.images.url}buttonsmall_genpdf.gif" styleClass="globalbuttons" property="methodToCall.performReport" title="Perform Report" alt="Perform Report" onclick="excludeSubmitRestriction=true"/>
 --%>
-        <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" property="methodToCall.close" onclick="excludeSubmitRestriction=true" title="close" alt="close"/>
+        <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" property="methodToCall.close" onclick="excludeSubmitRestriction=true" title="close" alt="close"/>
     </div>
 
 </kul:page>

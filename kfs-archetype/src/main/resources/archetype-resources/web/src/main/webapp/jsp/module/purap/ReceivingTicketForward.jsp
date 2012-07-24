@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -23,24 +20,24 @@
 </head>
 <body>
 <%-- Below form used for non java script enabled browsers --%>
-<form name="disabledJavaScriptPrintForm" id="disabledJavaScriptPrintForm" method="post" action="${symbol_dollar}{printReceivingTicketPDFUrl}">
+<form name="disabledJavaScriptPrintForm" id="disabledJavaScriptPrintForm" method="post" action="${printReceivingTicketPDFUrl}">
   <noscript>
-    Click this button to see the ${symbol_dollar}{receivingDocLabel} PDF:&nbsp;&nbsp;&nbsp;<input type="submit" title="View ${symbol_dollar}{receivingDocLabel} PDF" value="View ${symbol_dollar}{receivingDocLabel} PDF">
+    Click this button to see the ${receivingDocLabel} PDF:&nbsp;&nbsp;&nbsp;<input type="submit" title="View ${receivingDocLabel} PDF" value="View ${receivingDocLabel} PDF">
   </noscript>
 </form>
-<form name="disabledJavaScriptReturnForm" id="disabledJavaScriptReturnForm" method="post" action="${symbol_dollar}{displayReceivingDocTabbedPageUrl}">
+<form name="disabledJavaScriptReturnForm" id="disabledJavaScriptReturnForm" method="post" action="${displayReceivingDocTabbedPageUrl}">
   <noscript>
-    Click this button return to the ${symbol_dollar}{receivingDocLabel} tabbed page:&nbsp;&nbsp;&nbsp;<input type="submit" title="Return to the ${symbol_dollar}{receivingDocLabel}" value="Return to the ${symbol_dollar}{receivingDocLabel}">
+    Click this button return to the ${receivingDocLabel} tabbed page:&nbsp;&nbsp;&nbsp;<input type="submit" title="Return to the ${receivingDocLabel}" value="Return to the ${receivingDocLabel}">
   </noscript>
 </form>
 
 <%-- Below forms used for java script enabled browsers --%>
 
-<form name="backForm" id="backForm" method="post" action="${symbol_dollar}{displayReceivingDocTabbedPageUrl}">
+<form name="backForm" id="backForm" method="post" action="${displayReceivingDocTabbedPageUrl}">
 </form>
 
 
-<form name="printRecTicketPDFForm" id="printRecTicketPDFForm" method="post" action="${symbol_dollar}{printReceivingTicketPDFUrl}">
+<form name="printRecTicketPDFForm" id="printRecTicketPDFForm" method="post" action="${printReceivingTicketPDFUrl}">
   <input type="hidden" name="useJavascript" value="true"/>
   <script language ="javascript">
     window.onload = dothis();

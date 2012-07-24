@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
-<c:set var="budgetAttributes" value="${symbol_dollar}{DataDictionary.BudgetConstructionRequestImport.attributes}" />
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
+<c:set var="budgetAttributes" value="${DataDictionary.BudgetConstructionRequestImport.attributes}" />
 
 <kul:page showDocumentInfo="false"
-    htmlFormAction="${symbol_dollar}{KualiForm.htmlFormAction}" renderMultipart="true"
+    htmlFormAction="${KualiForm.htmlFormAction}" renderMultipart="true"
     docTitle=""
     transactionalDocument="false">
  <script type="text/javascript">
@@ -29,13 +26,13 @@
 
     </script>     
     <strong><h2>
-    <c:out value="${symbol_dollar}{KualiForm.title}"/>
-	 <a href="${symbol_dollar}{ConfigProperties.externalizable.help.url}default.htm?turl=WordDocuments%2Frequestimporttool.htm" tabindex="${symbol_dollar}{KualiForm.nextArbitrarilyHighIndex}" target="helpWindow"  title="[Help]Upload">
-	                                        <img src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}my_cp_inf.gif" title="[Help] Upload" alt="[Help] Upload" hspace=5 border=0  align="middle"></a>
+    <c:out value="${KualiForm.title}"/>
+	 <a href="${ConfigProperties.externalizable.help.url}default.htm?turl=WordDocuments%2Frequestimporttool.htm" tabindex="${KualiForm.nextArbitrarilyHighIndex}" target="helpWindow"  title="[Help]Upload">
+	                                        <img src="${ConfigProperties.kr.externalizable.images.url}my_cp_inf.gif" title="[Help] Upload" alt="[Help] Upload" hspace=5 border=0  align="middle"></a>
   </h2></strong>
 	</br>
       
-    <!-- kul:tab tabTitle="Select File to Import" defaultOpen="false" tabErrorKey="${symbol_dollar}{EffortConstants.EFFORT_CERTIFICATION_TAB_ERRORS}"-->
+    <!-- kul:tab tabTitle="Select File to Import" defaultOpen="false" tabErrorKey="${EffortConstants.EFFORT_CERTIFICATION_TAB_ERRORS}"-->
     	<!-- div class="tab-container" align=center-->
 		    <table align="center" cellpadding="0" cellspacing="0" class="datatable-100">
 		    
@@ -45,31 +42,31 @@
             <html:hidden property="returnFormKey" />
             <html:hidden property="backLocation" />
             
-            <c:if test="${symbol_dollar}{KualiForm.reportMode != 'requestImport'}">  
+            <c:if test="${KualiForm.reportMode != 'requestImport'}">  
 	            <html:hidden property="chartOfAccountsCode" />
 	            <html:hidden property="accountNumber" />
 	            <html:hidden property="subAccountNumber" />
 	            <html:hidden property="backLocation" />
 	            <html:hidden property="orgReport" />
 	        </c:if>
-		    	<c:if test="${symbol_dollar}{KualiForm.reportMode == 'requestImport'}">  
+		    	<c:if test="${KualiForm.reportMode == 'requestImport'}">  
 					<tr>
-			        	<th class="grid" align="right" colspan="1"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{budgetAttributes.fileName}" noColon="false" /></th>
+			        	<th class="grid" align="right" colspan="1"><kul:htmlAttributeLabel attributeEntry="${budgetAttributes.fileName}" noColon="false" /></th>
 			            <td class="grid"><html:file property="file" /></td>
 			       	</tr>
 		        	<tr>
-			        	<th class="grid" align="right" colspan="1"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{budgetAttributes.fileType}" noColon="false" /></th>
-			            <td class="grid"><kul:htmlControlAttribute attributeEntry="${symbol_dollar}{budgetAttributes.fileType}" property="fileType" readOnly="false" /></td>
+			        	<th class="grid" align="right" colspan="1"><kul:htmlAttributeLabel attributeEntry="${budgetAttributes.fileType}" noColon="false" /></th>
+			            <td class="grid"><kul:htmlControlAttribute attributeEntry="${budgetAttributes.fileType}" property="fileType" readOnly="false" /></td>
 					</tr>
 				</c:if>
 				<tr>
-		        	<th class="grid" align="right" colspan="1"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{budgetAttributes.fieldDelimiter}" noColon="false" /></th>
-		            <td class="grid"><kul:htmlControlAttribute attributeEntry="${symbol_dollar}{budgetAttributes.fieldDelimiter}" property="fieldDelimiter" readOnly="false" /> &nbsp; <kul:htmlControlAttribute attributeEntry="${symbol_dollar}{budgetAttributes.otherFieldDelimiter}" property="otherFieldDelimiter" readOnly="false" /></td>
+		        	<th class="grid" align="right" colspan="1"><kul:htmlAttributeLabel attributeEntry="${budgetAttributes.fieldDelimiter}" noColon="false" /></th>
+		            <td class="grid"><kul:htmlControlAttribute attributeEntry="${budgetAttributes.fieldDelimiter}" property="fieldDelimiter" readOnly="false" /> &nbsp; <kul:htmlControlAttribute attributeEntry="${budgetAttributes.otherFieldDelimiter}" property="otherFieldDelimiter" readOnly="false" /></td>
 				</tr>
 				
 				<tr>
-		        	<th class="grid" align="right" colspan="1"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{budgetAttributes.textFieldDelimiter}" noColon="false" /></th>
-		            <td class="grid"><kul:htmlControlAttribute attributeEntry="${symbol_dollar}{budgetAttributes.textFieldDelimiter}" property="textFieldDelimiter" readOnly="false" /> &nbsp; <kul:htmlControlAttribute attributeEntry="${symbol_dollar}{budgetAttributes.otherTextFieldDelimiter}" property="otherTextFieldDelimiter" readOnly="false" /></td>
+		        	<th class="grid" align="right" colspan="1"><kul:htmlAttributeLabel attributeEntry="${budgetAttributes.textFieldDelimiter}" noColon="false" /></th>
+		            <td class="grid"><kul:htmlControlAttribute attributeEntry="${budgetAttributes.textFieldDelimiter}" property="textFieldDelimiter" readOnly="false" /> &nbsp; <kul:htmlControlAttribute attributeEntry="${budgetAttributes.otherTextFieldDelimiter}" property="otherTextFieldDelimiter" readOnly="false" /></td>
 				</tr>
 				
 				<tr>

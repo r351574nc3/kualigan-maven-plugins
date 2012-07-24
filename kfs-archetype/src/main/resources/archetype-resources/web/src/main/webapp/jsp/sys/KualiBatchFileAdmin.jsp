@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2009 The Kuali Foundation
  
@@ -16,13 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false"
 	headerTitle="Batch File Delete" docTitle="Batch File Delete"
 	transactionalDocument="false" htmlFormAction="batchFileAdmin">
-	<c:out value="${symbol_dollar}{status}"/>
+	<c:out value="${status}"/>
 	<br/>
 	<br/>
-	<li><portal:portalLink displayTitle="true" title="Click here to return to the Batch File lookup" url="kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.${parentArtifactId}.sys.batch.BatchFile&docFormKey=88888888&returnLocation=${symbol_dollar}{ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
+	<li><portal:portalLink displayTitle="true" title="Click here to return to the Batch File lookup" url="kr/lookup.do?methodToCall=start&businessObjectClassName=org.kuali.kfs.sys.batch.BatchFile&docFormKey=88888888&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true" /></li>
 </kul:page>

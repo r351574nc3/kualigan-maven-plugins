@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -16,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
-<c:set var="payrateImportExportAttributes"	value="${symbol_dollar}{DataDictionary.PayrateImportExport.attributes}" />
+<c:set var="payrateImportExportAttributes"	value="${DataDictionary.PayrateImportExport.attributes}" />
 
 <html:xhtml/>
 
@@ -49,15 +46,15 @@
 				<tr >
 					<td class="infoline" > 
 						<b>
-								<kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{payrateImportExportAttributes.positionUnionCode}" /></b>
-						<kul:lookup boClassName="org.kuali.${parentArtifactId}.module.bc.businessobject.BudgetConstructionPosition" 
+								<kul:htmlAttributeLabel attributeEntry="${payrateImportExportAttributes.positionUnionCode}" /></b>
+						<kul:lookup boClassName="org.kuali.kfs.module.bc.businessobject.BudgetConstructionPosition" 
 								fieldConversions="positionUnionCode:positionUnionCode" 
 								lookupParameters="positionUnionCode:positionUnionCode" /> 
-								<kul:htmlControlAttribute property="positionUnionCode" readOnly="false" attributeEntry="${symbol_dollar}{payrateImportExportAttributes.positionUnionCode}"/>
+								<kul:htmlControlAttribute property="positionUnionCode" readOnly="false" attributeEntry="${payrateImportExportAttributes.positionUnionCode}"/>
 					</td> 
 					<td class="infoline"  > 
-						<b><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{payrateImportExportAttributes.csfFreezeDate}" /></b>
-						<kul:htmlControlAttribute property="csfFreezeDate" readOnly="false" attributeEntry="${symbol_dollar}{payrateImportExportAttributes.csfFreezeDate}" datePicker="true" />
+						<b><kul:htmlAttributeLabel attributeEntry="${payrateImportExportAttributes.csfFreezeDate}" /></b>
+						<kul:htmlControlAttribute property="csfFreezeDate" readOnly="false" attributeEntry="${payrateImportExportAttributes.csfFreezeDate}" datePicker="true" />
 					</td>
 					<td class="infoline"  >
 						<div align="center">
@@ -68,7 +65,7 @@
 			</table>
 		</div>
 		<div class="tab-container" align=center>
-			<table bgcolor="${symbol_pound}C0C0C0" cellpadding="30" >
+			<table bgcolor="#C0C0C0" cellpadding="30" >
 				<tr>
 					<td width="90%"><h3>Payrate Import</h3></td>
 					<td width="10%"><h3>Action</h3></td>
@@ -76,7 +73,7 @@
 				
 				<tr >
 					<td class="infoline" > 
-						<b><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{payrateImportExportAttributes.fileName}" /></b>
+						<b><kul:htmlAttributeLabel attributeEntry="${payrateImportExportAttributes.fileName}" /></b>
 						<html:file property="file" />
 					</td> 
 					<td class="infoline" colspan="2">
@@ -87,7 +84,7 @@
 				</tr>
 				
 			</table>
-			<table bgcolor="${symbol_pound}C0C0C0" cellpadding="0" cellspacing="0" >
+			<table bgcolor="#C0C0C0" cellpadding="0" cellspacing="0" >
 				<tr align="center" >
 					<td class="infoline" width="50%"></td>
 					<td class="infoline"> 

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2009 The Kuali Foundation
  
@@ -16,13 +13,13 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false" htmlFormAction="budgetBudgetExpansion" renderMultipart="true"
 	showTabButtons="false" docTitle="Budget Construction Lost Session" transactionalDocument="false">
 
     <div id="globalbuttons" class="globalbuttons">
-	    <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" 
+	    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" 
 	        onclick="window.close();return false;" title="close the window" alt="close the window"/>		
     </div>
 </kul:page>

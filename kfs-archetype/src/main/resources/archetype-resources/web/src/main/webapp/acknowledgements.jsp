@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -30,7 +27,7 @@
 </div>
 
  <table width="100%"  cellspacing="0" cellpadding="0" id="iframe_portlet_container_table">
-    <tr valign="top" bgcolor="${symbol_pound}FFFFFF">
+    <tr valign="top" bgcolor="FFFFFF">
 <td class="content" valign="top">
 <BR/>
 <h3><a name="Acknowledgements-"></a><font color="maroon">Acknowledgments</font></h3>

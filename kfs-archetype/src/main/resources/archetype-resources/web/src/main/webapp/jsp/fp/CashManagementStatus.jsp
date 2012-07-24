@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page docTitle="Cash Management status" showDocumentInfo="false"
 	headerTitle="Cash Management status" transactionalDocument="false"
@@ -38,9 +35,9 @@
 	<br>
 
 	<div id="globalbuttons" class="globalbuttons"><html:image
-		src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_returnToIndex.gif" styleClass="globalbuttons"
+		src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_returnToIndex.gif" styleClass="globalbuttons"
 		property="methodToCall.returnToIndex" alt="Return to Index" title="Return to Index" />
-	&nbsp;&nbsp; <html:image src="${symbol_dollar}{ConfigProperties.externalizable.images.url}buttonsmall_openExisting.gif"
+	&nbsp;&nbsp; <html:image src="${ConfigProperties.externalizable.images.url}buttonsmall_openExisting.gif"
 		styleClass="globalbuttons" property="methodToCall.openExisting"
 		alt="Open Existing Cash Management Document" title="Open Existing Cash Management Document" /></div>
 

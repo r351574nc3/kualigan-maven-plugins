@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -17,9 +14,9 @@
  limitations under the License.
 --%>
 <%@ page import="org.kuali.rice.kns.util.KNSConstants"%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <!-- Make sure it isn't a fabrication -->
-<c:if test="${symbol_dollar}{Constants.MAINTENANCE_NEW_ACTION != KualiForm.document.oldMaintainableObject.maintenanceAction}">
-  <cams:assetPaymentsLookupLink capitalAssetNumber="${symbol_dollar}{KualiForm.document.oldMaintainableObject.businessObject.capitalAssetNumber}" isTransactionalDocument="false"/> 
+<c:if test="${Constants.MAINTENANCE_NEW_ACTION != KualiForm.document.oldMaintainableObject.maintenanceAction}">
+  <cams:assetPaymentsLookupLink capitalAssetNumber="${KualiForm.document.oldMaintainableObject.businessObject.capitalAssetNumber}" isTransactionalDocument="false"/> 
 </c:if>

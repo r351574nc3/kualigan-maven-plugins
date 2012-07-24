@@ -50,7 +50,7 @@
                       <version>${kfsPrototypeVersion}</version>  
                       <type>jar</type>
                       <overWrite>false</overWrite>
-                      <outputDirectory>${basedir}/../web/target</outputDirectory>
+                      <outputDirectory>${basedir}/../web/target/classes</outputDirectory>
                       <excludes>**/*.class</excludes>
                     </artifactItem>
                   </artifactItems>

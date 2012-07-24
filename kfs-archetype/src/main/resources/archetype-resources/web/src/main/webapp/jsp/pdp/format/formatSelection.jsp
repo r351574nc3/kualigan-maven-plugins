@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,47 +13,47 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="disbursementNumberRangeAttributes"
-	value="${symbol_dollar}{DataDictionary.DisbursementNumberRange.attributes}" />
-<c:set var="bankAttributes" value="${symbol_dollar}{DataDictionary.Bank.attributes}" />
+	value="${DataDictionary.DisbursementNumberRange.attributes}" />
+<c:set var="bankAttributes" value="${DataDictionary.Bank.attributes}" />
 <c:set var="customerProfileAttributes"
-	value="${symbol_dollar}{DataDictionary.CustomerProfile.attributes}" />
+	value="${DataDictionary.CustomerProfile.attributes}" />
 <c:set var="paymentGroupAttributes"
-	value="${symbol_dollar}{DataDictionary.PaymentGroup.attributes}" />
+	value="${DataDictionary.PaymentGroup.attributes}" />
 <c:set var="dummyAttributes"
-	value="${symbol_dollar}{DataDictionary.AttributeReferenceDummy.attributes}" />
+	value="${DataDictionary.AttributeReferenceDummy.attributes}" />
 
 <kul:page headerTitle="Format Disbursements"
 	transactionalDocument="false" showDocumentInfo="false" errorKey="foo"
 	htmlFormAction="pdp/format" docTitle="Format Disbursements">
-	<c:if test="${symbol_dollar}{empty ErrorPropertyList}">
+	<c:if test="${empty ErrorPropertyList}">
 	
     <table width="100%" border="0"><tr><td>	
-	  <kul:errors keyMatch="${symbol_dollar}{Constants.GLOBAL_ERRORS}" errorTitle="Errors Found On Page:"/>
+	  <kul:errors keyMatch="${Constants.GLOBAL_ERRORS}" errorTitle="Errors Found On Page:"/>
 	</td></tr></table>  
 	</br>
 
 	<pdp:formatDisbursementRanges
-		disbursementNumberRangeAttributes="${symbol_dollar}{disbursementNumberRangeAttributes}"
-		bankAttributes="${symbol_dollar}{bankAttributes}" />
-	<pdp:formatOptions paymentGroupAttributes="${symbol_dollar}{paymentGroupAttributes}" />
+		disbursementNumberRangeAttributes="${disbursementNumberRangeAttributes}"
+		bankAttributes="${bankAttributes}" />
+	<pdp:formatOptions paymentGroupAttributes="${paymentGroupAttributes}" />
 	<pdp:formatCustomers
-		customerProfileAttributes="${symbol_dollar}{customerProfileAttributes}"
-		dummyAttributes="${symbol_dollar}{dummyAttributes}" />
+		customerProfileAttributes="${customerProfileAttributes}"
+		dummyAttributes="${dummyAttributes}" />
 	<kul:panelFooter />
 	<div id="globalbuttons" class="globalbuttons">
 		<html:image
-			src="${symbol_dollar}{ConfigProperties.externalizable.images.url}buttonsmall_beginformat.gif"
+			src="${ConfigProperties.externalizable.images.url}buttonsmall_beginformat.gif"
 			styleClass="globalbuttons" property="methodToCall.prepare"
 			title="begin format" alt="begin format" />
 		<html:image
-			src="${symbol_dollar}{ConfigProperties.externalizable.images.url}buttonsmall_reset.gif"
+			src="${ConfigProperties.externalizable.images.url}buttonsmall_reset.gif"
 			styleClass="globalbuttons" property="methodToCall.start"
 			title="reset" alt="reset" />
 		<html:image
-			src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif"
+			src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif"
 			styleClass="globalbuttons" property="methodToCall.clear"
 			title="clear" alt="clear" />			
 	</div>

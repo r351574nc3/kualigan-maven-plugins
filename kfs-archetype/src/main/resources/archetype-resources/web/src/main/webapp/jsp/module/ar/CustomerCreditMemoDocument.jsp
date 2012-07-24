@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,37 +13,37 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="CustomerCreditMemoDocument"
 	htmlFormAction="arCustomerCreditMemoDocument" renderMultipart="true"
 	showTabButtons="true">
 	
-	<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-	<c:set var="displayInitTab" value="${symbol_dollar}{KualiForm.editingMode['displayInitTab']}" scope="request" />
+	<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+	<c:set var="displayInitTab" value="${KualiForm.editingMode['displayInitTab']}" scope="request" />
 	
 	<sys:hiddenDocumentFields isFinancialDocument="false" />
 
 	<ar:customerCreditMemoHiddenFields />
 
 	<!--  Display 1st screen -->
-	<c:if test="${symbol_dollar}{displayInitTab}" >
+	<c:if test="${displayInitTab}" >
 		<ar:customerCreditMemoInit />
 		<kul:panelFooter />
 	</c:if>
 
 	<!--  Display 2nd screen -->
-	<c:if test="${symbol_dollar}{not displayInitTab}" >
-		<kul:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<c:if test="${not displayInitTab}" >
+		<kul:documentOverview editingMode="${KualiForm.editingMode}" />
 	
 		<ar:customerCreditMemoGeneral />
 		
-    	<c:if test="${symbol_dollar}{!empty KualiForm.editingMode['showReceivableFAU']}">
+    	<c:if test="${!empty KualiForm.editingMode['showReceivableFAU']}">
     		<ar:customerCreditMemoReceivableAccountingLine />
     	</c:if>
       
-      	<ar:customerCreditMemoDetails readOnly="${symbol_dollar}{readOnly}" />
+      	<ar:customerCreditMemoDetails readOnly="${readOnly}" />
       	<gl:generalLedgerPendingEntries />
     	<kul:notes />
 		<kul:adHocRecipients />
@@ -54,7 +51,7 @@
 		<kul:panelFooter />
 	</c:if>
 
-	<c:set var="extraButtons" value="${symbol_dollar}{KualiForm.extraButtons}" scope="request"/>
-  	<kul:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{extraButtons}" suppressRoutingControls="${symbol_dollar}{displayInitTab}" />
+	<c:set var="extraButtons" value="${KualiForm.extraButtons}" scope="request"/>
+  	<kul:documentControls transactionalDocument="true" extraButtons="${extraButtons}" suppressRoutingControls="${displayInitTab}" />
 
 </kul:documentPage>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false" headerTitle="Cash Drawer Correction" docTitle="Cash Drawer Correction" htmlFormAction="cashDrawerCorrection" transactionalDocument="false">
     
@@ -24,7 +21,7 @@
     
     <kul:tabTop tabTitle="Cash Drawer Corrections" defaultOpen="true" tabErrorKey="cashDrawerErrors">
       <div class="tab-container" align="center">
-          <h3>Cash Drawer for ${symbol_dollar}{KualiForm.cashDrawer.campusCode}</h3>
+          <h3>Cash Drawer for ${KualiForm.cashDrawer.campusCode}</h3>
         <fp:cashDrawerCurrencyCoin cashDrawerProperty="cashDrawer" readOnly="false" showCashDrawerSummary="false" />
       </div>
     </kul:tabTop>
@@ -32,7 +29,7 @@
     <kul:panelFooter/>
     
     <div id="globalbuttons" class="globalbuttons">
-      <html:image property="methodToCall.saveCashDrawer" src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" alt="save cash drawer corrections" title="save corrections" styleClass="tinybutton" />
-      <html:image property="methodToCall.cancelCorrections" src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" alt="cancel" title="cancel" styleClass="tinybutton" />
+      <html:image property="methodToCall.saveCashDrawer" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" alt="save cash drawer corrections" title="save corrections" styleClass="tinybutton" />
+      <html:image property="methodToCall.cancelCorrections" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" alt="cancel" title="cancel" styleClass="tinybutton" />
     </div>
 </kul:page>

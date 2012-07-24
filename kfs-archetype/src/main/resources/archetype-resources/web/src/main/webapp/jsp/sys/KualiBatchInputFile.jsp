@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -16,18 +13,18 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false"
 	headerTitle="Batch File Upload" docTitle="" renderMultipart="true"
 	transactionalDocument="false" htmlFormAction="batchUpload" errorKey="foo">
 	<html:hidden property="batchUpload.batchInputTypeName" />
 	
-    <c:set var="batchUploadAttributes" value="${symbol_dollar}{DataDictionary.BatchUpload.attributes}" />
+    <c:set var="batchUploadAttributes" value="${DataDictionary.BatchUpload.attributes}" />
 
 	<strong><h2>	
-	  <bean:message key="${symbol_dollar}{KualiForm.titleKey}"/> <a href="${symbol_dollar}{ConfigProperties.externalizable.help.url}${symbol_dollar}{KualiForm.url}" tabindex="${symbol_dollar}{KualiForm.nextArbitrarilyHighIndex}" target="helpWindow"  title="[Help]Upload">
-	                                        <img src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}my_cp_inf.gif" alt="[Help]Upload" hspace=5 border=0  align="middle"></a>
+	  <bean:message key="${KualiForm.titleKey}"/> <a href="${ConfigProperties.externalizable.help.url}${KualiForm.url}" tabindex="${KualiForm.nextArbitrarilyHighIndex}" target="helpWindow"  title="[Help]Upload">
+	                                        <img src="${ConfigProperties.kr.externalizable.images.url}my_cp_inf.gif" alt="[Help]Upload" hspace=5 border=0  align="middle"></a>
 	  </h2></strong>
 	</br>
 	
@@ -52,11 +49,11 @@
               <td class="infoline"><html:file styleId="uploadFile" property="uploadFile"/>
                 <span class="fineprint"></span> </td>
               <td class="infoline"><div align="left">
-                  <kul:htmlControlAttribute attributeEntry="${symbol_dollar}{batchUploadAttributes.fileUserIdentifer}" property="batchUpload.fileUserIdentifer"/>
+                  <kul:htmlControlAttribute attributeEntry="${batchUploadAttributes.fileUserIdentifer}" property="batchUpload.fileUserIdentifer"/>
               </div>
                 <span class="fineprint"></span> </td>
               <td class="infoline"><div align="center">
-              		<html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" styleClass="globalbuttons" property="methodToCall.save" title="Upload Batch File" alt="Upload Batch File" />
+              		<html:image src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" styleClass="globalbuttons" property="methodToCall.save" title="Upload Batch File" alt="Upload Batch File" />
               </td>
             </tr>
          </table>

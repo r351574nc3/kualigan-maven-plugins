@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2006 The Kuali Foundation
  
@@ -16,38 +13,40 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="journalVoucherAttributes"
-	value="${symbol_dollar}{DataDictionary['JournalVoucherDocument'].attributes}" />
+	value="${DataDictionary['JournalVoucherDocument'].attributes}" />
 <c:set var="readOnly"
-	value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+	value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="JournalVoucherDocument"
 	htmlFormAction="financialJournalVoucher" renderMultipart="true"
 	showTabButtons="true">
 	<sys:hiddenDocumentFields />
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	<!-- JOURNAL VOUCHER SPECIFIC FIELDS -->
 	<kul:tab tabTitle="Journal Voucher Details" defaultOpen="true"
-		tabErrorKey="${symbol_dollar}{KFSConstants.EDIT_JOURNAL_VOUCHER_ERRORS}">
+		tabErrorKey="${KFSConstants.EDIT_JOURNAL_VOUCHER_ERRORS}">
 		<div class="tab-container" align=center>
 		<h3>Journal Voucher Details</h3>
 		<table cellpadding=0 class="datatable"
-			summary="view/edit ad hoc recipients">
+			summary="Journal Voucher Details">
 			<tbody>
 
 				<tr>
 					<th width="35%" class="bord-l-b">
 					<div align="right"><kul:htmlAttributeLabel
-						labelFor="selectedAccountingPeriod" attributeEntry="${symbol_dollar}{journalVoucherAttributes.accountingPeriod}"
+						labelFor="selectedAccountingPeriod" attributeEntry="${journalVoucherAttributes.accountingPeriod}"
 						useShortLabel="false" /></div>
 					</th>
-					<td class="datacell-nowrap"><c:if test="${symbol_dollar}{readOnly}">
-                        ${symbol_dollar}{KualiForm.accountingPeriod.universityFiscalPeriodName}
+					<td class="datacell-nowrap">
+					<c:if test="${readOnly}">
+                        ${KualiForm.accountingPeriod.universityFiscalPeriodName}
                         <html:hidden property="selectedAccountingPeriod" />
-					</c:if> <c:if test="${symbol_dollar}{!readOnly}">
+					</c:if> 
+					<c:if test="${!readOnly}">
 						<SCRIPT type="text/javascript">
 						<!--
 						    function submitForChangedAccountingPeriod() {
@@ -56,23 +55,9 @@
 						//-->
 						</SCRIPT>
 						<html:select property="selectedAccountingPeriod" onchange="submitForChangedAccountingPeriod()">
-							<c:forEach items="${symbol_dollar}{KualiForm.accountingPeriods}"
-								var="accountingPeriod">
-								<c:set var="accountingPeriodCompositeValue"
-									value="${symbol_dollar}{accountingPeriod.universityFiscalPeriodCode}${symbol_dollar}{accountingPeriod.universityFiscalYear}" />
-								<c:choose>
-									<c:when
-										test="${symbol_dollar}{KualiForm.selectedAccountingPeriod==accountingPeriodCompositeValue}">
-										<html:option
-											value="${symbol_dollar}{accountingPeriodCompositeValue}"><c:out
-											value="${symbol_dollar}{accountingPeriod.universityFiscalPeriodName}" /></html:option>
-									</c:when>
-									<c:otherwise>
-										<html:option
-											value="${symbol_dollar}{accountingPeriodCompositeValue}" ><c:out
-											value="${symbol_dollar}{accountingPeriod.universityFiscalPeriodName}" /></html:option>
-									</c:otherwise>
-								</c:choose>
+							<c:forEach items="${KualiForm.accountingPeriods}" var="accountingPeriod">
+								<c:set var="accountingPeriodCompositeValue" value="${accountingPeriod.universityFiscalPeriodCode}${accountingPeriod.universityFiscalYear}" />
+								<html:option value="${accountingPeriodCompositeValue}"><c:out value="${accountingPeriod.universityFiscalPeriodName}" /></html:option>
 							</c:forEach>
 						</html:select>
 						
@@ -84,13 +69,15 @@
 				<tr>
 					<th width="35%" class="bord-l-b">
 					<div align="right"><kul:htmlAttributeLabel
-						labelFor="" attributeEntry="${symbol_dollar}{journalVoucherAttributes.balanceTypeCode}"
+						labelFor="" attributeEntry="${journalVoucherAttributes.balanceTypeCode}"
 						useShortLabel="false" /></div>
 					</th>
 					<td class="datacell-nowrap">
-					<c:if test="${symbol_dollar}{readOnly}">
-                        ${symbol_dollar}{KualiForm.selectedBalanceType.financialBalanceTypeName}
-					</c:if> <c:if test="${symbol_dollar}{!readOnly}">
+					<c:if test="${readOnly}">
+                        ${KualiForm.selectedBalanceType.financialBalanceTypeName}
+					</c:if> 
+					
+					<c:if test="${!readOnly}">
 						<SCRIPT type="text/javascript">
 						<!--
 						    function submitForChangedBalanceType() {
@@ -99,34 +86,34 @@
 						//-->
 						</SCRIPT>
 						<html:select property="selectedBalanceType.code" onchange="submitForChangedBalanceType()">
-						<c:forEach items="${symbol_dollar}{KualiForm.balanceTypes}" var="balanceType">
-							<html:option value="${symbol_dollar}{balanceType.code}" >
-								<c:out value="${symbol_dollar}{balanceType.codeAndDescription}" /> 
-							</html:option>
+							<c:forEach items="${KualiForm.balanceTypes}" var="balanceType">
+								<html:option value="${balanceType.code}" >
+									<c:out value="${balanceType.codeAndDescription}" /> 
+								</html:option>
 							</c:forEach>
 						</html:select>
 						<NOSCRIPT><html:submit value="refresh"
 							title="press this button to refresh the page after changing the balance type" alt="press this button to refresh the page after changing the balance type" />
 						</NOSCRIPT>
 						<kul:lookup
-							boClassName="org.kuali.${parentArtifactId}.coa.businessobject.BalanceType"
+							boClassName="org.kuali.kfs.coa.businessobject.BalanceType"
 							fieldConversions="code:selectedBalanceType.code"
 							lookupParameters="selectedBalanceType.code:code" 
-							 fieldLabel="${symbol_dollar}{journalVoucherAttributes.balanceTypeCode.label}" />
+							 fieldLabel="${journalVoucherAttributes.balanceTypeCode.label}" />
 					</c:if></td>
 				</tr>
 				<tr>
                     <kul:htmlAttributeHeaderCell
-                        attributeEntry="${symbol_dollar}{journalVoucherAttributes.reversalDate}"
+                        attributeEntry="${journalVoucherAttributes.reversalDate}"
                         horizontal="true"
                         width="35%"
                         />
                     <td class="datacell-nowrap"><kul:htmlControlAttribute
-                        attributeEntry="${symbol_dollar}{journalVoucherAttributes.reversalDate}"
+                        attributeEntry="${journalVoucherAttributes.reversalDate}"
                         datePicker="true"
                         property="document.reversalDate"
-                        readOnly="${symbol_dollar}{readOnly}"
-                        readOnlyAlternateDisplay="${symbol_dollar}{fn:escapeXml(KualiForm.formattedReversalDate)}"
+                        readOnly="${readOnly}"
+                        readOnlyAlternateDisplay="${fn:escapeXml(KualiForm.formattedReversalDate)}"
                         /></td>
 				</tr>
 			</tbody>
@@ -134,27 +121,27 @@
 		</div>
 	</kul:tab>
 
-	<c:set var="isExtEncumbrance" value="${symbol_dollar}{KualiForm.selectedBalanceType.code==KFSConstants.BALANCE_TYPE_EXTERNAL_ENCUMBRANCE}" />
-	<c:set var="isDebitCreditAmount" value="${symbol_dollar}{KualiForm.selectedBalanceType.financialOffsetGenerationIndicator}" />
+	<c:set var="isEncumbrance" value="${KualiForm.isEncumbranceBalanceType}" />
+	<c:set var="isDebitCreditAmount" value="${KualiForm.selectedBalanceType.financialOffsetGenerationIndicator}" />
 
 	<c:choose>
-		<c:when test="${symbol_dollar}{isExtEncumbrance && isDebitCreditAmount}">
-			<c:set var="attributeGroupName" value="source-withDebitCreditExtEncumbrance"/>
+		<c:when test="${isEncumbrance && isDebitCreditAmount}">
+			<c:set var="attributeGroupName" value="source-withDebitCreditEncumbrance"/>
 		</c:when>
-		<c:when test="${symbol_dollar}{!isExtEncumbrance && isDebitCreditAmount}">
+		<c:when test="${!isEncumbrance && isDebitCreditAmount}">
 			<c:set var="attributeGroupName" value="source-withDebitCredit"/>
 		</c:when>		
-		<c:when test="${symbol_dollar}{isExtEncumbrance && !isDebitCreditAmount}">
-			<c:set var="attributeGroupName" value="source-withExtEncumbrance"/>
+		<c:when test="${isEncumbrance && !isDebitCreditAmount}">
+			<c:set var="attributeGroupName" value="source-withEncumbrance"/>
 		</c:when>
 		<c:otherwise>
 			<c:set var="attributeGroupName" value="source"/>
 		</c:otherwise>
 	</c:choose>
 
-	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${KFSConstants.NEW_SOURCE_LINE_ERRORS}">
 		<sys-java:accountingLines>
-			<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="${symbol_dollar}{attributeGroupName}" />
+			<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="${attributeGroupName}" />
 		</sys-java:accountingLines>
 	</kul:tab>
 		
@@ -163,5 +150,5 @@
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />
-	<sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{KualiForm.extraButtons}"/>
+	<sys:documentControls transactionalDocument="true" extraButtons="${KualiForm.extraButtons}"/>
 </kul:documentPage>

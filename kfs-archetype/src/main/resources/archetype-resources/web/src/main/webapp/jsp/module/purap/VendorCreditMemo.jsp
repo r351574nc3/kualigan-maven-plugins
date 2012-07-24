@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -16,54 +13,54 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true" documentTypeName="VendorCreditMemoDocument" htmlFormAction="purapVendorCreditMemo" renderMultipart="true" showTabButtons="true">
 
-    <c:set var="fullEntryMode" value="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+    <c:set var="fullEntryMode" value="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
  
-    <c:set var="displayInitTab" value="${symbol_dollar}{KualiForm.editingMode['displayInitTab']}" scope="request" />
+    <c:set var="displayInitTab" value="${KualiForm.editingMode['displayInitTab']}" scope="request" />
                      
-    <c:if test="${symbol_dollar}{displayInitTab}" > 
-    	<purap:creditMemoInit documentAttributes="${symbol_dollar}{DataDictionary.VendorCreditMemoDocument.attributes}" /> 
+    <c:if test="${displayInitTab}" > 
+    	<purap:creditMemoInit documentAttributes="${DataDictionary.VendorCreditMemoDocument.attributes}" /> 
     	
     	<kul:panelFooter />
     
 	    <div align="right"><br><bean:message key="message.creditMemo.initMessage" /></div><br>
 	</c:if>
 	
-	<c:if test="${symbol_dollar}{not displayInitTab}" >
+	<c:if test="${not displayInitTab}" >
 		<!--  Display hold message if payment is on hold -->
-	    <c:if test="${symbol_dollar}{KualiForm.document.holdIndicator}">	
-		  <h4>This Credit Memo has been Held by <c:out value="${symbol_dollar}{KualiForm.document.lastActionPerformedByPersonName}"/></h4>		
+	    <c:if test="${KualiForm.document.holdIndicator}">	
+		  <h4>This Credit Memo has been Held by <c:out value="${KualiForm.document.lastActionPerformedByPersonName}"/></h4>		
 	    </c:if>
 	    
-		<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" includePostingYear="true" fiscalYearReadOnly="true" postingYearAttributes="${symbol_dollar}{DataDictionary.VendorCreditMemoDocument.attributes}" />
+		<sys:documentOverview editingMode="${KualiForm.editingMode}" includePostingYear="true" fiscalYearReadOnly="true" postingYearAttributes="${DataDictionary.VendorCreditMemoDocument.attributes}" />
 	        
-		<purap:vendor documentAttributes="${symbol_dollar}{DataDictionary.VendorCreditMemoDocument.attributes}" displayPurchaseOrderFields="false" displayCreditMemoFields="true"/>
+		<purap:vendor documentAttributes="${DataDictionary.VendorCreditMemoDocument.attributes}" displayPurchaseOrderFields="false" displayCreditMemoFields="true"/>
 	
-		<purap:creditMemoInfo documentAttributes="${symbol_dollar}{DataDictionary.VendorCreditMemoDocument.attributes}" />        
+		<purap:creditMemoInfo documentAttributes="${DataDictionary.VendorCreditMemoDocument.attributes}" />        
 
 	  	<purap:paymentRequestProcessItems 
-			documentAttributes="${symbol_dollar}{DataDictionary.VendorCreditMemoDocument.attributes}"
-			itemAttributes="${symbol_dollar}{DataDictionary.CreditMemoItem.attributes}"
-			accountingLineAttributes="${symbol_dollar}{DataDictionary.CreditMemoAccount.attributes}"
+			documentAttributes="${DataDictionary.VendorCreditMemoDocument.attributes}"
+			itemAttributes="${DataDictionary.CreditMemoItem.attributes}"
+			accountingLineAttributes="${DataDictionary.CreditMemoAccount.attributes}"
 			isCreditMemo="true" />
 	  
 	    <purap:summaryaccounts
-            itemAttributes="${symbol_dollar}{DataDictionary.CreditMemoItem.attributes}"
-    	    documentAttributes="${symbol_dollar}{DataDictionary.SourceAccountingLine.attributes}" />  
+            itemAttributes="${DataDictionary.CreditMemoItem.attributes}"
+    	    documentAttributes="${DataDictionary.SourceAccountingLine.attributes}" />  
     	    	
-		<purap:relatedDocuments documentAttributes="${symbol_dollar}{DataDictionary.RelatedDocuments.attributes}"/>
+		<purap:relatedDocuments documentAttributes="${DataDictionary.RelatedDocuments.attributes}"/>
            	
-	    <purap:paymentHistory documentAttributes="${symbol_dollar}{DataDictionary.RelatedDocuments.attributes}" />
+	    <purap:paymentHistory documentAttributes="${DataDictionary.RelatedDocuments.attributes}" />
 	
 	    <gl:generalLedgerPendingEntries />
 
 	    <kul:notes 
-	    	notesBo="${symbol_dollar}{KualiForm.document.documentBusinessObject.boNotes}" 
-	    	noteType="${symbol_dollar}{Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" 	    	
-	    	attachmentTypesValuesFinderClass="${symbol_dollar}{DataDictionary.VendorCreditMemoDocument.attachmentTypesValuesFinderClass}"/> 
+	    	notesBo="${KualiForm.document.documentBusinessObject.boNotes}" 
+	    	noteType="${Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" 	    	
+	    	attachmentTypesValuesFinderClass="${DataDictionary.VendorCreditMemoDocument.attachmentTypesValuesFinderClass}"/> 
 	
 	    <kul:adHocRecipients />
 	    
@@ -72,8 +69,8 @@
         <kul:panelFooter />
 	</c:if>
 	
-	<c:set var="extraButtons" value="${symbol_dollar}{KualiForm.extraButtons}" scope="request"/>
+	<c:set var="extraButtons" value="${KualiForm.extraButtons}" scope="request"/>
 	
-  	<sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{extraButtons}" suppressRoutingControls="${symbol_dollar}{displayInitTab}" />
+  	<sys:documentControls transactionalDocument="true" extraButtons="${extraButtons}" suppressRoutingControls="${displayInitTab}" />
    
 </kul:documentPage>

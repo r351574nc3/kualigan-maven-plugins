@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,25 +13,25 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="readOnly"
-	value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+	value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 	
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="LiabilityIncreaseDocument"
 	htmlFormAction="endowLiabilityIncreaseDocument" renderMultipart="true" 
 	showTabButtons="true">
 
-    <c:if test="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
+    <c:if test="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
         <c:set var="fullEntryMode" value="true" scope="request" />
     </c:if>
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	
 	<endow:endowmentTransactionalDocumentDetails
-         documentAttributes="${symbol_dollar}{DataDictionary.LiabilityIncreaseDocument.attributes}" 
-         readOnly="${symbol_dollar}{readOnly}" 
+         documentAttributes="${DataDictionary.LiabilityIncreaseDocument.attributes}" 
+         readOnly="${readOnly}" 
          subTypeReadOnly="false"
          tabTitle="Liability Increase Details"
          headingTitle="Liability Increase Details"
@@ -46,14 +43,14 @@
 	<endow:endowmentTransactionLinesSection hasSource="false" hasTarget="true" hasUnits="true" isTransAmntReadOnly="false"/> 
                    
     <endow:endowmentTaxLotLine 
-    	documentAttributes="${symbol_dollar}{DataDictionary.EndowmentTransactionTaxLotLine.attributes}" 
+    	documentAttributes="${DataDictionary.EndowmentTransactionTaxLotLine.attributes}" 
     	isSource="false"
     	isTarget="true"
     	displayHoldingCost="true"
     	displayGainLoss="false"
     	showSourceDeleteButton="false"
     	showTargetDeleteButton="false"
-    	readOnly="${symbol_dollar}{readOnly}"/>
+    	readOnly="${readOnly}"/>
 
   
 	<kul:notes /> 
@@ -62,5 +59,5 @@
 
 	<kul:panelFooter />
 
-	<sys:documentControls transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}" extraButtons="${symbol_dollar}{KualiForm.extraButtons}" />
+	<sys:documentControls transactionalDocument="${documentEntry.transactionalDocument}" extraButtons="${KualiForm.extraButtons}" />
 </kul:documentPage>

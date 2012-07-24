@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -16,19 +13,19 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="advanceDepositAttributes"
-	value="${symbol_dollar}{DataDictionary['AdvanceDepositDocument'].attributes}" />
+	value="${DataDictionary['AdvanceDepositDocument'].attributes}" />
 <c:set var="readOnly"
-	value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+	value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:documentPage showDocumentInfo="true"
 	htmlFormAction="financialAdvanceDeposit"
 	documentTypeName="AdvanceDepositDocument" renderMultipart="true"
 	showTabButtons="true">
 	<sys:hiddenDocumentFields />
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	<SCRIPT type="text/javascript">
 	    <!--
 	        function submitForm() {
@@ -37,21 +34,27 @@
 	    //-->
 	</SCRIPT>
 	
-	<fp:advanceDeposits editingMode="${symbol_dollar}{KualiForm.editingMode}" />
-	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+	<fp:advanceDeposits editingMode="${KualiForm.editingMode}" />
+	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS},newSourceLine*">
 		<sys-java:accountingLines>
 			<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="source" />
 		</sys-java:accountingLines>
 	</kul:tab>
 	
-	<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-	<fp:capitalAssetEditTab readOnly="${symbol_dollar}{readOnly}"/>
-	
+	<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+  	<fp:capitalAccountingLines readOnly="${readOnly}"/>
+  	
+	<c:if test="${KualiForm.capitalAccountingLine.canCreateAsset}">
+		<fp:capitalAssetCreateTab readOnly="${readOnly}"/>
+	</c:if>
+			
+	<fp:capitalAssetModifyTab readOnly="${readOnly}"/>  
+			
 	<gl:generalLedgerPendingEntries />
 	<kul:notes />
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />
 	<sys:documentControls
-		transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}" />
+		transactionalDocument="${documentEntry.transactionalDocument}" />
 </kul:documentPage>

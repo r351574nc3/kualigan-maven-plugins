@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -17,16 +14,16 @@
  limitations under the License.
 --%>
 
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 	
-	<c:set var="kemidAttributes" value="${symbol_dollar}{DataDictionary.KEMID.attributes}" />
-	<c:set var="orgAttributes" value="${symbol_dollar}{DataDictionary.Organization.attributes}" />
-	<c:set var="typeCodeAttributes" value="${symbol_dollar}{DataDictionary.TypeCode.attributes}" />
-	<c:set var="purposeCodeAttributes" value="${symbol_dollar}{DataDictionary.PurposeCode.attributes}" />
-	<c:set var="combineGroupCodeAttributes" value="${symbol_dollar}{DataDictionary.CombineGroupCode.attributes}" />
-	<c:set var="campusAttributes" value="${symbol_dollar}{DataDictionary.CampusImpl.attributes}" />
-	<c:set var="medAttributes" value="${symbol_dollar}{DataDictionary.MonthEndDate.attributes}" />
-	<c:set var="chartAttributes" value="${symbol_dollar}{DataDictionary.Chart.attributes}" />
+	<c:set var="kemidAttributes" value="${DataDictionary.KEMID.attributes}" />
+	<c:set var="orgAttributes" value="${DataDictionary.Organization.attributes}" />
+	<c:set var="typeCodeAttributes" value="${DataDictionary.TypeCode.attributes}" />
+	<c:set var="purposeCodeAttributes" value="${DataDictionary.PurposeCode.attributes}" />
+	<c:set var="combineGroupCodeAttributes" value="${DataDictionary.CombineGroupCode.attributes}" />
+	<c:set var="campusAttributes" value="${DataDictionary.CampusImpl.attributes}" />
+	<c:set var="medAttributes" value="${DataDictionary.MonthEndDate.attributes}" />
+	<c:set var="chartAttributes" value="${DataDictionary.Chart.attributes}" />
 		
 <kul:page  showDocumentInfo="false"
 	headerTitle="Endowment Asset Statement Generation" docTitle="Endowment Asset Statement Generation" renderMultipart="true"
@@ -35,18 +32,18 @@
 	 <table cellpadding="0" cellspacing="0" class="datatable-80" summary="Asset Transaction">
 			<tr>		
                 <th align=right valign=middle class="grid" style="width: 25%;">
-                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{kemidAttributes.kemidForReport}" readOnly="true" /></div>
+                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${kemidAttributes.kemidForReport}" readOnly="true" /></div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">                
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{kemidAttributes.kemidForReport}" property="kemid" />
-                    <kul:lookup boClassName="org.kuali.${parentArtifactId}.module.endow.businessobject.KEMID"  fieldConversions="kemid:kemid" />
+					<kul:htmlControlAttribute attributeEntry="${kemidAttributes.kemidForReport}" property="kemid" />
+                    <kul:lookup boClassName="org.kuali.kfs.module.endow.businessobject.KEMID"  fieldConversions="kemid:kemid" />
                 </td>				                       
             </tr>
             <th align=right valign=middle class="grid" style="width: 25%;">
                     <div align="right">Benefitting Organization Campus</div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{orgAttributes.organizationPhysicalCampusCodeForReport}" property="benefittingOrganziationCampus" />	
+					<kul:htmlControlAttribute attributeEntry="${orgAttributes.organizationPhysicalCampusCodeForReport}" property="benefittingOrganziationCampus" />	
                     <kul:lookup boClassName="org.kuali.rice.kns.bo.CampusImpl"  fieldConversions="campusCode:benefittingOrganziationCampus" />
                 </td>				                      
             </tr>                          
@@ -55,8 +52,8 @@
                     <div align="right">Benefitting Organization Chart:</div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{chartAttributes.chartCodeForReport}" property="benefittingOrganziationChart" />	
-                    <kul:lookup boClassName="org.kuali.${parentArtifactId}.coa.businessobject.Chart"  fieldConversions="chartCodeForReport:benefittingOrganziationChart" />
+					<kul:htmlControlAttribute attributeEntry="${chartAttributes.chartCodeForReport}" property="benefittingOrganziationChart" />	
+                    <kul:lookup boClassName="org.kuali.kfs.coa.businessobject.Chart"  fieldConversions="chartCodeForReport:benefittingOrganziationChart" />
                 </td>				                      
             </tr>          
             <tr>		
@@ -64,35 +61,35 @@
                     <div align="right">Benefitting Organization</div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{orgAttributes.organizationCodeForReport}" property="benefittingOrganziation" />	
-                    <kul:lookup boClassName="org.kuali.${parentArtifactId}.coa.businessobject.Organization"  fieldConversions="organizationCodeForReport:benefittingOrganziation" />
+					<kul:htmlControlAttribute attributeEntry="${orgAttributes.organizationCodeForReport}" property="benefittingOrganziation" />	
+                    <kul:lookup boClassName="org.kuali.kfs.coa.businessobject.Organization"  fieldConversions="organizationCodeForReport:benefittingOrganziation" />
                 </td>				                      
             </tr>
             <tr>		
                 <th align=right valign=middle class="grid" style="width: 25%;">
-                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{typeCodeAttributes.codeForReport}" readOnly="true" /></div>
+                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${typeCodeAttributes.codeForReport}" readOnly="true" /></div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{typeCodeAttributes.codeForReport}" property="typeCode"  />	
-                    <kul:lookup boClassName="org.kuali.${parentArtifactId}.module.endow.businessobject.TypeCode"  fieldConversions="code:typeCode"  />
+					<kul:htmlControlAttribute attributeEntry="${typeCodeAttributes.codeForReport}" property="typeCode"  />	
+                    <kul:lookup boClassName="org.kuali.kfs.module.endow.businessobject.TypeCode"  fieldConversions="code:typeCode"  />
                 </td>				                      
             </tr>
             <tr>		
                 <th align=right valign=middle class="grid" style="width: 25%;">
-                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{purposeCodeAttributes.codeForReport}" readOnly="true" /></div>
+                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${purposeCodeAttributes.codeForReport}" readOnly="true" /></div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{purposeCodeAttributes.codeForReport}" property="purposeCode"  />	
-                    <kul:lookup boClassName="org.kuali.${parentArtifactId}.module.endow.businessobject.PurposeCode"  fieldConversions="code:purposeCode"  />
+					<kul:htmlControlAttribute attributeEntry="${purposeCodeAttributes.codeForReport}" property="purposeCode"  />	
+                    <kul:lookup boClassName="org.kuali.kfs.module.endow.businessobject.PurposeCode"  fieldConversions="code:purposeCode"  />
                 </td>				                      
             </tr>
             <tr>		
                 <th align=right valign=middle class="grid" style="width: 25%;">
-                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{combineGroupCodeAttributes.codeForReport}" readOnly="true" /></div>
+                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${combineGroupCodeAttributes.codeForReport}" readOnly="true" /></div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{combineGroupCodeAttributes.codeForReport}" property="combineGroupCode"  />	
-                    <kul:lookup boClassName="org.kuali.${parentArtifactId}.module.endow.businessobject.CombineGroupCode"  fieldConversions="code:combineGroupCode"  />
+					<kul:htmlControlAttribute attributeEntry="${combineGroupCodeAttributes.codeForReport}" property="combineGroupCode"  />	
+                    <kul:lookup boClassName="org.kuali.kfs.module.endow.businessobject.CombineGroupCode"  fieldConversions="code:combineGroupCode"  />
                 </td>				                      
             </tr>            
             <tr>		
@@ -100,7 +97,7 @@
                     <div align="right">Month End Date:</div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{medAttributes.endingDate}" property="monthEndDate" /> 
+					<kul:htmlControlAttribute attributeEntry="${medAttributes.endingDate}" property="monthEndDate" /> 
                 </td>				                      
             </tr>
             <tr>		
@@ -153,19 +150,19 @@
             </tr>            
         </table>
     
-     <c:set var="extraButtons" value="${symbol_dollar}{KualiForm.extraButtons}"/>  	
+     <c:set var="extraButtons" value="${KualiForm.extraButtons}"/>  	
   	
      <div id="globalbuttons" class="globalbuttons">	        	
-       	<c:if test="${symbol_dollar}{!empty extraButtons}">
-        	<c:forEach items="${symbol_dollar}{extraButtons}" var="extraButton">
-        		<html:image src="${symbol_dollar}{extraButton.extraButtonSource}" styleClass="globalbuttons" property="${symbol_dollar}{extraButton.extraButtonProperty}" title="${symbol_dollar}{extraButton.extraButtonAltText}" alt="${symbol_dollar}{extraButton.extraButtonAltText}"/>
+       	<c:if test="${!empty extraButtons}">
+        	<c:forEach items="${extraButtons}" var="extraButton">
+        		<html:image src="${extraButton.extraButtonSource}" styleClass="globalbuttons" property="${extraButton.extraButtonProperty}" title="${extraButton.extraButtonAltText}" alt="${extraButton.extraButtonAltText}"/>
         	</c:forEach>
        	</c:if>
 	</div>
 	
 	<div>
-	  <c:if test="${symbol_dollar}{!empty KualiForm.message }">
-            	 ${symbol_dollar}{KualiForm.message }
+	  <c:if test="${!empty KualiForm.message }">
+            	 ${KualiForm.message }
             </c:if>
    </div>
 	

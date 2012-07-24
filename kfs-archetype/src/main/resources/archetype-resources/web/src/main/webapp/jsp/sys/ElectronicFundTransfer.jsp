@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <script language="javascript">
   function toggleclaimedcheckbox(lineNbr) {
@@ -33,7 +30,7 @@
 </script>
 
 <kul:page headerTitle="Electronic Payment Claiming" transactionalDocument="false" showDocumentInfo="false" htmlFormAction="electronicFundTransfer" docTitle="Electronic Payments to Claim">
-  <sys:electronicPaymentClaims allowAdministration="${symbol_dollar}{KualiForm.allowElectronicFundsTransferAdministration}" />
+  <sys:electronicPaymentClaims allowAdministration="${KualiForm.allowElectronicFundsTransferAdministration}" />
   <kul:tab tabTitle="Claiming Document" defaultOpen="true" tabErrorKey="chosenElectronicPaymentClaimingDocumentCode">
     <div class="tab-container" align=center>
       <h3>Claiming Document Type</h3>
@@ -41,17 +38,17 @@
         <tr>
           <td>
             <p>
-              <bean:message key="${symbol_dollar}{KualiForm.documentChoiceMessageKey}" />
+              <bean:message key="${KualiForm.documentChoiceMessageKey}" />
             </p>
             <p align="center">
-              <c:forEach var="docType" items="${symbol_dollar}{KualiForm.availableClaimingDocumentStrategies}">
+              <c:forEach var="docType" items="${KualiForm.availableClaimingDocumentStrategies}">
                 <c:set var="docTypeFieldName" value="chosenElectronicPaymentClaimingDocumentCode" />
-                <c:set var="docTypeFieldId" value="${symbol_dollar}{docTypeFieldName}${symbol_dollar}{docType.claimingDocumentWorkflowDocumentType}"/>
-              	${symbol_dollar}{kfunc:registerEditableProperty(KualiForm, docTypeFieldName)}
+                <c:set var="docTypeFieldId" value="${docTypeFieldName}${docType.claimingDocumentWorkflowDocumentType}"/>
+              	${kfunc:registerEditableProperty(KualiForm, docTypeFieldName)}
               	
-              	<c:set var="checked" value="${symbol_dollar}{KualiForm.chosenElectronicPaymentClaimingDocumentCode == docType.claimingDocumentWorkflowDocumentType? 'checked' : ''}" />
-                <input type="radio" id="${symbol_dollar}{docTypeFieldId}" name="${symbol_dollar}{docTypeFieldName}" value="${symbol_dollar}{docType.claimingDocumentWorkflowDocumentType}" ${symbol_dollar}{checked} />
-                <label for="${symbol_dollar}{docTypeFieldId}">${symbol_dollar}{docType.documentLabel}</label>&nbsp;
+              	<c:set var="checked" value="${KualiForm.chosenElectronicPaymentClaimingDocumentCode == docType.claimingDocumentWorkflowDocumentType? 'checked' : ''}" />
+                <input type="radio" id="${docTypeFieldId}" name="${docTypeFieldName}" value="${docType.claimingDocumentWorkflowDocumentType}" ${checked} />
+                <label for="${docTypeFieldId}">${docType.documentLabel}</label>&nbsp;
               </c:forEach>
             </p>
           </td>
@@ -65,13 +62,13 @@
         <tr>
           <td>
             <p>
-              <bean:message key="${symbol_dollar}{KualiForm.documentationMessageKey}" />
+              <bean:message key="${KualiForm.documentationMessageKey}" />
             </p>
             <p align="center">
               <c:set var="questionFieldName" value="hasDocumentation" />
-              ${symbol_dollar}{kfunc:registerEditableProperty(KualiForm, questionFieldName)}
-              <input type="radio" id="hasDocumentationYes" name="${symbol_dollar}{questionFieldName}" value="Yep"<c:if test="${symbol_dollar}{KualiForm.properlyDocumented}"> checked="checked"</c:if> /><label for="hasDocumentationYes">Yes</label>&nbsp;
-              <input type="radio" id="hasDocumentationNo" name="${symbol_dollar}{questionFieldName}" value="Nope"<c:if test="${symbol_dollar}{not KualiForm.properlyDocumented}"> checked="checked"</c:if> /><label for="hasDocumentationNo">No</label>
+              ${kfunc:registerEditableProperty(KualiForm, questionFieldName)}
+              <input type="radio" id="hasDocumentationYes" name="${questionFieldName}" value="Yep"<c:if test="${KualiForm.properlyDocumented}"> checked="checked"</c:if> /><label for="hasDocumentationYes">Yes</label>&nbsp;
+              <input type="radio" id="hasDocumentationNo" name="${questionFieldName}" value="Nope"<c:if test="${not KualiForm.properlyDocumented}"> checked="checked"</c:if> /><label for="hasDocumentationNo">No</label>
             </p>
           </td>
         </tr>
@@ -80,7 +77,7 @@
   </kul:tab>
   <kul:panelFooter />
   <div id="globalbuttons" class="globalbuttons">
-    <html:image src="${symbol_dollar}{ConfigProperties.externalizable.images.url}buttonsmall_claim.gif" styleClass="globalbuttons" property="methodToCall.claim" title="claim" alt="claim"/>
-    <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="cancel" alt="cancel"/>
+    <html:image src="${ConfigProperties.externalizable.images.url}buttonsmall_claim.gif" styleClass="globalbuttons" property="methodToCall.claim" title="claim" alt="claim"/>
+    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="cancel" alt="cancel"/>
   </div>
 </kul:page>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005 The Kuali Foundation
  
@@ -16,24 +13,30 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="GeneralErrorCorrectionDocument"
 	htmlFormAction="financialGeneralErrorCorrection" renderMultipart="true"
 	showTabButtons="true">
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	
-	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS}">
 		<sys-java:accountingLines>
 			<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="source" />
 			<sys-java:accountingLineGroup newLinePropertyName="newTargetLine" collectionPropertyName="document.targetAccountingLines" collectionItemPropertyName="document.targetAccountingLine" attributeGroupName="target"/>
 		</sys-java:accountingLines>
 	</kul:tab>
 	
-	<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-	<fp:capitalAssetEditTab readOnly="${symbol_dollar}{readOnly}"/>	
+	<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+  	<fp:capitalAccountingLines readOnly="${readOnly}"/>
+  	
+	<c:if test="${KualiForm.capitalAccountingLine.canCreateAsset}">
+		<fp:capitalAssetCreateTab readOnly="${readOnly}"/>
+	</c:if>
+  	
+	<fp:capitalAssetModifyTab readOnly="${readOnly}"/>  
 
 	<gl:generalLedgerPendingEntries />
 
@@ -45,6 +48,6 @@
 
 	<kul:panelFooter />
 
-	<sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{KualiForm.extraButtons}" />
+	<sys:documentControls transactionalDocument="true" extraButtons="${KualiForm.extraButtons}" />
 
 </kul:documentPage>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false"
 	htmlFormAction="budgetOrganizationReportSelection" renderMultipart="true"
-	docTitle="${symbol_dollar}{KualiForm.operatingModeTitle}"
+	docTitle="${KualiForm.operatingModeTitle}"
     transactionalDocument="false">
 
 	<html-el:hidden name="KualiForm" property="universityFiscalYear" />
@@ -32,20 +29,20 @@
 	<html-el:hidden name="KualiForm" property="operatingModeTitle" />
 	<html-el:hidden name="KualiForm" property="budgetConstructionReportThresholdSettings.lockThreshold" />
 	
-    <kul:errors errorTitle="Errors found on Page:" keyMatch="${symbol_dollar}{BCConstants.ErrorKey.ORGANIZATION_REPORTS_SELECTION_ERRORS}"/>
+    <kul:errors errorTitle="Errors found on Page:" keyMatch="${BCConstants.ErrorKey.ORGANIZATION_REPORTS_SELECTION_ERRORS}"/>
     <kul:messages/>
     
-    <html:hidden property="operatingModeTitle" value="${symbol_dollar}{KualiForm.operatingModeTitle}" />
+    <html:hidden property="operatingModeTitle" value="${KualiForm.operatingModeTitle}" />
     
-    <c:if test="${symbol_dollar}{KualiForm.operatingModeTitle eq BCConstants.Report.SUB_FUND_SELECTION_TITLE}" >
+    <c:if test="${KualiForm.operatingModeTitle eq BCConstants.Report.SUB_FUND_SELECTION_TITLE}" >
        <bc:subFundPick />
     </c:if>
        
-    <c:if test="${symbol_dollar}{KualiForm.operatingModeTitle eq BCConstants.Report.OBJECT_CODE_SELECTION_TITLE}" >
+    <c:if test="${KualiForm.operatingModeTitle eq BCConstants.Report.OBJECT_CODE_SELECTION_TITLE}" >
       <bc:objectCodePick />
     </c:if>
        
-    <c:if test="${symbol_dollar}{KualiForm.operatingModeTitle eq BCConstants.Report.REASON_CODE_SELECTION_TITLE}" >
+    <c:if test="${KualiForm.operatingModeTitle eq BCConstants.Report.REASON_CODE_SELECTION_TITLE}" >
       <bc:reasonCodePick />
     </c:if>
 

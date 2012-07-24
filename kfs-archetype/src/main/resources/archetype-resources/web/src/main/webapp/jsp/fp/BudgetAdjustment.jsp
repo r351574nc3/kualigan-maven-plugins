@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="BudgetAdjustmentDocument"
@@ -25,13 +22,13 @@
 
 	<sys:hiddenDocumentFields excludePostingYear="true" />
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}"
+	<sys:documentOverview editingMode="${KualiForm.editingMode}"
 		includePostingYear="true"
         postingYearOnChange="submitForm()"
         includePostingYearRefresh="true"
-        postingYearAttributes="${symbol_dollar}{DataDictionary.BudgetAdjustmentDocument.attributes}" />
+        postingYearAttributes="${DataDictionary.BudgetAdjustmentDocument.attributes}" />
 
-	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS}">
 		<sys-java:accountingLines>
 			<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="source" />
 			<sys-java:accountingLineGroup newLinePropertyName="newTargetLine" collectionPropertyName="document.targetAccountingLines" collectionItemPropertyName="document.targetAccountingLine" attributeGroupName="target"/>
@@ -48,6 +45,6 @@
 
 	<kul:panelFooter />
 
-	<sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{KualiForm.extraButtons}"/>
+	<sys:documentControls transactionalDocument="true" extraButtons="${KualiForm.extraButtons}"/>
 
 </kul:documentPage>

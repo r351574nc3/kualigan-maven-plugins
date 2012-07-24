@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -16,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <c:set var="budgetConstructionAttributes"
-	value="${symbol_dollar}{DataDictionary['BudgetConstructionDocument'].attributes}" />
+	value="${DataDictionary['BudgetConstructionDocument'].attributes}" />
 
-<c:if test="${symbol_dollar}{KualiForm.pickListClose}">
+<c:if test="${KualiForm.pickListClose}">
 <kul:page showDocumentInfo="false"
 	htmlFormAction="budgetBudgetConstruction" renderMultipart="false"
 	showTabButtons="false"
@@ -28,13 +25,13 @@
     transactionalDocument="true"
 	>
     <div id="globalbuttons" class="globalbuttons">
-	    <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" 
+	    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" 
 	        onclick="window.close();return false;" title="close the window" alt="close the window"/>		
     </div>
 </kul:page>
 </c:if>
 
-<c:if test="${symbol_dollar}{!KualiForm.pickListClose}">
+<c:if test="${!KualiForm.pickListClose}">
 <kul:page showDocumentInfo="true"
 	htmlFormAction="budgetBudgetConstruction" renderMultipart="true"
 	showTabButtons="true"
@@ -43,9 +40,9 @@
 	>
     <html:hidden property="mainWindow" />
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 
-    <c:if test="${symbol_dollar}{!KualiForm.securityNoAccess}">
+    <c:if test="${!KualiForm.securityNoAccess}">
     <bc:systemInformation />
 
     <bc:budgetConstructionRevenueLines />

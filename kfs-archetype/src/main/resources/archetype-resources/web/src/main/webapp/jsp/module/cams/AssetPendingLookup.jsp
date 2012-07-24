@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2009 The Kuali Foundation
  
@@ -17,24 +14,24 @@
  limitations under the License.
 --%>
 
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
-<c:set var="preqLockingList" value="${symbol_dollar}{KualiForm.document.newMaintainableObject.preqLinks}" />
-<c:set var="linkedDocumentNames" value="${symbol_dollar}{KualiForm.document.newMaintainableObject.fpLinkedDocumentInfo}" />
-<c:set var="fabricationOn" value="${symbol_dollar}{KualiForm.document.newMaintainableObject.fabricationOn}" />
+<c:set var="preqLockingList" value="${KualiForm.document.newMaintainableObject.preqLinks}" />
+<c:set var="linkedDocumentNames" value="${KualiForm.document.newMaintainableObject.fpLinkedDocumentInfo}" />
+<c:set var="fabricationOn" value="${KualiForm.document.newMaintainableObject.fabricationOn}" />
 
-<c:if test="${symbol_dollar}{!fabricationOn }" >
+<c:if test="${!fabricationOn }" >
 <kul:tab tabTitle="View Purchasing/Financial Asset Documents" defaultOpen="false">
 	<div class="tab-container" align=center>
 		<table cellpadding="0" cellspacing="0" class="datatable" summary="view/edit pending entries">
-    	<c:if test="${symbol_dollar}{!empty linkedDocumentNames }">
+    	<c:if test="${!empty linkedDocumentNames }">
 			<logic:iterate id="fpLinkedDocumentInfo" name="KualiForm" property="document.newMaintainableObject.fpLinkedDocumentInfo" indexId="ctr">
 				<tr>
-					<c:set var="documentName" value="${symbol_dollar}{fn:substringBefore(KualiForm.document.newMaintainableObject.fpLinkedDocumentInfo[ctr], '-')}" />
-					<c:set var="documentNumber" value="${symbol_dollar}{fn:substringAfter(KualiForm.document.newMaintainableObject.fpLinkedDocumentInfo[ctr], '-')}" />
-					<td class="infoline" align="center">${symbol_dollar}{documentName} - 
-						<a href="${symbol_dollar}{ConfigProperties.application.url}/kew/DocHandler.do?command=displayDocSearchView&docId=${symbol_dollar}{documentNumber}"  target="_blank">
-							${symbol_dollar}{documentNumber}
+					<c:set var="documentName" value="${fn:substringBefore(KualiForm.document.newMaintainableObject.fpLinkedDocumentInfo[ctr], '-')}" />
+					<c:set var="documentNumber" value="${fn:substringAfter(KualiForm.document.newMaintainableObject.fpLinkedDocumentInfo[ctr], '-')}" />
+					<td class="infoline" align="center">${documentName} - 
+						<a href="${ConfigProperties.application.url}/kew/DocHandler.do?command=displayDocSearchView&docId=${documentNumber}"  target="_blank">
+							${documentNumber}
 						</a>&nbsp;
 					</td>
 				</tr>
@@ -44,12 +41,12 @@
 		<br/>
 		
 		<table cellpadding="0" cellspacing="0" class="datatable" summary="view/edit pending entries">
-		<c:if test="${symbol_dollar}{!empty preqLockingList}">
+		<c:if test="${!empty preqLockingList}">
 			<logic:iterate id="preqLinks" name="KualiForm" property="document.newMaintainableObject.preqLinks" indexId="ctr">
 				<tr>
 					<td class="infoline" align="center">Payment Request - 
-						<a href="${symbol_dollar}{ConfigProperties.application.url}/kew/DocHandler.do?command=displayDocSearchView&docId=${symbol_dollar}{KualiForm.document.newMaintainableObject.preqLinks[ctr]}"  target="_blank">
-							${symbol_dollar}{KualiForm.document.newMaintainableObject.preqLinks[ctr]}
+						<a href="${ConfigProperties.application.url}/kew/DocHandler.do?command=displayDocSearchView&docId=${KualiForm.document.newMaintainableObject.preqLinks[ctr]}"  target="_blank">
+							${KualiForm.document.newMaintainableObject.preqLinks[ctr]}
 						</a>&nbsp;
 					</td>
 				</tr>

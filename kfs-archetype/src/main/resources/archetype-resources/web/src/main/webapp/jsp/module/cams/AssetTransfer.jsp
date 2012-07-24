@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -16,14 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <kul:documentPage showDocumentInfo="true" htmlFormAction="camsAssetTransfer" documentTypeName="AssetTransferDocument" renderMultipart="true" showTabButtons="true">
-	<c:set var="assetTransferAttributes" value="${symbol_dollar}{DataDictionary.AssetTransferDocument.attributes}" />
-	<c:set var="assetAttributes" value="${symbol_dollar}{DataDictionary.Asset.attributes}" />	
-	<c:set var="assetOrgAttributes" value="${symbol_dollar}{DataDictionary.AssetOrganization.attributes}" />	
-	<c:set var="organizationAttributes" value="${symbol_dollar}{DataDictionary.Organization.attributes}" />	
-	<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<c:set var="assetTransferAttributes" value="${DataDictionary.AssetTransferDocument.attributes}" />
+	<c:set var="assetAttributes" value="${DataDictionary.Asset.attributes}" />	
+	<c:set var="assetOrgAttributes" value="${DataDictionary.AssetOrganization.attributes}" />	
+	<c:set var="organizationAttributes" value="${DataDictionary.Organization.attributes}" />	
+	<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" viewYearEndAccountPeriod="${!empty KualiForm.documentActions[KFSConstants.YEAR_END_ACCOUNTING_PERIOD_VIEW_DOCUMENT_ACTION]}" />
     <cams:viewAssetDetails defaultTabHide="false" /> 
 	
 	  <kul:tab tabTitle="Asset Transfer Information" defaultOpen="true" tabErrorKey="document.organizationOwnerAccountNumber,document.organizationOwnerChartOfAccountsCode,document.transferOfFundsFinancialDocumentNumber"> 
@@ -37,45 +34,45 @@
 				<td class="tab-subhead"  colspan="2" width="50%">Transfer from Originating Organization</td><td class="tab-subhead"  colspan="2" width="50%">Transfer to Receiving Organization</td>
 			</tr>			
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.oldOrganizationOwnerChartOfAccountsCode}" readOnly="true" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.oldOrganizationOwnerChartOfAccountsCode" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationOwnerChartOfAccountsCode}" readOnly="true"/></td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationOwnerChartOfAccountsCode}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationOwnerChartOfAccountsCode" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationOwnerChartOfAccountsCode}" readOnly="${symbol_dollar}{readOnly}"/>
-					<c:if test="${symbol_dollar}{not readOnly}">
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.oldOrganizationOwnerChartOfAccountsCode}" readOnly="true" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.oldOrganizationOwnerChartOfAccountsCode" attributeEntry="${assetTransferAttributes.organizationOwnerChartOfAccountsCode}" readOnly="true"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.organizationOwnerChartOfAccountsCode}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationOwnerChartOfAccountsCode" attributeEntry="${assetTransferAttributes.organizationOwnerChartOfAccountsCode}" readOnly="${readOnly}"/>
+					<c:if test="${not readOnly}">
 						&nbsp;
-		                <kul:lookup boClassName="org.kuali.${parentArtifactId}.coa.businessobject.Chart" fieldConversions="chartOfAccountsCode:document.organizationOwnerChartOfAccountsCode" lookupParameters="document.organizationOwnerChartOfAccountsCode:chartOfAccountsCode" />
+		                <kul:lookup boClassName="org.kuali.kfs.coa.businessobject.Chart" fieldConversions="chartOfAccountsCode:document.organizationOwnerChartOfAccountsCode" lookupParameters="document.organizationOwnerChartOfAccountsCode:chartOfAccountsCode" />
 	                </c:if>
 				</td>						
 			</tr>
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.oldOrganizationOwnerAccountNumber}" readOnly="true" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.oldOrganizationOwnerAccountNumber" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationOwnerAccountNumber}" readOnly="true"/></td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationOwnerAccountNumber}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationOwnerAccountNumber" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationOwnerAccountNumber}" readOnly="${symbol_dollar}{readOnly}"/>
-					<c:if test="${symbol_dollar}{not readOnly}">
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.oldOrganizationOwnerAccountNumber}" readOnly="true" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.oldOrganizationOwnerAccountNumber" attributeEntry="${assetTransferAttributes.organizationOwnerAccountNumber}" readOnly="true"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.organizationOwnerAccountNumber}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationOwnerAccountNumber" attributeEntry="${assetTransferAttributes.organizationOwnerAccountNumber}" readOnly="${readOnly}"/>
+					<c:if test="${not readOnly}">
 						&nbsp;
-		                <kul:lookup boClassName="org.kuali.${parentArtifactId}.coa.businessobject.Account" fieldConversions="accountNumber:document.organizationOwnerAccountNumber,chartOfAccountsCode:document.organizationOwnerChartOfAccountsCode" lookupParameters="document.organizationOwnerAccountNumber:accountNumber,document.organizationOwnerChartOfAccountsCode:chartOfAccountsCode" />
+		                <kul:lookup boClassName="org.kuali.kfs.coa.businessobject.Account" fieldConversions="accountNumber:document.organizationOwnerAccountNumber,chartOfAccountsCode:document.organizationOwnerChartOfAccountsCode" lookupParameters="document.organizationOwnerAccountNumber:accountNumber,document.organizationOwnerChartOfAccountsCode:chartOfAccountsCode" />
 	                </c:if>
 				</td>				
 			</tr>
 
 			<tr>				
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{organizationAttributes.organizationCode}" readOnly="true" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.oldOrganizationOwnerAccount.organizationCode" attributeEntry="${symbol_dollar}{organizationAttributes.organizationCode}" readOnly="true"/></td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{organizationAttributes.organizationCode}"/></th>
-                <td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationOwnerAccount.organizationCode" attributeEntry="${symbol_dollar}{organizationAttributes.organizationCode}" readOnly="true" /></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${organizationAttributes.organizationCode}" readOnly="true" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.oldOrganizationOwnerAccount.organizationCode" attributeEntry="${organizationAttributes.organizationCode}" readOnly="true"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${organizationAttributes.organizationCode}"/></th>
+                <td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationOwnerAccount.organizationCode" attributeEntry="${organizationAttributes.organizationCode}" readOnly="true" /></td>
  			</tr>
 
 			<tr>
 				<td class="tab-subhead" colspan="4" width="100%">Interdepartmental Sale</td>
 			</tr>			
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.interdepartmentalSalesIndicator}" /></th>
-				<td class="grid" colspan="3"><kul:htmlControlAttribute property="document.interdepartmentalSalesIndicator" attributeEntry="${symbol_dollar}{assetTransferAttributes.interdepartmentalSalesIndicator}" readOnly="${symbol_dollar}{readOnly}"/></td>						
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.interdepartmentalSalesIndicator}" /></th>
+				<td class="grid" colspan="3"><kul:htmlControlAttribute property="document.interdepartmentalSalesIndicator" attributeEntry="${assetTransferAttributes.interdepartmentalSalesIndicator}" readOnly="${readOnly}"/></td>						
 			</tr>
 			<tr>				
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.transferOfFundsFinancialDocumentNumber}" /></th>
-				<td class="grid" colspan="3"><kul:htmlControlAttribute property="document.transferOfFundsFinancialDocumentNumber" attributeEntry="${symbol_dollar}{assetTransferAttributes.transferOfFundsFinancialDocumentNumber}" readOnly="${symbol_dollar}{readOnly}"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.transferOfFundsFinancialDocumentNumber}" /></th>
+				<td class="grid" colspan="3"><kul:htmlControlAttribute property="document.transferOfFundsFinancialDocumentNumber" attributeEntry="${assetTransferAttributes.transferOfFundsFinancialDocumentNumber}" readOnly="${readOnly}"/></td>
 			</tr>
 		</table>
 		</div>
@@ -88,44 +85,44 @@
 				<td class="tab-subhead"  colspan="2" width="50%">On Campus</td><td class="tab-subhead"  colspan="2" width="50%">Off Campus</td>
 			</tr>			
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.campusCode}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.campusCode" attributeEntry="${symbol_dollar}{assetTransferAttributes.campusCode}" readOnly="${symbol_dollar}{readOnly}"/>
-					<c:if test="${symbol_dollar}{not readOnly}">
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.campusCode}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.campusCode" attributeEntry="${assetTransferAttributes.campusCode}" readOnly="${readOnly}"/>
+					<c:if test="${not readOnly}">
 						&nbsp;
 		                <kul:lookup boClassName="org.kuali.rice.kns.bo.Campus" fieldConversions="campusCode:document.campusCode" lookupParameters="document.campusCode:campusCode" />
 		            </c:if>
 				</td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusName}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusName" attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusName}" readOnly="${symbol_dollar}{readOnly}"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.offCampusName}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusName" attributeEntry="${assetTransferAttributes.offCampusName}" readOnly="${readOnly}"/></td>
 			</tr>
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.buildingCode}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.buildingCode" attributeEntry="${symbol_dollar}{assetTransferAttributes.buildingCode}" readOnly="${symbol_dollar}{readOnly}"/>
-					<c:if test="${symbol_dollar}{not readOnly}">
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.buildingCode}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.buildingCode" attributeEntry="${assetTransferAttributes.buildingCode}" readOnly="${readOnly}"/>
+					<c:if test="${not readOnly}">
 						&nbsp;
-		                <kul:lookup boClassName="org.kuali.${parentArtifactId}.sys.businessobject.Building" fieldConversions="buildingCode:document.buildingCode,campusCode:document.campusCode" lookupParameters="document.buildingCode:buildingCode,document.campusCode:campusCode" />
+		                <kul:lookup boClassName="org.kuali.kfs.sys.businessobject.Building" fieldConversions="buildingCode:document.buildingCode,campusCode:document.campusCode" lookupParameters="document.buildingCode:buildingCode,document.campusCode:campusCode" />
 	                </c:if>
 				</td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusAddress}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusAddress" attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusAddress}" readOnly="${symbol_dollar}{readOnly}"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.offCampusAddress}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusAddress" attributeEntry="${assetTransferAttributes.offCampusAddress}" readOnly="${readOnly}"/></td>
 			</tr>
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.buildingRoomNumber}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.buildingRoomNumber" attributeEntry="${symbol_dollar}{assetTransferAttributes.buildingRoomNumber}" readOnly="${symbol_dollar}{readOnly}"/>
-					<c:if test="${symbol_dollar}{not readOnly}">
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.buildingRoomNumber}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.buildingRoomNumber" attributeEntry="${assetTransferAttributes.buildingRoomNumber}" readOnly="${readOnly}"/>
+					<c:if test="${not readOnly}">
 						&nbsp;
-		                <kul:lookup boClassName="org.kuali.${parentArtifactId}.sys.businessobject.Room" fieldConversions="buildingRoomNumber:document.buildingRoomNumber,buildingCode:document.buildingCode,campusCode:document.campusCode" lookupParameters="document.buildingRoomNumber:buildingRoomNumber,document.buildingCode:buildingCode,document.campusCode:campusCode" />
+		                <kul:lookup boClassName="org.kuali.kfs.sys.businessobject.Room" fieldConversions="buildingRoomNumber:document.buildingRoomNumber,buildingCode:document.buildingCode,campusCode:document.campusCode" lookupParameters="document.buildingRoomNumber:buildingRoomNumber,document.buildingCode:buildingCode,document.campusCode:campusCode" />
 	                </c:if>
 				</td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusCityName}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusCityName" attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusCityName}" readOnly="${symbol_dollar}{readOnly}"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.offCampusCityName}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusCityName" attributeEntry="${assetTransferAttributes.offCampusCityName}" readOnly="${readOnly}"/></td>
 			</tr>
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.buildingSubRoomNumber}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.buildingSubRoomNumber" attributeEntry="${symbol_dollar}{assetTransferAttributes.buildingSubRoomNumber}" readOnly="${symbol_dollar}{readOnly}"/></td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusStateCode}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusStateCode" attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusStateCode}" readOnly="${symbol_dollar}{readOnly}"/>						
-					<c:if test="${symbol_dollar}{not readOnly}">
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.buildingSubRoomNumber}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.buildingSubRoomNumber" attributeEntry="${assetTransferAttributes.buildingSubRoomNumber}" readOnly="${readOnly}"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.offCampusStateCode}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusStateCode" attributeEntry="${assetTransferAttributes.offCampusStateCode}" readOnly="${readOnly}"/>						
+					<c:if test="${not readOnly}">
 						&nbsp;
 		                <kul:lookup boClassName="org.kuali.rice.kns.bo.State" fieldConversions="postalStateCode:document.offCampusStateCode" lookupParameters="document.offCampusCountryCode:postalCountryCode,document.offCampusStateCode:postalStateCode," />
 	                </c:if>
@@ -133,9 +130,9 @@
 			</tr>
 			<tr>
 				<th class="grid" width="25%" align="right" colspan="2"></th>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusZipCode}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusZipCode" attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusZipCode}" readOnly="${symbol_dollar}{readOnly}"/>
-					<c:if test="${symbol_dollar}{not readOnly}">
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.offCampusZipCode}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusZipCode" attributeEntry="${assetTransferAttributes.offCampusZipCode}" readOnly="${readOnly}"/>
+					<c:if test="${not readOnly}">
 						&nbsp;
 		                <kul:lookup boClassName="org.kuali.rice.kns.bo.PostalCode" fieldConversions="postalCode:document.offCampusZipCode" lookupParameters="document.offCampusCountryCode:postalCountryCode,document.offCampusZipCode:postalCode,document.offCampusStateCode:postalStateCode" />
 					</c:if>		                
@@ -143,9 +140,9 @@
 			</tr>
 			<tr>
 				<th class="grid" width="25%" align="right" colspan="2"></th>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusCountryCode}" /></th>  
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusCountryCode" attributeEntry="${symbol_dollar}{assetTransferAttributes.offCampusCountryCode}" readOnly="${symbol_dollar}{readOnly}"/>
-					<c:if test="${symbol_dollar}{not readOnly}">
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.offCampusCountryCode}" /></th>  
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.offCampusCountryCode" attributeEntry="${assetTransferAttributes.offCampusCountryCode}" readOnly="${readOnly}"/>
+					<c:if test="${not readOnly}">
 						&nbsp;
 		                <kul:lookup boClassName="org.kuali.rice.kns.bo.Country" fieldConversions="postalCountryCode:document.offCampusCountryCode" lookupParameters="document.offCampusCountryCode:postalCountryCode" />
 	                </c:if>
@@ -163,51 +160,51 @@
 				<td class="tab-subhead" colspan="2" width="50%"><div class="tab-subhead-r">Current</div></td><td class="tab-subhead" colspan="2" width="50%"><div class="tab-subhead-r">New</div></td>
 			</tr>					
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationInventoryName}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.organizationInventoryName" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationInventoryName}" readOnly="true"/></td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationInventoryName}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationInventoryName" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationInventoryName}" readOnly="${symbol_dollar}{readOnly}"/></td>						
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.organizationInventoryName}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.organizationInventoryName" attributeEntry="${assetTransferAttributes.organizationInventoryName}" readOnly="true"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.organizationInventoryName}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationInventoryName" attributeEntry="${assetTransferAttributes.organizationInventoryName}" readOnly="${readOnly}"/></td>						
 			</tr>
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.representativeUniversalIdentifier}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.assetRepresentative.name" attributeEntry="${symbol_dollar}{assetTransferAttributes.representativeUniversalIdentifier}" readOnly="true"/></td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.representativeUniversalIdentifier}" /></th>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.representativeUniversalIdentifier}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.assetRepresentative.name" attributeEntry="${assetTransferAttributes.representativeUniversalIdentifier}" readOnly="true"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.representativeUniversalIdentifier}" /></th>
 				<td class="grid" width="25%">
 					<kul:checkErrors keyMatch="document.assetRepresentative.principalName" />
 					<kul:user userIdFieldName="document.assetRepresentative.principalName" universalIdFieldName="document.representativeUniversalIdentifier" userNameFieldName="document.assetRepresentative.name" label="User" 
 					lookupParameters="document.assetRepresentative.principalName:principalName,document.representativeUniversalIdentifier:principalId,document.assetRepresentative.name:name" 
 					fieldConversions="principalName:document.assetRepresentative.principalName,principalId:document.representativeUniversalIdentifier,name:document.assetRepresentative.name" 
-					userId="${symbol_dollar}{KualiForm.document.assetRepresentative.principalName}" universalId="${symbol_dollar}{KualiForm.document.representativeUniversalIdentifier}" userName="${symbol_dollar}{KualiForm.document.assetRepresentative.name}" 
-					hasErrors="${symbol_dollar}{hasErrors}" readOnly="${symbol_dollar}{readOnly}"/>
+					userId="${KualiForm.document.assetRepresentative.principalName}" universalId="${KualiForm.document.representativeUniversalIdentifier}" userName="${KualiForm.document.assetRepresentative.name}" 
+					hasErrors="${hasErrors}" readOnly="${readOnly}"/>
 				</td>
 			</tr>
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationText}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.assetOrganization.organizationText" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationText}" readOnly="true"/></td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationText}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationText" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationText}" readOnly="${symbol_dollar}{readOnly}"/></td>						
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.organizationText}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.assetOrganization.organizationText" attributeEntry="${assetTransferAttributes.organizationText}" readOnly="true"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.organizationText}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationText" attributeEntry="${assetTransferAttributes.organizationText}" readOnly="${readOnly}"/></td>						
 			</tr>
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationTagNumber}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.assetOrganization.organizationTagNumber" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationTagNumber}" readOnly="true"/></td>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationTagNumber}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationTagNumber" attributeEntry="${symbol_dollar}{assetTransferAttributes.organizationTagNumber}" readOnly="${symbol_dollar}{readOnly}"/></td>						
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.organizationTagNumber}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.assetOrganization.organizationTagNumber" attributeEntry="${assetTransferAttributes.organizationTagNumber}" readOnly="true"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetTransferAttributes.organizationTagNumber}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.organizationTagNumber" attributeEntry="${assetTransferAttributes.organizationTagNumber}" readOnly="${readOnly}"/></td>						
 			</tr>
 			<tr>
-				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{assetOrgAttributes.organizationAssetTypeIdentifier}" /></th>
-				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.assetOrganization.organizationAssetTypeIdentifier" attributeEntry="${symbol_dollar}{assetOrgAttributes.organizationAssetTypeIdentifier}" readOnly="true"/></td>
+				<th class="grid" width="25%" align="right"><kul:htmlAttributeLabel attributeEntry="${assetOrgAttributes.organizationAssetTypeIdentifier}" /></th>
+				<td class="grid" width="25%"><kul:htmlControlAttribute property="document.asset.assetOrganization.organizationAssetTypeIdentifier" attributeEntry="${assetOrgAttributes.organizationAssetTypeIdentifier}" readOnly="true"/></td>
 				<th class="grid" width="25%" align="right">&nbsp;</th>
 				<td class="grid" width="25%">&nbsp;</td>						
 			</tr>		
 		</table>
 		</div>
 	</kul:tab>		
-	<cams:viewPayments defaultTabHide="true" assetPayments="${symbol_dollar}{KualiForm.document.asset.assetPayments}" />
+	<cams:viewPayments defaultTabHide="true" assetPayments="${KualiForm.document.asset.assetPayments}" />
 	<cams:viewDepreciationInfo defaultTabHide="true" />
 	<gl:generalLedgerPendingEntries />
 	<kul:notes />
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />
-	<sys:documentControls transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}" />
+	<sys:documentControls transactionalDocument="${documentEntry.transactionalDocument}" />
 </kul:documentPage>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <script type='text/javascript'>
 function toggle(id) {
   var v=document.getElementById(id); 
@@ -27,7 +24,7 @@ function toggle(id) {
   }
 }
 </script>
-<c:if test="${symbol_dollar}{!accountingLineScriptsLoaded}">
+<c:if test="${!accountingLineScriptsLoaded}">
        <script type='text/javascript' src="dwr/interface/ChartService.js"></script>
        <script type='text/javascript' src="dwr/interface/AccountService.js"></script>
        <script type='text/javascript' src="dwr/interface/SubAccountService.js"></script>
@@ -40,18 +37,18 @@ function toggle(id) {
        <c:set var="accountingLineScriptsLoaded" value="true" scope="request" />
 </c:if>
 
-<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-<c:set var="paymentApplicationDocumentAttributes" value="${symbol_dollar}{DataDictionary['PaymentApplicationDocument'].attributes}" />
-<c:set var="invoiceAttributes" value="${symbol_dollar}{DataDictionary['CustomerInvoiceDocument'].attributes}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+<c:set var="paymentApplicationDocumentAttributes" value="${DataDictionary['PaymentApplicationDocument'].attributes}" />
+<c:set var="invoiceAttributes" value="${DataDictionary['CustomerInvoiceDocument'].attributes}" />
 <c:set var="invoicePaidAppliedAttributes"
-	value="${symbol_dollar}{DataDictionary['InvoicePaidApplied'].attributes}" />
-<c:set var="customerAttributes" value="${symbol_dollar}{DataDictionary['Customer'].attributes}" />
+	value="${DataDictionary['InvoicePaidApplied'].attributes}" />
+<c:set var="customerAttributes" value="${DataDictionary['Customer'].attributes}" />
 <c:set var="customerInvoiceDetailAttributes"
-	value="${symbol_dollar}{DataDictionary['CustomerInvoiceDetail'].attributes}" />
-<c:set var="hasRelatedCashControlDocument" value="${symbol_dollar}{null != KualiForm.cashControlDocument}" />
+	value="${DataDictionary['CustomerInvoiceDetail'].attributes}" />
+<c:set var="hasRelatedCashControlDocument" value="${null != KualiForm.cashControlDocument}" />
 <c:set var="isCustomerSelected"
-	value="${symbol_dollar}{!empty KualiForm.document.accountsReceivableDocumentHeader.customerNumber}" />
-<c:set var="invoiceApplications" value="${symbol_dollar}{KualiForm.invoiceApplications}" />
+	value="${!empty KualiForm.document.accountsReceivableDocumentHeader.customerNumber}" />
+<c:set var="invoiceApplications" value="${KualiForm.invoiceApplications}" />
 
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="PaymentApplicationDocument"
@@ -60,34 +57,34 @@ function toggle(id) {
 
 	<sys:hiddenDocumentFields isFinancialDocument="false" />
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 
-    <ar:paymentApplicationControlInformation isCustomerSelected="${symbol_dollar}{isCustomerSelected}"
-        hasRelatedCashControlDocument="${symbol_dollar}{hasRelatedCashControlDocument}"
-        customerAttributes="${symbol_dollar}{customerAttributes}"
-        customerInvoiceDetailAttributes="${symbol_dollar}{customerInvoiceDetailAttributes}"
-        invoiceAttributes="${symbol_dollar}{invoiceAttributes}" readOnly="${symbol_dollar}{readOnly}" />
+    <ar:paymentApplicationControlInformation isCustomerSelected="${isCustomerSelected}"
+        hasRelatedCashControlDocument="${hasRelatedCashControlDocument}"
+        customerAttributes="${customerAttributes}"
+        customerInvoiceDetailAttributes="${customerInvoiceDetailAttributes}"
+        invoiceAttributes="${invoiceAttributes}" readOnly="${readOnly}" />
 
-	<ar:paymentApplicationSummaryOfAppliedFunds isCustomerSelected="${symbol_dollar}{isCustomerSelected}"
-	   hasRelatedCashControlDocument="${symbol_dollar}{hasRelatedCashControlDocument}" readOnly="${symbol_dollar}{readOnly}" />
+	<ar:paymentApplicationSummaryOfAppliedFunds isCustomerSelected="${isCustomerSelected}"
+	   hasRelatedCashControlDocument="${hasRelatedCashControlDocument}" readOnly="${readOnly}" />
 
-	<ar:paymentApplicationQuickApplyToInvoice isCustomerSelected="${symbol_dollar}{isCustomerSelected}"
-	   hasRelatedCashControlDocument="${symbol_dollar}{hasRelatedCashControlDocument}"
-	   readOnly="${symbol_dollar}{readOnly}" 
-	   customerInvoiceDetailAttributes="${symbol_dollar}{customerInvoiceDetailAttributes}" 
-	   invoiceAttributes="${symbol_dollar}{invoiceAttributes}" />
+	<ar:paymentApplicationQuickApplyToInvoice isCustomerSelected="${isCustomerSelected}"
+	   hasRelatedCashControlDocument="${hasRelatedCashControlDocument}"
+	   readOnly="${readOnly}" 
+	   customerInvoiceDetailAttributes="${customerInvoiceDetailAttributes}" 
+	   invoiceAttributes="${invoiceAttributes}" />
 	
-	<ar:paymentApplicationApplyToInvoiceDetail customerAttributes="${symbol_dollar}{customerAttributes}"
-		customerInvoiceDetailAttributes="${symbol_dollar}{customerInvoiceDetailAttributes}"
-		invoiceAttributes="${symbol_dollar}{invoiceAttributes}" readOnly="${symbol_dollar}{readOnly}" />
+	<ar:paymentApplicationApplyToInvoiceDetail customerAttributes="${customerAttributes}"
+		customerInvoiceDetailAttributes="${customerInvoiceDetailAttributes}"
+		invoiceAttributes="${invoiceAttributes}" readOnly="${readOnly}" />
 
-    <ar:paymentApplicationNonAr customerAttributes="${symbol_dollar}{customerAttributes}"
-        isCustomerSelected="${symbol_dollar}{isCustomerSelected}"
-        hasRelatedCashControlDocument="${symbol_dollar}{hasRelatedCashControlDocument}"
-        readOnly="${symbol_dollar}{readOnly}"/>
+    <ar:paymentApplicationNonAr customerAttributes="${customerAttributes}"
+        isCustomerSelected="${isCustomerSelected}"
+        hasRelatedCashControlDocument="${hasRelatedCashControlDocument}"
+        readOnly="${readOnly}"/>
     <ar:paymentApplicationUnappliedTab
-		isCustomerSelected="${symbol_dollar}{isCustomerSelected}" readOnly="${symbol_dollar}{readOnly}" 
-		hasRelatedCashControlDocument="${symbol_dollar}{hasRelatedCashControlDocument}" />
+		isCustomerSelected="${isCustomerSelected}" readOnly="${readOnly}" 
+		hasRelatedCashControlDocument="${hasRelatedCashControlDocument}" />
         
 	<gl:generalLedgerPendingEntries />
 		            

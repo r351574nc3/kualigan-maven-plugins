@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -16,14 +13,14 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page lookup="true" showDocumentInfo="false"
 	htmlFormAction="glModifiedInquiry"
-	headerMenuBar="${symbol_dollar}{KualiForm.lookupable.htmlMenuBar}"
+	headerMenuBar="${KualiForm.lookupable.htmlMenuBar}"
 	headerTitle="Lookup" docTitle="" transactionalDocument="false">
 	<div class="headerarea-small" id="headerarea-small">
-	<h1><c:out value="${symbol_dollar}{KualiForm.lookupable.title}" /> <kul:help
+	<h1><c:out value="${KualiForm.lookupable.title}" /> <kul:help
 		resourceKey="lookupHelpText" altText="lookup help" /></h1>
 	</div>
 	<kul:enterKey methodToCall="search" />
@@ -37,46 +34,46 @@
 	<table width="1200px" cellspacing="0" cellpadding="0">
 		<tr>
 			<td width="1%"><img
-				src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}pixel_clear.gif"
+				src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif"
 				alt="" width="20" height="20" /></td>
 
-			<td><c:if test="${symbol_dollar}{param.inquiryFlag != 'true'}">
+			<td><c:if test="${param.inquiryFlag != 'true'}">
 				<div id="lookup" align="center"><br />
 				<br />
 				<table class="datatable-100" align="center" cellpadding="0"
 					cellspacing="0">
 					<c:set var="FormName" value="KualiForm" scope="request" />
-					<c:set var="FieldRows" value="${symbol_dollar}{KualiForm.lookupable.rows}"
+					<c:set var="FieldRows" value="${KualiForm.lookupable.rows}"
 						scope="request" />
 					<c:set var="ActionName" value="glModifiedInquiry.do"
 						scope="request" />
 					<c:set var="IsLookupDisplay" value="true" scope="request" />
 
-					<kul:rowDisplay rows="${symbol_dollar}{KualiForm.lookupable.rows}"
-						numberOfColumns="${symbol_dollar}{KualiForm.numColumns}" />
+					<kul:rowDisplay rows="${KualiForm.lookupable.rows}"
+						numberOfColumns="${KualiForm.numColumns}" />
 
 					<tr align=center>
-						<td height="30" colspan="${symbol_dollar}{KualiForm.numColumns*2}"
+						<td height="30" colspan="${KualiForm.numColumns*2}"
 							class="infoline"><html:image property="methodToCall.search"
 							value="search"
-							src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_search.gif"
+							src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_search.gif"
 							styleClass="tinybutton" alt="search" title="search" border="0" />
 						<html:image property="methodToCall.clearValues"
 							value="clearValues"
-							src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif"
+							src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif"
 							styleClass="tinybutton" alt="clear" title="clear" border="0" />
-						<c:if test="${symbol_dollar}{KualiForm.formKey!=''}">
+						<c:if test="${KualiForm.formKey!=''}">
 							<a
-								href='<c:out value="${symbol_dollar}{KualiForm.backLocation}?methodToCall=refresh&docFormKey=${symbol_dollar}{KualiForm.formKey}" />'
+								href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}" />'
 								title="cancel"> <img
-								src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif"
+								src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif"
 								class="tinybutton" border="0" alt="cancel" title="cancel" /> </a>
 						</c:if> <!-- Optional extra button --> <c:if
-							test="${symbol_dollar}{not empty KualiForm.lookupable.extraButtonSource}">
+							test="${not empty KualiForm.lookupable.extraButtonSource}">
 							<a
-								href='<c:out value="${symbol_dollar}{KualiForm.backLocation}?methodToCall=refresh&refreshCaller=org.kuali.rice.kns.lookup.KualiLookupableImpl&docFormKey=${symbol_dollar}{KualiForm.formKey}" /><c:out value="${symbol_dollar}{KualiForm.lookupable.extraButtonParams}" />'>
+								href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&refreshCaller=org.kuali.rice.kns.lookup.KualiLookupableImpl&docFormKey=${KualiForm.formKey}" /><c:out value="${KualiForm.lookupable.extraButtonParams}" />'>
 							<img
-								src='<c:out value="${symbol_dollar}{KualiForm.lookupable.extraButtonSource}" />'
+								src='<c:out value="${KualiForm.lookupable.extraButtonSource}" />'
 								class="tinybutton" border="0" /></a>
 						</c:if></td>
 					</tr>
@@ -91,42 +88,42 @@
 	</table>
 	<table width="100%" cellspacing="0" cellpadding="0">
 		<tr>
-			<td><c:if test="${symbol_dollar}{!empty reqSearchResultsSize}">
+			<td><c:if test="${!empty reqSearchResultsSize}">
 
-				<c:set var="exporting" value="${symbol_dollar}{!empty param['d-16544-e']}"
+				<c:set var="exporting" value="${!empty param['d-16544-e']}"
 					scope="request" />
 				<display:table class="datatable-100" cellspacing="0" cellpadding="0"
-					name="${symbol_dollar}{reqSearchResults}" id="row" export="true" pagesize="100"
+					name="${reqSearchResults}" id="row" export="true" pagesize="100"
 					defaultsort="1"
-					requestURI="glModifiedInquiry.do?methodToCall=viewResults&reqSearchResultsSize=${symbol_dollar}{reqSearchResultsSize}&searchResultKey=${symbol_dollar}{searchResultKey}">
+					requestURI="glModifiedInquiry.do?methodToCall=viewResults&reqSearchResultsSize=${reqSearchResultsSize}&searchResultKey=${searchResultKey}">
 
-					<c:forEach items="${symbol_dollar}{row.columns}" var="column">
+					<c:forEach items="${row.columns}" var="column">
 
-						<c:if test="${symbol_dollar}{!empty column.columnAnchor.title}">
-							<c:set var="title" value="${symbol_dollar}{column.columnAnchor.title}" />
+						<c:if test="${!empty column.columnAnchor.title}">
+							<c:set var="title" value="${column.columnAnchor.title}" />
 						</c:if>
-						<c:if test="${symbol_dollar}{empty column.columnAnchor.title}">
-							<c:set var="title" value="${symbol_dollar}{column.propertyValue}" />
+						<c:if test="${empty column.columnAnchor.title}">
+							<c:set var="title" value="${column.propertyValue}" />
 						</c:if>
 						<c:choose>
 
 							<c:when
-								test="${symbol_dollar}{column.formatter.implementationClass == 'org.kuali.rice.kns.web.format.CurrencyFormatter'}">
+								test="${column.formatter.implementationClass == 'org.kuali.rice.kns.web.format.CurrencyFormatter'}">
 
 								<display:column class="numbercell" sortable="true"
 									decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"
-									title="${symbol_dollar}{column.columnTitle}" comparator="${symbol_dollar}{column.comparator}">
+									title="${column.columnTitle}" comparator="${column.comparator}">
 
 									<c:choose>
 
-										<c:when test="${symbol_dollar}{column.propertyURL != ${symbol_escape}"${symbol_escape}"}">
-											<a href="<c:out value="${symbol_dollar}{column.propertyURL}"/>"
-												title="<c:out value="${symbol_dollar}{title}" />" target="blank"><c:out
-												value="${symbol_dollar}{column.propertyValue}" /></a>
+										<c:when test="${column.propertyURL != \"\"}">
+											<a href="<c:out value="${column.propertyURL}"/>"
+												title="<c:out value="${title}" />" target="blank"><c:out
+												value="${column.propertyValue}" /></a>
 										</c:when>
 
 										<c:otherwise>
-											<c:out value="${symbol_dollar}{column.propertyValue}" />
+											<c:out value="${column.propertyValue}" />
 										</c:otherwise>
 									</c:choose>
 								</display:column>
@@ -137,16 +134,16 @@
 
 								<c:choose>
 
-									<c:when test="${symbol_dollar}{column.propertyURL != ${symbol_escape}"${symbol_escape}"}">
+									<c:when test="${column.propertyURL != \"\"}">
 
-										<display:column class="infocell" sortable="${symbol_dollar}{column.sortable}"
+										<display:column class="infocell" sortable="${column.sortable}"
 											decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"
-											title="${symbol_dollar}{column.columnTitle}"
-											comparator="${symbol_dollar}{column.comparator}">
+											title="${column.columnTitle}"
+											comparator="${column.comparator}">
 
-											<a href="<c:out value="${symbol_dollar}{column.propertyURL}"/>"
-												title="<c:out value="${symbol_dollar}{title}" />" target="blank"><c:out
-												value="${symbol_dollar}{column.propertyValue}" /></a>
+											<a href="<c:out value="${column.propertyURL}"/>"
+												title="<c:out value="${title}" />" target="blank"><c:out
+												value="${column.propertyValue}" /></a>
 
 										</display:column>
 
@@ -154,20 +151,20 @@
 
 									<c:otherwise>
 
-										<display:column class="infocell" sortable="${symbol_dollar}{column.sortable}"
+										<display:column class="infocell" sortable="${column.sortable}"
 											decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"
-											title="${symbol_dollar}{column.columnTitle}"
-											comparator="${symbol_dollar}{column.comparator}">
+											title="${column.columnTitle}"
+											comparator="${column.comparator}">
 
 											<c:if
-												test="${symbol_dollar}{!exporting && column.columnTitle == 'Project Code'}">
+												test="${!exporting && column.columnTitle == 'Project Code'}">
 												<div style="white-space: nowrap"><c:out
-													value="${symbol_dollar}{column.propertyValue}" /></div>
+													value="${column.propertyValue}" /></div>
 											</c:if>
 
 											<c:if
-												test="${symbol_dollar}{exporting || column.columnTitle != 'Project Code'}">
-												<c:out value="${symbol_dollar}{column.propertyValue}" />
+												test="${exporting || column.columnTitle != 'Project Code'}">
+												<c:out value="${column.propertyValue}" />
 											</c:if>
 
 										</display:column>
@@ -181,15 +178,15 @@
 						</c:choose>
 
 					</c:forEach>
-					<c:if test="${symbol_dollar}{param['d-16544-e'] == null}">
+					<c:if test="${param['d-16544-e'] == null}">
 						<logic:present name="KualiForm" property="formKey">
 							<c:if
-								test="${symbol_dollar}{KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues && param.inquiryFlag != 'true'}">
+								test="${KualiForm.formKey!='' && KualiForm.hideReturnLink!=true && !KualiForm.multipleValues && param.inquiryFlag != 'true'}">
 								<display:column class="infocell" property="returnUrl"
 									media="html" />
 							</c:if>
 							<c:if
-								test="${symbol_dollar}{row.actionUrls!='' && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
+								test="${row.actionUrls!='' && KualiForm.suppressActions!=true && !KualiForm.multipleValues && KualiForm.showMaintenanceLinks}">
 								<display:column class="infocell" property="actionUrls"
 									title="Actions" media="html" />
 							</c:if>
@@ -198,8 +195,10 @@
 				</display:table></td>
 			</c:if>
 			<td width="1%"><img
-				src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}pixel_clear.gif"
+				src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif"
 				alt="" height="20" width="20"></td>
+				
 		</tr>
 	</table>
+	
 </kul:page>

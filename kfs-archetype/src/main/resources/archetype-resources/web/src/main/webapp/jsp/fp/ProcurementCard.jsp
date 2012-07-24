@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="ProcurementCardDocument"
 	htmlFormAction="financialProcurementCard" renderMultipart="true"
@@ -24,14 +21,20 @@
 
 	<sys:hiddenDocumentFields />
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 
 	<fp:procurementCardTransactions
-		editingMode="${symbol_dollar}{KualiForm.editingMode}"
-		editableAccounts="${symbol_dollar}{KualiForm.editableAccounts}" />
+		editingMode="${KualiForm.editingMode}"
+		editableAccounts="${KualiForm.editableAccounts}" />
 	
-	<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-	<fp:capitalAssetEditTab readOnly="${symbol_dollar}{readOnly}"/>	
+	<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+  	<fp:capitalAccountingLines readOnly="${readOnly}"/>
+  	
+	<c:if test="${KualiForm.capitalAccountingLine.canCreateAsset}">
+		<fp:capitalAssetCreateTab readOnly="${readOnly}"/>
+	</c:if>
+  	
+	<fp:capitalAssetModifyTab readOnly="${readOnly}"/>  
 
 	<gl:generalLedgerPendingEntries />
 

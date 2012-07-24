@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false" headerTitle="Travel Per Diem Links"
 	docTitle="Travel Per Diem Links" transactionalDocument="false"
@@ -26,7 +23,7 @@
 
 	<table border=0 cellspacing=0 cellpadding=0 width="75%">
 		<tr>
-			<td>${symbol_dollar}{KualiForm.travelPerDiemLinkPageMessage}</td>
+			<td>${KualiForm.travelPerDiemLinkPageMessage}</td>
 		<tr>
 	</table>
 
@@ -54,9 +51,9 @@
 				property="travelPerDiemCategoryCodes" id="currentCategory">
 				<tr>
 					<th scope="row">
-					<div align="right">${symbol_dollar}{currentCategory.perDiemCountryName}</div>
+					<div align="right">${currentCategory.perDiemCountryName}</div>
 					</th>
-					<td valign="top"><a href="${symbol_dollar}{currentCategory.perDiemCountryText}">${symbol_dollar}{currentCategory.perDiemCountryText}</a></td>
+					<td valign="top"><a href="${currentCategory.perDiemCountryText}">${currentCategory.perDiemCountryText}</a></td>
 				</tr>
 			</logic:iterate>
 		</tbody>

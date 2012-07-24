@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
-<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="CustomerInvoiceDocument"
@@ -27,26 +24,26 @@
 
 	<sys:hiddenDocumentFields />
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	
-    <ar:customerInvoiceOrganization documentAttributes="${symbol_dollar}{DataDictionary.CustomerInvoiceDocument.attributes}"  readOnly="${symbol_dollar}{readOnly}"/>	
+    <ar:customerInvoiceOrganization documentAttributes="${DataDictionary.CustomerInvoiceDocument.attributes}"  readOnly="${readOnly}"/>	
 	
     <ar:customerInvoiceRecurrenceDetails
-        documentAttributes="${symbol_dollar}{DataDictionary.CustomerInvoiceDocument.attributes}" readOnly="${symbol_dollar}{readOnly}" />
+        documentAttributes="${DataDictionary.CustomerInvoiceDocument.attributes}" readOnly="${readOnly}" />
         
     <ar:customerInvoiceGeneral
-        documentAttributes="${symbol_dollar}{DataDictionary.CustomerInvoiceDocument.attributes}" readOnly="${symbol_dollar}{readOnly}" />
+        documentAttributes="${DataDictionary.CustomerInvoiceDocument.attributes}" readOnly="${readOnly}" />
         
     <ar:customerInvoiceAddresses
-        documentAttributes="${symbol_dollar}{DataDictionary.CustomerInvoiceDocument.attributes}" readOnly="${symbol_dollar}{readOnly}" />        
+        documentAttributes="${DataDictionary.CustomerInvoiceDocument.attributes}" readOnly="${readOnly}" />        
      
-	<c:if test="${symbol_dollar}{!empty KualiForm.editingMode['showReceivableFAU']}">
+	<c:if test="${!empty KualiForm.editingMode['showReceivableFAU']}">
      <ar:customerInvoiceReceivableAccountingLine
-      	documentAttributes="${symbol_dollar}{DataDictionary.CustomerInvoiceDocument.attributes}" readOnly="${symbol_dollar}{readOnly}"
-      	receivableValuesMap="${symbol_dollar}{KualiForm.document.valuesMap}"  />
+      	documentAttributes="${DataDictionary.CustomerInvoiceDocument.attributes}" readOnly="${readOnly}"
+      	receivableValuesMap="${KualiForm.document.valuesMap}"  />
     </c:if>
      
-	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS}">
 		<sys-java:accountingLines>
 			<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="source" />
 		</sys-java:accountingLines>
@@ -62,8 +59,8 @@
 
 	<kul:panelFooter />
 
-	<c:set var="extraButtons" value="${symbol_dollar}{KualiForm.extraButtons}" scope="request"/>
+	<c:set var="extraButtons" value="${KualiForm.extraButtons}" scope="request"/>
 	
-	<sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{extraButtons}"/>
+	<sys:documentControls transactionalDocument="true" extraButtons="${extraButtons}"/>
 
 </kul:documentPage>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005 The Kuali Foundation
  
@@ -16,24 +13,30 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true"
 	htmlFormAction="financialInternalBilling"
 	documentTypeName="InternalBillingDocument" renderMultipart="true"
 	showTabButtons="true">
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
-	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
+	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS}">
 		<sys-java:accountingLines>
 			<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="source" />
 			<sys-java:accountingLineGroup newLinePropertyName="newTargetLine" collectionPropertyName="document.targetAccountingLines" collectionItemPropertyName="document.targetAccountingLine" attributeGroupName="target"/>
 		</sys-java:accountingLines>
 	</kul:tab>
-	<fp:items editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<fp:items editingMode="${KualiForm.editingMode}" />
 	
-	<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
-	<fp:capitalAssetEditTab readOnly="${symbol_dollar}{readOnly}"/>
+	<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+  	<fp:capitalAccountingLines readOnly="${readOnly}"/>
+  	
+	<c:if test="${KualiForm.capitalAccountingLine.canCreateAsset}">
+		<fp:capitalAssetCreateTab readOnly="${readOnly}"/>
+	</c:if>
+  	
+	<fp:capitalAssetModifyTab readOnly="${readOnly}"/>  
 	
 	<gl:generalLedgerPendingEntries />
 	<kul:notes />
@@ -41,6 +44,6 @@
 	<kul:routeLog />
 	<kul:panelFooter />
 	<sys:documentControls
-		transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}" extraButtons="${symbol_dollar}{KualiForm.extraButtons}" />
+		transactionalDocument="${documentEntry.transactionalDocument}" extraButtons="${KualiForm.extraButtons}" />
 
 </kul:documentPage>

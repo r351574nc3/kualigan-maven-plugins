@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -17,10 +14,10 @@
  limitations under the License.
 --%>
 
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:choose>
-	<c:when test="${symbol_dollar}{KualiForm.document.documentHeader.workflowDocument.routeHeader.docRouteStatus == KFSConstants.DocumentStatusCodes.INITIATED}">
+	<c:when test="${KualiForm.document.documentHeader.workflowDocument.routeHeader.docRouteStatus == KFSConstants.DocumentStatusCodes.INITIATED}">
 		<c:set var="url" value="/effortCertificationRecreate.do" />
 	</c:when>
 	<c:otherwise>
@@ -28,10 +25,10 @@
 	</c:otherwise>
 </c:choose>
   
-<c:redirect url="${symbol_dollar}{url}">
-	<c:forEach var="parameter" items="${symbol_dollar}{paramValues}"> 
-		<c:forEach var="value" items="${symbol_dollar}{parameter.value}">
-			<c:param name="${symbol_dollar}{parameter.key}" value="${symbol_dollar}{value}"/>
+<c:redirect url="${url}">
+	<c:forEach var="parameter" items="${paramValues}"> 
+		<c:forEach var="value" items="${parameter.value}">
+			<c:param name="${parameter.key}" value="${value}"/>
 		</c:forEach>
 	</c:forEach>
 </c:redirect>

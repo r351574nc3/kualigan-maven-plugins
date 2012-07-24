@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,28 +13,28 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true"
     documentTypeName="CorrectionReceivingDocument"
     htmlFormAction="purapCorrectionReceiving" renderMultipart="true"
     showTabButtons="true">
 
-   <c:set var="fullEntryMode" value="${symbol_dollar}{ KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+   <c:set var="fullEntryMode" value="${ KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
     		    
-    <sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+    <sys:documentOverview editingMode="${KualiForm.editingMode}" />
 
-	<purap:receivingVendor documentAttributes="${symbol_dollar}{DataDictionary.CorrectionReceivingDocument.attributes}" />
+	<purap:receivingVendor documentAttributes="${DataDictionary.CorrectionReceivingDocument.attributes}" />
 
-	<purap:receivingCorrectionItems itemAttributes="${symbol_dollar}{DataDictionary.CorrectionReceivingItem.attributes}" />
+	<purap:receivingCorrectionItems itemAttributes="${DataDictionary.CorrectionReceivingItem.attributes}" />
 	
     <purap:delivery
-		documentAttributes="${symbol_dollar}{DataDictionary.CorrectionReceivingDocument.attributes}" 
+		documentAttributes="${DataDictionary.CorrectionReceivingDocument.attributes}" 
 		deliveryReadOnly="true" />
           	
-    <purap:relatedDocuments documentAttributes="${symbol_dollar}{DataDictionary.RelatedDocuments.attributes}" />
+    <purap:relatedDocuments documentAttributes="${DataDictionary.RelatedDocuments.attributes}" />
 
-	<kul:notes notesBo="${symbol_dollar}{KualiForm.document.documentBusinessObject.boNotes}" noteType="${symbol_dollar}{Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" />
+	<kul:notes notesBo="${KualiForm.document.documentBusinessObject.boNotes}" noteType="${Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" />
 
     <kul:routeLog />
     		

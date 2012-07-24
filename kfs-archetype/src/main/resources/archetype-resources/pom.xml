@@ -64,6 +64,7 @@ limitations under the License.
     <cxf.version>2.3.8</cxf.version>
     <jetty.version>8.1.5.v20120716</jetty.version>
     <jsp-api.version>2.1</jsp-api.version>
+    <jsp.version>2.1</jsp.version>
     <jstl.version>1.2</jstl.version>
     <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
     <log4j.version>1.2.17</log4j.version>
@@ -656,18 +657,6 @@ limitations under the License.
                     <groupId>${driver.groupId}</groupId>
                     <artifactId>${driver.artifactId}</artifactId>
                     <version>${driver.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                    <groupId>${project.groupId}</groupId>
-                    <artifactId>${project.parent.artifactId}-core</artifactId>
-                    <version>${project.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
-                <dependency>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                    <version>${servlet.version}</version>
                     <scope>runtime</scope>
                 </dependency>
             </dependencies>

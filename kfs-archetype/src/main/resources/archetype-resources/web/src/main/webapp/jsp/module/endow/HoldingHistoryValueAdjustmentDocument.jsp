@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,27 +13,27 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="readOnly"
-	value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+	value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="HoldingHistoryValueAdjustmentDocument"
 	htmlFormAction="endowHoldingHistoryValueAdjustmentDocument" renderMultipart="true"
 	showTabButtons="true">
 
-    <c:if test="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
+    <c:if test="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
         <c:set var="fullEntryMode" value="true" scope="request" />
     </c:if>
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	
 	<sys:hiddenDocumentFields isFinancialDocument="false" />
      
     <endow:endowmentHoldingHistoryValueAdjustmentDetails
-         documentAttributes="${symbol_dollar}{DataDictionary.HoldingHistoryValueAdjustmentDocument.attributes}"
-         readOnly="${symbol_dollar}{readOnly}"
+         documentAttributes="${DataDictionary.HoldingHistoryValueAdjustmentDocument.attributes}"
+         readOnly="${readOnly}"
          tabTitle="History Value Adjustment Details"
          headingTitle="History Value Adjustment Details"
          summaryTitle="History Value Adjustment Details" />
@@ -47,7 +44,7 @@
 
 	<kul:panelFooter />
 
-	<sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{KualiForm.extraButtons}" />
+	<sys:documentControls transactionalDocument="true" extraButtons="${KualiForm.extraButtons}" />
 
 </kul:documentPage>
 	

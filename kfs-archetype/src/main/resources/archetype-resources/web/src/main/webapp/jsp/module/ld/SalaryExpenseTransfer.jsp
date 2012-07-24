@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -17,33 +14,33 @@
  limitations under the License.
 --%>
 
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="balanceInquiryAttributes"
-	value="${symbol_dollar}{DataDictionary.LedgerBalanceForBenefitExpenseTransfer.attributes}" />
+	value="${DataDictionary.LedgerBalanceForBenefitExpenseTransfer.attributes}" />
 	
 <c:set var="readOnly"
-	value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || !KualiForm.editingMode['ledgerBalanceImporting']}"/>
+	value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || !KualiForm.editingMode['ledgerBalanceImporting']}"/>
 
 <c:set var="documentTypeName" value="SalaryExpenseTransferDocument"/>
 <c:set var="htmlFormAction" value="laborSalaryExpenseTransfer"/>
 
-<c:if test="${symbol_dollar}{isYearEnd}">
+<c:if test="${isYearEnd}">
   <c:set var="documentTypeName" value="YearEndSalaryExpenseTransferDocument"/>
   <c:set var="htmlFormAction" value="laborYearEndSalaryExpenseTransfer"/>
 </c:if>
 
 <kul:documentPage showDocumentInfo="true"
-    documentTypeName="${symbol_dollar}{documentTypeName}"
-    htmlFormAction="${symbol_dollar}{htmlFormAction}" renderMultipart="true"
+    documentTypeName="${documentTypeName}"
+    htmlFormAction="${htmlFormAction}" renderMultipart="true"
     showTabButtons="true">
 
     <html:hidden property="financialBalanceTypeCode" />
     
-    <sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+    <sys:documentOverview editingMode="${KualiForm.editingMode}" />
  
 	<kul:tab tabTitle="Ledger Balance Importing" defaultOpen="true"
-		tabErrorKey="${symbol_dollar}{KFSConstants.EMPLOYEE_LOOKUP_ERRORS}">
+		tabErrorKey="${KFSConstants.EMPLOYEE_LOOKUP_ERRORS}">
 		<div class="tab-container" align=center>
 		<h3>Ledger Balance Importing</h3>
 		<table cellpadding="0" cellspacing="0" class="datatable"
@@ -51,26 +48,26 @@
 
 			<tr>
 				<kul:htmlAttributeHeaderCell
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.universityFiscalYear}"
+					attributeEntry="${balanceInquiryAttributes.universityFiscalYear}"
 					horizontal="true" width="35%"  labelFor="universityFiscalYear" forceRequired="true"/>
 
 				<td class="datacell-nowrap"><kul:htmlControlAttribute
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.universityFiscalYear}"
-					property="universityFiscalYear" forceRequired="true" readOnly="${symbol_dollar}{readOnly}" /> 
+					attributeEntry="${balanceInquiryAttributes.universityFiscalYear}"
+					property="universityFiscalYear" forceRequired="true" readOnly="${readOnly}" /> 
 					
-					<c:if test="${symbol_dollar}{!readOnly}">
+					<c:if test="${!readOnly}">
 					<!-- KULLAB-709 Force field conversions -->
-						<kul:lookup	boClassName="org.kuali.${parentArtifactId}.sys.businessobject.SystemOptions"
+						<kul:lookup	boClassName="org.kuali.kfs.sys.businessobject.SystemOptions"
 						lookupParameters="universityFiscalYear:universityFiscalYear"
 						fieldConversions="universityFiscalYear:universityFiscalYear"						
-						fieldLabel="${symbol_dollar}{balanceInquiryAttributes.universityFiscalYear.label}" />
+						fieldLabel="${balanceInquiryAttributes.universityFiscalYear.label}" />
 					</c:if>
 				</td>
 			</tr>			
 
              <tr>
                <kul:htmlAttributeHeaderCell
-                   attributeEntry="${symbol_dollar}{DataDictionary.PersonImpl.attributes.employeeId}"
+                   attributeEntry="${DataDictionary.PersonImpl.attributes.employeeId}"
                    horizontal="true"
                    forceRequired="true" labelFor="document.emplid"
                    />
@@ -79,9 +76,9 @@
                                  userNameFieldName="document.user.name" 
                                  fieldConversions="employeeId:document.emplid"
                                  lookupParameters="document.emplid:employeeId,universityFiscalYear:universityFiscalYear"
-                                 hasErrors="${symbol_dollar}{hasErrors}"
-                                 onblur="${symbol_dollar}{onblur}"
-                                 highlight="${symbol_dollar}{addHighlighting}" readOnly="${symbol_dollar}{readOnly}" >
+                                 hasErrors="${hasErrors}"
+                                 onblur="${onblur}"
+                                 highlight="${addHighlighting}" readOnly="${readOnly}" >
                      </sys:employee>
                </td>
              </tr>
@@ -89,9 +86,9 @@
             <tr>
             	<td height="30" class="infoline">&nbsp;</td>
             	<td height="30" class="infoline">
-            		<c:if test="${symbol_dollar}{!readOnly}">
+            		<c:if test="${!readOnly}">
 	                   <gl:balanceInquiryLookup
-	                       boClassName="org.kuali.${parentArtifactId}.module.ld.businessobject.LedgerBalanceForSalaryExpenseTransfer"
+	                       boClassName="org.kuali.kfs.module.ld.businessobject.LedgerBalanceForSalaryExpenseTransfer"
 	                       actionPath="glBalanceInquiryLookup.do"
 	                       lookupParameters="universityFiscalYear:universityFiscalYear,document.emplid:emplid,financialBalanceTypeCode:financialBalanceTypeCode"
 	                       tabindexOverride="KualiForm.currentTabIndex"
@@ -103,7 +100,7 @@
 		</div>
 	</kul:tab>
 	
-	<kul:tab tabTitle="Accounting Lines" defaultOpen="true"	tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">			
+	<kul:tab tabTitle="Accounting Lines" defaultOpen="true"	tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS}">			
 		<sys-java:accountingLines>
 			<sys-java:accountingLineGroup collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine"	attributeGroupName="source" />
 	       	<sys-java:accountingLineGroup collectionPropertyName="document.targetAccountingLines" collectionItemPropertyName="document.targetAccountingLine" attributeGroupName="target" />
@@ -115,5 +112,5 @@
     <kul:adHocRecipients />
     <kul:routeLog />
     <kul:panelFooter />
-    <sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{KualiForm.extraButtons}" />
+    <sys:documentControls transactionalDocument="true" extraButtons="${KualiForm.extraButtons}" />
 </kul:documentPage>

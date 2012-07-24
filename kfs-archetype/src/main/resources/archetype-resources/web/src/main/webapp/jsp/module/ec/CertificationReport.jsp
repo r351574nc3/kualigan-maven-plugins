@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -16,42 +13,42 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <html:xhtml/>
 
-<c:set var="documentAttributes"	value="${symbol_dollar}{DataDictionary.EffortCertificationDocument.attributes}" />
-<c:set var="detailAttributes" value="${symbol_dollar}{DataDictionary.EffortCertificationDetail.attributes}" />
+<c:set var="documentAttributes"	value="${DataDictionary.EffortCertificationDocument.attributes}" />
+<c:set var="detailAttributes" value="${DataDictionary.EffortCertificationDetail.attributes}" />
 
-<c:set var="detailLines" value="${symbol_dollar}{KualiForm.detailLines}"/>
-<c:set var="newDetailLine" value="${symbol_dollar}{KualiForm.newDetailLine}"/>
+<c:set var="detailLines" value="${KualiForm.detailLines}"/>
+<c:set var="newDetailLine" value="${KualiForm.newDetailLine}"/>
 
 <c:set var="documentTypeName" value="EffortCertificationDocument"/>
 <c:set var="htmlFormAction" value="effortCertificationRecreate"/>
 
 <kul:documentPage showDocumentInfo="true"
 	htmlFormAction="effortCertificationReport"
-	documentTypeName="${symbol_dollar}{documentTypeName}" renderMultipart="true"
+	documentTypeName="${documentTypeName}" renderMultipart="true"
 	showTabButtons="true">
 	
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />	
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />	
 	
 	<ec:reportInformation />
 	
     <c:set var="hiddenFieldNames" value="effortCertificationDocumentCode,totalOriginalPayrollAmount"/>
-	<c:forTokens var="fieldName" items="${symbol_dollar}{hiddenFieldNames}" delims=",">	
-		<input type="hidden" name="document.${symbol_dollar}{fieldName}" id="document.${symbol_dollar}{fieldName}" value="${symbol_dollar}{KualiForm.document[fieldName]}"/>		  
+	<c:forTokens var="fieldName" items="${hiddenFieldNames}" delims=",">	
+		<input type="hidden" name="document.${fieldName}" id="document.${fieldName}" value="${KualiForm.document[fieldName]}"/>		  
 	</c:forTokens>
 
-	<c:set var="canEdit" value="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}"/>
-	<c:set var="isSummaryTabEntry" value="${symbol_dollar}{KualiForm.editingMode[EffortConstants.EffortCertificationEditMode.SUMMARY_TAB_ENTRY]}"/>
+	<c:set var="canEdit" value="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}"/>
+	<c:set var="isSummaryTabEntry" value="${KualiForm.editingMode[EffortConstants.EffortCertificationEditMode.SUMMARY_TAB_ENTRY]}"/>
 	
- 	<c:if test="${symbol_dollar}{canEdit && isSummaryTabEntry}">
+ 	<c:if test="${canEdit && isSummaryTabEntry}">
 		<ec:summaryTab/>	
 	</c:if>
 	
-	<c:set var="isDetailTabEntry" value="${symbol_dollar}{KualiForm.editingMode[EffortConstants.EffortCertificationEditMode.DETAIL_TAB_ENTRY]}" />
-	<ec:detailTab isOpen="${symbol_dollar}{!isSummaryTabEntry}" isEditable="${symbol_dollar}{canEdit && isDetailTabEntry && !isSummaryTabEntry}"/>
+	<c:set var="isDetailTabEntry" value="${KualiForm.editingMode[EffortConstants.EffortCertificationEditMode.DETAIL_TAB_ENTRY]}" />
+	<ec:detailTab isOpen="${!isSummaryTabEntry}" isEditable="${canEdit && isDetailTabEntry && !isSummaryTabEntry}"/>
 	
 	<kul:notes />
 	
@@ -61,6 +58,6 @@
 	
 	<kul:panelFooter />
 	
-	<sys:documentControls transactionalDocument="${symbol_dollar}{document.transactionalDocument}" />
+	<sys:documentControls transactionalDocument="${document.transactionalDocument}" />
 
 </kul:documentPage>

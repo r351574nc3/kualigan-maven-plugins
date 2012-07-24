@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -16,21 +13,21 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <html:html locale="true">
 <head>
-<script>var jsContextPath = "${symbol_dollar}{pageContext.request.contextPath}";</script>
+<script>var jsContextPath = "${pageContext.request.contextPath}";</script>
 
-<c:forEach items="${symbol_dollar}{fn:split(ConfigProperties.javascript.files, ',')}" var="javascriptFile">
-	<c:if test="${symbol_dollar}{fn:length(fn:trim(javascriptFile)) > 0}">
+<c:forEach items="${fn:split(ConfigProperties.javascript.files, ',')}" var="javascriptFile">
+	<c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
 		<script language="JavaScript" type="text/javascript"
-				src="${symbol_dollar}{pageContext.request.contextPath}/${symbol_dollar}{javascriptFile}">
+				src="${pageContext.request.contextPath}/${javascriptFile}">
 		</script>
 	</c:if>
 </c:forEach>
 </head>
 
 <body onload="reload()">
-<portal:iframePortletContainer channelTitle="Shop Catalogs" channelUrl="${symbol_dollar}{KualiForm.shopUrl}" frameHeight="1000"/>
+<portal:iframePortletContainer channelTitle="Shop Catalogs" channelUrl="${KualiForm.shopUrl}" frameHeight="1000"/>
 </body>
 </html:html>

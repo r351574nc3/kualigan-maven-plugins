@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006 The Kuali Foundation
  
@@ -16,64 +13,65 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="RequisitionDocument"
 	htmlFormAction="purapRequisition" renderMultipart="true"
 	showTabButtons="true">
 
-    <c:set var="fullEntryMode" value="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] && (empty KualiForm.editingMode['restrictFiscalEntry'])}" />
+    <c:set var="fullEntryMode" value="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] && (empty KualiForm.editingMode['restrictFiscalEntry'])}" />
  
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}"
+	<sys:documentOverview editingMode="${KualiForm.editingMode}"
 		includePostingYear="true"
-        fiscalYearReadOnly="${symbol_dollar}{not KualiForm.editingMode['allowPostingYearEntry']}"
-        postingYearAttributes="${symbol_dollar}{DataDictionary.RequisitionDocument.attributes}" >
+        fiscalYearReadOnly="${not KualiForm.editingMode['allowPostingYearEntry']}"
+        postingYearAttributes="${DataDictionary.RequisitionDocument.attributes}" >
 
     	<purap:purapDocumentDetail
-	    	documentAttributes="${symbol_dollar}{DataDictionary.RequisitionDocument.attributes}"
+	    	documentAttributes="${DataDictionary.RequisitionDocument.attributes}"
 	    	detailSectionLabel="Requisition Detail"
-	    	editableFundingSource="true" />
+	    	editableFundingSource="true" 
+	    	editableAccountDistributionMethod="${KualiForm.readOnlyAccountDistributionMethod}" />
     </sys:documentOverview>
 
     <purap:delivery
-        documentAttributes="${symbol_dollar}{DataDictionary.RequisitionDocument.attributes}" 
+        documentAttributes="${DataDictionary.RequisitionDocument.attributes}" 
         showDefaultBuildingOption="true" />
 
     <purap:vendor
-        documentAttributes="${symbol_dollar}{DataDictionary.RequisitionDocument.attributes}"
+        documentAttributes="${DataDictionary.RequisitionDocument.attributes}"
         displayRequisitionFields="true" />
  
-    <purap:puritems itemAttributes="${symbol_dollar}{DataDictionary.RequisitionItem.attributes}"
-    	accountingLineAttributes="${symbol_dollar}{DataDictionary.RequisitionAccount.attributes}" 
+    <purap:puritems itemAttributes="${DataDictionary.RequisitionItem.attributes}"
+    	accountingLineAttributes="${DataDictionary.RequisitionAccount.attributes}" 
     	displayRequisitionFields="true"/>
- 	<purap:purCams documentAttributes="${symbol_dollar}{DataDictionary.RequisitionDocument.attributes}"
-		itemAttributes="${symbol_dollar}{DataDictionary.RequisitionItem.attributes}" 
-		camsItemAttributes="${symbol_dollar}{DataDictionary.RequisitionCapitalAssetItem.attributes}" 
-		camsSystemAttributes="${symbol_dollar}{DataDictionary.RequisitionCapitalAssetSystem.attributes}"
-		camsAssetAttributes="${symbol_dollar}{DataDictionary.RequisitionItemCapitalAsset.attributes}"
-		camsLocationAttributes="${symbol_dollar}{DataDictionary.RequisitionCapitalAssetLocation.attributes}" 
+ 	<purap:purCams documentAttributes="${DataDictionary.RequisitionDocument.attributes}"
+		itemAttributes="${DataDictionary.RequisitionItem.attributes}" 
+		camsItemAttributes="${DataDictionary.RequisitionCapitalAssetItem.attributes}" 
+		camsSystemAttributes="${DataDictionary.RequisitionCapitalAssetSystem.attributes}"
+		camsAssetAttributes="${DataDictionary.RequisitionItemCapitalAsset.attributes}"
+		camsLocationAttributes="${DataDictionary.RequisitionCapitalAssetLocation.attributes}" 
 		isRequisition="true" />
 
 
     <purap:paymentinfo
-        documentAttributes="${symbol_dollar}{DataDictionary.RequisitionDocument.attributes}" />
+        documentAttributes="${DataDictionary.RequisitionDocument.attributes}" />
 
     <purap:additional
-        documentAttributes="${symbol_dollar}{DataDictionary.RequisitionDocument.attributes}"
+        documentAttributes="${DataDictionary.RequisitionDocument.attributes}"
         displayRequisitionFields="true" />
          
     <purap:summaryaccounts
-        itemAttributes="${symbol_dollar}{DataDictionary.RequisitionItem.attributes}"
-    	documentAttributes="${symbol_dollar}{DataDictionary.SourceAccountingLine.attributes}" />
+        itemAttributes="${DataDictionary.RequisitionItem.attributes}"
+    	documentAttributes="${DataDictionary.SourceAccountingLine.attributes}" />
 
     <purap:relatedDocuments
-            documentAttributes="${symbol_dollar}{DataDictionary.RelatedDocuments.attributes}" />
+            documentAttributes="${DataDictionary.RelatedDocuments.attributes}" />
     
     <purap:paymentHistory
-            documentAttributes="${symbol_dollar}{DataDictionary.RelatedDocuments.attributes}" />
+            documentAttributes="${DataDictionary.RelatedDocuments.attributes}" />
 	            
-	<kul:notes notesBo="${symbol_dollar}{KualiForm.document.documentBusinessObject.boNotes}" noteType="${symbol_dollar}{Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" /> 
+	<kul:notes notesBo="${KualiForm.document.documentBusinessObject.boNotes}" noteType="${Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" /> 
 
 	<kul:adHocRecipients />
 
@@ -81,8 +79,8 @@
 
 	<kul:panelFooter />
 	
-	<c:set var="extraButtons" value="${symbol_dollar}{KualiForm.extraButtons}"/>  	
+	<c:set var="extraButtons" value="${KualiForm.extraButtons}"/>  	
 
-	<sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{extraButtons}" />
+	<sys:documentControls transactionalDocument="true" extraButtons="${extraButtons}" />
 
 </kul:documentPage>

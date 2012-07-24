@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2006 The Kuali Foundation
  
@@ -16,11 +13,11 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp" %>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp" %>
 
 <kul:documentPage showDocumentInfo="true" htmlFormAction="financialAuxiliaryVoucher" documentTypeName="AuxiliaryVoucherDocument" renderMultipart="true" showTabButtons="true">
 		<%-- derive displayReadOnly value --%>
-		<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+		<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
   	   	<SCRIPT type="text/javascript">
 		<!--
@@ -31,9 +28,9 @@
 	    </SCRIPT>
 
 		
-        <sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}"/>
+        <sys:documentOverview editingMode="${KualiForm.editingMode}"/>
 		<!-- AUXILIARY VOUCHER SPECIFIC FIELDS -->
-		<kul:tab tabTitle="Auxiliary Voucher Details" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.EDIT_AUXILIARY_VOUCHER_ERRORS}" >
+		<kul:tab tabTitle="Auxiliary Voucher Details" defaultOpen="true" tabErrorKey="${KFSConstants.EDIT_AUXILIARY_VOUCHER_ERRORS}" >
 	    	
 	    	<div class="tab-container" align="center">
 		<h3>Auxiliary Voucher Details</h3>
@@ -42,14 +39,14 @@
               <tr>
                 <th width="35%" class="bord-l-b">
                   <div align="right">
-                    <kul:htmlAttributeLabel labelFor="selectedAccountingPeriod" attributeEntry="${symbol_dollar}{DataDictionary.AuxiliaryVoucherDocument.attributes.accountingPeriod}" useShortLabel="false" />
+                    <kul:htmlAttributeLabel labelFor="selectedAccountingPeriod" attributeEntry="${DataDictionary.AuxiliaryVoucherDocument.attributes.accountingPeriod}" useShortLabel="false" />
                   </div>
                 </th>
                 <td class="datacell-nowrap">
-               		<c:if test="${symbol_dollar}{readOnly}">
-                        ${symbol_dollar}{KualiForm.accountingPeriod.universityFiscalPeriodName}
+               		<c:if test="${readOnly}">
+                        ${KualiForm.accountingPeriod.universityFiscalPeriodName}
 					</c:if>
-                	<c:if test="${symbol_dollar}{!readOnly}">
+                	<c:if test="${!readOnly}">
 						<html:select property="selectedAccountingPeriod"
 						 onchange ="submitForChangedType()">
 					 		<html:options property="accountingPeriodCompositeValueList" labelProperty="accountingPeriodLabelList"  />
@@ -60,15 +57,15 @@
               <tr>
                   <th width="35%" class="bord-l-b">
                       <div align="right">
-                          <kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{DataDictionary.AuxiliaryVoucherDocument.attributes.typeCode}" useShortLabel="false" />
+                          <kul:htmlAttributeLabel attributeEntry="${DataDictionary.AuxiliaryVoucherDocument.attributes.typeCode}" useShortLabel="false" />
                       </div>
                   </th>
                   <td class="datacell-nowrap">
          	          <kul:htmlControlAttribute
-					    	attributeEntry="${symbol_dollar}{DataDictionary.AuxiliaryVoucherDocument.attributes.typeCode}"
+					    	attributeEntry="${DataDictionary.AuxiliaryVoucherDocument.attributes.typeCode}"
                             property="document.typeCode"
-                            readOnly="${symbol_dollar}{readOnly}" 
-                            readOnlyAlternateDisplay="${symbol_dollar}{fn:escapeXml(KualiForm.formattedAuxiliaryVoucherType)}" 
+                            readOnly="${readOnly}" 
+                            readOnlyAlternateDisplay="${fn:escapeXml(KualiForm.formattedAuxiliaryVoucherType)}" 
                             onchange="submitForChangedType()"/>          
 						<NOSCRIPT>
     						<html:submit value="select" alt="press this button to refresh the page after changing the voucher type." />
@@ -76,28 +73,28 @@
                   </td>
               </tr>
               <c:choose>
-                  <c:when test="${symbol_dollar}{empty KualiForm.document.typeCode || KualiForm.document.typeCode == KFSConstants.AuxiliaryVoucher.ADJUSTMENT_DOC_TYPE}">
+                  <c:when test="${empty KualiForm.document.typeCode || KualiForm.document.typeCode == KFSConstants.AuxiliaryVoucher.ADJUSTMENT_DOC_TYPE}">
                   </c:when>                  
                   <c:otherwise>
-                      <c:set var="reversalReadOnly" value="${symbol_dollar}{readOnly}"/>
-                      <c:if test="${symbol_dollar}{!reversalReadOnly}">  <!--  if we're already readOnly b/c of authz permissions, then we want to stay that way -->
-	                      <c:if test="${symbol_dollar}{KualiForm.document.typeCode == KFSConstants.AuxiliaryVoucher.RECODE_DOC_TYPE}">
+                      <c:set var="reversalReadOnly" value="${readOnly}"/>
+                      <c:if test="${!reversalReadOnly}">  <!--  if we're already readOnly b/c of authz permissions, then we want to stay that way -->
+	                      <c:if test="${KualiForm.document.typeCode == KFSConstants.AuxiliaryVoucher.RECODE_DOC_TYPE}">
 						      <c:set var="reversalReadOnly" value="true"/>
 	                      </c:if>
 	                  </c:if>
                       <tr>
                           <kul:htmlAttributeHeaderCell
-                                  attributeEntry="${symbol_dollar}{DataDictionary.AuxiliaryVoucherDocument.attributes.reversalDate}"
+                                  attributeEntry="${DataDictionary.AuxiliaryVoucherDocument.attributes.reversalDate}"
                                   horizontal="true"
                                   width="35%"
                                   />
                           <td class="datacell-nowrap">
                               <kul:htmlControlAttribute
-                                      attributeEntry="${symbol_dollar}{DataDictionary.AuxiliaryVoucherDocument.attributes.reversalDate}"
+                                      attributeEntry="${DataDictionary.AuxiliaryVoucherDocument.attributes.reversalDate}"
                                       datePicker="true"
                                       property="document.reversalDate"
-                                      readOnly="${symbol_dollar}{reversalReadOnly}"
-                                      readOnlyAlternateDisplay="${symbol_dollar}{fn:escapeXml(KualiForm.formattedReversalDate)}"
+                                      readOnly="${reversalReadOnly}"
+                                      readOnlyAlternateDisplay="${fn:escapeXml(KualiForm.formattedReversalDate)}"
                                       />
                           </td>
                       </tr>
@@ -107,7 +104,7 @@
           </table>
 	    	</div>
 		</kul:tab>
-        <kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+        <kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS}">
 			<sys-java:accountingLines>
 				<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="source" />
 			</sys-java:accountingLines>
@@ -122,6 +119,6 @@
 
 		<kul:panelFooter/>
 
-		<sys:documentControls transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}" extraButtons="${symbol_dollar}{KualiForm.extraButtons}"/>
+		<sys:documentControls transactionalDocument="${documentEntry.transactionalDocument}" extraButtons="${KualiForm.extraButtons}"/>
 
 </kul:documentPage>

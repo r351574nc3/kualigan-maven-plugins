@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -17,12 +14,12 @@
  limitations under the License.
 --%>
 
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <script language="JavaScript" type="text/javascript" src="scripts/module/cams/selectAllCheckbox.js"></script>
 <kul:documentPage showDocumentInfo="true"  htmlFormAction="camsBarcodeInventoryError"  documentTypeName="BarcodeInventoryErrorDocument" 
 renderMultipart="true"  showTabButtons="true">
 
- 	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+ 	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
  	
  	<cams:barcodeInventoryErrorDetails/>
  	
@@ -34,6 +31,6 @@ renderMultipart="true"  showTabButtons="true">
     
     <kul:panelFooter />
     
-    <sys:documentControls transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}"/>
+    <sys:documentControls transactionalDocument="${documentEntry.transactionalDocument}"/>
     
 </kul:documentPage>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,37 +13,37 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <c:set var="disbursementNumberRangeAttributes"
-	value="${symbol_dollar}{DataDictionary.DisbursementNumberRange.attributes}" />
+	value="${DataDictionary.DisbursementNumberRange.attributes}" />
 <c:set var="formatResultAttributes"
-	value="${symbol_dollar}{DataDictionary.FormatResult.attributes}" />
+	value="${DataDictionary.FormatResult.attributes}" />
 <c:set var="customerProfileAttributes"
-	value="${symbol_dollar}{DataDictionary.CustomerProfile.attributes}" />
+	value="${DataDictionary.CustomerProfile.attributes}" />
 <c:set var="dummyAttributes"
-	value="${symbol_dollar}{DataDictionary.AttributeReferenceDummy.attributes}" />
+	value="${DataDictionary.AttributeReferenceDummy.attributes}" />
 
 <kul:page headerTitle="Format Disbursement Summary"
 	transactionalDocument="false" showDocumentInfo="false" errorKey="foo"
 	htmlFormAction="pdp/format" docTitle="Format Disbursement Summary">
 	
 	<table width="100%" border="0"><tr><td>	
-	  <kul:errors keyMatch="${symbol_dollar}{Constants.GLOBAL_ERRORS}" errorTitle="Errors Found On Page:"/>
+	  <kul:errors keyMatch="${Constants.GLOBAL_ERRORS}" errorTitle="Errors Found On Page:"/>
 	</td></tr></table>  
 	</br>
 	
 	<pdp:formatSelectedPayments
-		disbursementNumberRangeAttributes="${symbol_dollar}{disbursementNumberRangeAttributes}"
-		customerProfileAttributes="${symbol_dollar}{customerProfileAttributes}"
-		formatResultAttributes="${symbol_dollar}{formatResultAttributes}" />
+		disbursementNumberRangeAttributes="${disbursementNumberRangeAttributes}"
+		customerProfileAttributes="${customerProfileAttributes}"
+		formatResultAttributes="${formatResultAttributes}" />
 	<kul:panelFooter />
 	<div id="globalbuttons" class="globalbuttons">
 		<html:image
-			src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_continue.gif"
+			src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_continue.gif"
 			styleClass="globalbuttons" property="methodToCall.continueFormat"
 			title="begin format" alt="continue format" />
 		<html:image
-			src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif"
+			src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif"
 			styleClass="globalbuttons" property="methodToCall.cancel"
 			title="cancel" alt="cancel" />
 	</div>

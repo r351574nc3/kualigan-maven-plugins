@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,53 +13,53 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="readOnly"
-	value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+	value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 <c:set var="editDetails"
-	value="${symbol_dollar}{!empty KualiForm.editingMode['editDetails']}" />
+	value="${!empty KualiForm.editingMode['editDetails']}" />
 <c:set var="showGenerateButton"
-	value="${symbol_dollar}{!empty KualiForm.editingMode['showGenerateButton']}" />
+	value="${!empty KualiForm.editingMode['showGenerateButton']}" />
 <c:set var="editPaymentMedium"
-	value="${symbol_dollar}{!empty KualiForm.editingMode['editPaymentMedium']}" />
+	value="${!empty KualiForm.editingMode['editPaymentMedium']}" />
 <c:set var="editRefDocNbr"
-	value="${symbol_dollar}{!empty KualiForm.editingMode['editRefDocNbr']}" />
+	value="${!empty KualiForm.editingMode['editRefDocNbr']}" />
 <c:set var="editPaymentAppDoc"
-	value="${symbol_dollar}{!empty KualiForm.editingMode['editPaymentAppDoc']}" />
+	value="${!empty KualiForm.editingMode['editPaymentAppDoc']}" />
 <c:set var="editBankCode"
-	value="${symbol_dollar}{!empty KualiForm.editingMode['editBankCode']}" />
+	value="${!empty KualiForm.editingMode['editBankCode']}" />
 <c:set var="showBankCode"
-	value="${symbol_dollar}{!empty KualiForm.editingMode['showBankCode']}" />	
+	value="${!empty KualiForm.editingMode['showBankCode']}" />	
 	
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="CashControlDocument"
 	htmlFormAction="arCashControlDocument" renderMultipart="true"
 	showTabButtons="true">
 
-    <c:if test="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
+    <c:if test="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
         <c:set var="fullEntryMode" value="true" scope="request" />
     </c:if>
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	
 	<sys:hiddenDocumentFields isFinancialDocument="false" />
 	
     <ar:cashControl
-        documentAttributes="${symbol_dollar}{DataDictionary.CashControlDocument.attributes}"
-        readOnly="${symbol_dollar}{readOnly}"
-        showGenerateButton = "${symbol_dollar}{showGenerateButton}"
-        editPaymentMedium= "${symbol_dollar}{editPaymentMedium}"
-        editBankCode = "${symbol_dollar}{editBankCode}"
-        showBankCode = "${symbol_dollar}{showBankCode}"
-        editRefDocNbr = "${symbol_dollar}{editRefDocNbr}" />
+        documentAttributes="${DataDictionary.CashControlDocument.attributes}"
+        readOnly="${readOnly}"
+        showGenerateButton = "${showGenerateButton}"
+        editPaymentMedium= "${editPaymentMedium}"
+        editBankCode = "${editBankCode}"
+        showBankCode = "${showBankCode}"
+        editRefDocNbr = "${editRefDocNbr}" />
         
     <ar:cashControlDetails
-        documentAttributes="${symbol_dollar}{DataDictionary.CashControlDocument.attributes}"
-        cashControlDetailAttributes="${symbol_dollar}{DataDictionary.CashControlDetail.attributes}"
-        readOnly="${symbol_dollar}{readOnly}"
-        editDetails = "${symbol_dollar}{editDetails}"
-        editPaymentAppDoc = "${symbol_dollar}{editPaymentAppDoc}"/>  
+        documentAttributes="${DataDictionary.CashControlDocument.attributes}"
+        cashControlDetailAttributes="${DataDictionary.CashControlDetail.attributes}"
+        readOnly="${readOnly}"
+        editDetails = "${editDetails}"
+        editPaymentAppDoc = "${editPaymentAppDoc}"/>  
         
     <gl:generalLedgerPendingEntries />
                 

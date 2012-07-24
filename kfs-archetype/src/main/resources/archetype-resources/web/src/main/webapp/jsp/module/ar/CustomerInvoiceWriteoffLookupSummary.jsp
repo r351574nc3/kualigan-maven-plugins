@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,21 +13,21 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page headerTitle="Customer Invoice Writeoff Summary" transactionalDocument="false" showDocumentInfo="false" htmlFormAction="arCustomerInvoiceWriteoffLookupSummary" docTitle="Customer Invoice Writeoff Summary">
 		
-	<ar:customerInvoiceWriteoffSummaryResults customerInvoiceDocumentAttributes="${symbol_dollar}{DataDictionary.CustomerInvoiceDocument.attributes}"/>
+	<ar:customerInvoiceWriteoffSummaryResults customerInvoiceDocumentAttributes="${DataDictionary.CustomerInvoiceDocument.attributes}"/>
 	
 	<kul:panelFooter />
 
 	<div id="globalbuttons" class="globalbuttons">
-		<c:if test="${symbol_dollar}{KualiForm.sentToBatch}"> 
-		<html:image src="${symbol_dollar}{ConfigProperties.externalizable.images.url}buttonsmall_return.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="claim" alt="claim"/>
+		<c:if test="${KualiForm.sentToBatch}"> 
+		<html:image src="${ConfigProperties.externalizable.images.url}buttonsmall_return.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="claim" alt="claim"/>
 		</c:if>
-		<c:if test="${symbol_dollar}{!KualiForm.sentToBatch}">
-		<html:image src="${symbol_dollar}{ConfigProperties.externalizable.images.url}buttonsmall_create.gif" styleClass="globalbuttons" property="methodToCall.createCustomerInvoiceWriteoffs" title="claim" alt="claim"/>
-		<html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="cancel" alt="cancel"/>
+		<c:if test="${!KualiForm.sentToBatch}">
+		<html:image src="${ConfigProperties.externalizable.images.url}buttonsmall_create.gif" styleClass="globalbuttons" property="methodToCall.createCustomerInvoiceWriteoffs" title="claim" alt="claim"/>
+		<html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="cancel" alt="cancel"/>
 		</c:if>
 	</div>
 </kul:page>

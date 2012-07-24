@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -16,21 +13,21 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <c:set var="generalLedgerPendingEntriesList"
-	value="${symbol_dollar}{KualiForm.document.newMaintainableObject.businessObject.generalLedgerPendingEntries}" />
-<c:if test="${symbol_dollar}{!empty generalLedgerPendingEntriesList}">
+	value="${KualiForm.document.newMaintainableObject.businessObject.generalLedgerPendingEntries}" />
+<c:if test="${!empty generalLedgerPendingEntriesList}">
 	<gl:generalLedgerPendingEntries
-		generalLedgerPendingEntries="${symbol_dollar}{generalLedgerPendingEntriesList}"
+		generalLedgerPendingEntries="${generalLedgerPendingEntriesList}"
 		generalLedgerPendingEntryProperty="document.newMaintainableObject.businessObject.generalLedgerPendingEntries"
 		generalLedgerPendingEntriesProperty="document.newMaintainableObject.businessObject.generalLedgerPendingEntries" />
 </c:if>
-<c:if test="${symbol_dollar}{empty generalLedgerPendingEntriesList}">
+<c:if test="${empty generalLedgerPendingEntriesList}">
 	<kul:tab tabTitle="General Ledger Pending Entries" defaultOpen="false"
-		tabErrorKey="${symbol_dollar}{KFSConstants.GENERAL_LEDGER_PENDING_ENTRIES_TAB_ERRORS}">
+		tabErrorKey="${KFSConstants.GENERAL_LEDGER_PENDING_ENTRIES_TAB_ERRORS}">
 		<div class="tab-container" align=center>
 		<h3>General Ledger Pending Entries <kul:lookup
-			boClassName="org.kuali.${parentArtifactId}.sys.businessobject.GeneralLedgerPendingEntry"
+			boClassName="org.kuali.kfs.sys.businessobject.GeneralLedgerPendingEntry"
 			lookupParameters="document.documentNumber:documentNumber"
 			hideReturnLink="true" suppressActions="true" /></h3>
 		<table cellpadding="0" cellspacing="0" class="datatable"

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -23,32 +20,32 @@
 </head>
 <body>
 <%-- Below form used for non java script enabled browsers --%>
-<form name="disabledJavaScriptPrintForm" id="disabledJavaScriptPrintForm" method="post" action="${symbol_dollar}{printPOPDFUrl}">
-  <input type="hidden" name="retransmitHeader" value="${symbol_dollar}{KualiForm.document.retransmitHeader}" />
-  <input type="hidden" name="selectedItemIndexes" value="${symbol_dollar}{selectedItemIndexes}" />
-  <input type="hidden" name="poDocumentNumberForRetransmit" value="${symbol_dollar}{docId}" >
+<form name="disabledJavaScriptPrintForm" id="disabledJavaScriptPrintForm" method="post" action="${printPOPDFUrl}">
+  <input type="hidden" name="retransmitHeader" value="${KualiForm.document.retransmitHeader}" />
+  <input type="hidden" name="selectedItemIndexes" value="${selectedItemIndexes}" />
+  <input type="hidden" name="poDocumentNumberForRetransmit" value="${docId}" >
   <noscript>
-    Click this button to see the ${symbol_dollar}{purchaseOrderLabel} PDF:&nbsp;&nbsp;&nbsp;<input type="submit" title="View ${symbol_dollar}{purchaseOrderLabel} PDF" value="View ${symbol_dollar}{purchaseOrderLabel} PDF">
+    Click this button to see the ${purchaseOrderLabel} PDF:&nbsp;&nbsp;&nbsp;<input type="submit" title="View ${purchaseOrderLabel} PDF" value="View ${purchaseOrderLabel} PDF">
   </noscript>
 </form>
-<form name="disabledJavaScriptReturnForm" id="disabledJavaScriptReturnForm" method="post" action="${symbol_dollar}{displayPOTabbedPageUrl}">
+<form name="disabledJavaScriptReturnForm" id="disabledJavaScriptReturnForm" method="post" action="${displayPOTabbedPageUrl}">
   <noscript>
-    Click this button return to the ${symbol_dollar}{purchaseOrderLabel} tabbed page:&nbsp;&nbsp;&nbsp;<input type="submit" title="Return to the ${symbol_dollar}{purchaseOrderLabel}" value="Return to the ${symbol_dollar}{purchaseOrderLabel}">
+    Click this button return to the ${purchaseOrderLabel} tabbed page:&nbsp;&nbsp;&nbsp;<input type="submit" title="Return to the ${purchaseOrderLabel}" value="Return to the ${purchaseOrderLabel}">
   </noscript>
 </form>
 
 <%-- Below forms used for java script enabled browsers --%>
 
-<form name="backForm" id="backForm" method="post" action="${symbol_dollar}{displayPOTabbedPageUrl}">
+<form name="backForm" id="backForm" method="post" action="${displayPOTabbedPageUrl}">
 </form>
 
 
-<!-- form name="printPOPDFForm" id="printPOPDFForm" method="post" action="${symbol_dollar}{printPOPDFUrl}" -->
-<form name="KualiForm" method="post" action="${symbol_dollar}{printPOPDFUrl}">
+<!-- form name="printPOPDFForm" id="printPOPDFForm" method="post" action="${printPOPDFUrl}" -->
+<form name="KualiForm" method="post" action="${printPOPDFUrl}">
   <input type="hidden" name="useJavascript" value="true"/>
-  <input type="hidden" name="retransmitHeader" value="${symbol_dollar}{KualiForm.document.retransmitHeader}" />
-  <input type="hidden" name="selectedItemIndexes" value="${symbol_dollar}{selectedItemIndexes}" />
-  <input type="hidden" name="poDocumentNumberForRetransmit" value="${symbol_dollar}{docId}">
+  <input type="hidden" name="retransmitHeader" value="${KualiForm.document.retransmitHeader}" />
+  <input type="hidden" name="selectedItemIndexes" value="${selectedItemIndexes}" />
+  <input type="hidden" name="poDocumentNumberForRetransmit" value="${docId}">
   <script language ="javascript">
     window.onload = dothis();
     function dothis() {

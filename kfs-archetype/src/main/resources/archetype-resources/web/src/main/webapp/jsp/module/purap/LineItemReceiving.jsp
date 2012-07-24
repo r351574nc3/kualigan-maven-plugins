@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,45 +13,45 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true"
     documentTypeName="LineItemReceivingDocument"
     htmlFormAction="purapLineItemReceiving" renderMultipart="true"
     showTabButtons="true">
     		     		
-    <c:set var="fullEntryMode" value="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+    <c:set var="fullEntryMode" value="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
     
-	<c:if test="${symbol_dollar}{KualiForm.editingMode['displayInitTab']}" > 
-    	<purap:receivingLineInit documentAttributes="${symbol_dollar}{DataDictionary.LineItemReceivingDocument.attributes}"/>
+	<c:if test="${KualiForm.editingMode['displayInitTab']}" > 
+    	<purap:receivingLineInit documentAttributes="${DataDictionary.LineItemReceivingDocument.attributes}"/>
 	</c:if>
     
-    <c:if test="${symbol_dollar}{not KualiForm.editingMode['displayInitTab']}" >
+    <c:if test="${not KualiForm.editingMode['displayInitTab']}" >
 	
-	    <sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	    <sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	
-		<purap:receivingVendor documentAttributes="${symbol_dollar}{DataDictionary.LineItemReceivingDocument.attributes}" />
+		<purap:receivingVendor documentAttributes="${DataDictionary.LineItemReceivingDocument.attributes}" />
 	
-		<purap:receivingLineItems itemAttributes="${symbol_dollar}{DataDictionary.LineItemReceivingItem.attributes}" />
+		<purap:receivingLineItems itemAttributes="${DataDictionary.LineItemReceivingItem.attributes}" />
 		
 	    <purap:delivery
-			documentAttributes="${symbol_dollar}{DataDictionary.LineItemReceivingDocument.attributes}"
+			documentAttributes="${DataDictionary.LineItemReceivingDocument.attributes}"
 			deliveryReadOnly="true" />
 		          	
-	    <purap:relatedDocuments documentAttributes="${symbol_dollar}{DataDictionary.RelatedDocuments.attributes}" />
+	    <purap:relatedDocuments documentAttributes="${DataDictionary.RelatedDocuments.attributes}" />
 
-		<kul:notes notesBo="${symbol_dollar}{KualiForm.document.documentBusinessObject.boNotes}" noteType="${symbol_dollar}{Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" />
+		<kul:notes notesBo="${KualiForm.document.documentBusinessObject.boNotes}" noteType="${Constants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE}" />
 	
 	    <kul:routeLog />
 	</c:if>
 	    		
     <kul:panelFooter />
 	
-    <c:set var="extraButtons" value="${symbol_dollar}{KualiForm.extraButtons}"/>  	
+    <c:set var="extraButtons" value="${KualiForm.extraButtons}"/>  	
   	
     <sys:documentControls 
         transactionalDocument="true" 
-        extraButtons="${symbol_dollar}{extraButtons}"
-        suppressRoutingControls="${symbol_dollar}{KualiForm.editingMode['displayInitTab']}" />
+        extraButtons="${extraButtons}"
+        suppressRoutingControls="${KualiForm.editingMode['displayInitTab']}" />
       
 </kul:documentPage>

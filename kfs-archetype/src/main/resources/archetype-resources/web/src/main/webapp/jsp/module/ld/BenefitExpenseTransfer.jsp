@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -17,31 +14,31 @@
  limitations under the License.
 --%>
 
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="balanceInquiryAttributes"
-	value="${symbol_dollar}{DataDictionary.LedgerBalanceForBenefitExpenseTransfer.attributes}" />
+	value="${DataDictionary.LedgerBalanceForBenefitExpenseTransfer.attributes}" />
 
 <c:set var="readOnly"
-	value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || !KualiForm.editingMode['ledgerBalanceImporting']}"/>	
+	value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || !KualiForm.editingMode['ledgerBalanceImporting']}"/>	
 
 <c:set var="documentTypeName" value="BenefitExpenseTransferDocument"/>
 <c:set var="htmlFormAction" value="laborBenefitExpenseTransfer"/>
 
-<c:if test="${symbol_dollar}{isYearEnd}">
+<c:if test="${isYearEnd}">
   <c:set var="documentTypeName" value="YearEndBenefitExpenseTransferDocument"/>
   <c:set var="htmlFormAction" value="laborYearEndBenefitExpenseTransfer"/>
 </c:if>
 
 <kul:documentPage showDocumentInfo="true"
-    documentTypeName="${symbol_dollar}{documentTypeName}"
-    htmlFormAction="${symbol_dollar}{htmlFormAction}" renderMultipart="true"
+    documentTypeName="${documentTypeName}"
+    htmlFormAction="${htmlFormAction}" renderMultipart="true"
     showTabButtons="true">
 
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	
 	<kul:tab tabTitle="Ledger Balance Importing" defaultOpen="true"
-		tabErrorKey="${symbol_dollar}{KFSConstants.EMPLOYEE_LOOKUP_ERRORS}">
+		tabErrorKey="${KFSConstants.EMPLOYEE_LOOKUP_ERRORS}">
 		<div class="tab-container" align=center>
 		<h3>Ledger Balance Importing</h3>
 	
@@ -50,36 +47,36 @@
 
 			<tr>
 				<kul:htmlAttributeHeaderCell
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.universityFiscalYear}"
+					attributeEntry="${balanceInquiryAttributes.universityFiscalYear}"
 					horizontal="true" width="35%"  labelFor="universityFiscalYear" forceRequired="true"/>
 
 				<td class="datacell-nowrap"><kul:htmlControlAttribute
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.universityFiscalYear}"
-					property="universityFiscalYear" forceRequired="true" readOnly="${symbol_dollar}{readOnly}" /> 
-					<c:if test="${symbol_dollar}{!readOnly}">
+					attributeEntry="${balanceInquiryAttributes.universityFiscalYear}"
+					property="universityFiscalYear" forceRequired="true" readOnly="${readOnly}" /> 
+					<c:if test="${!readOnly}">
 						<!-- KULLAB-704 Force the field conversions. -->	
-						<kul:lookup	boClassName="org.kuali.${parentArtifactId}.sys.businessobject.SystemOptions"						
+						<kul:lookup	boClassName="org.kuali.kfs.sys.businessobject.SystemOptions"						
 						lookupParameters="universityFiscalYear:universityFiscalYear" 
 						fieldConversions="universityFiscalYear:universityFiscalYear"
-						fieldLabel="${symbol_dollar}{balanceInquiryAttributes.universityFiscalYear.label}" />
+						fieldLabel="${balanceInquiryAttributes.universityFiscalYear.label}" />
 					</c:if>
 				</td>
 			</tr>	
 													
 			<tr>
 				<kul:htmlAttributeHeaderCell
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.chartOfAccountsCode}"
+					attributeEntry="${balanceInquiryAttributes.chartOfAccountsCode}"
 					horizontal="true" labelFor="chartOfAccountsCode" forceRequired="true" />
 
 				<td class="datacell-nowrap"><kul:htmlControlAttribute
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.chartOfAccountsCode}"
-					property="chartOfAccountsCode" forceRequired="true" readOnly="${symbol_dollar}{readOnly}" />
-					<c:if test="${symbol_dollar}{!readOnly}">
+					attributeEntry="${balanceInquiryAttributes.chartOfAccountsCode}"
+					property="chartOfAccountsCode" forceRequired="true" readOnly="${readOnly}" />
+					<c:if test="${!readOnly}">
 						<!-- KULLAB-704 Force the field conversions. -->
-						<kul:lookup	boClassName="org.kuali.${parentArtifactId}.coa.businessobject.Chart"
+						<kul:lookup	boClassName="org.kuali.kfs.coa.businessobject.Chart"
 						lookupParameters="chartOfAccountsCode:chartOfAccountsCode"							
 						fieldConversions="chartOfAccountsCode:chartOfAccountsCode"
-						fieldLabel="${symbol_dollar}{balanceInquiryAttributes.chartOfAccountsCode.label}" />
+						fieldLabel="${balanceInquiryAttributes.chartOfAccountsCode.label}" />
 						
 					</c:if>
 				</td>
@@ -88,34 +85,34 @@
 
 			<tr>			 
 				<kul:htmlAttributeHeaderCell
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.accountNumber}"
+					attributeEntry="${balanceInquiryAttributes.accountNumber}"
 					horizontal="true" labelFor="accountNumber" forceRequired="true"/>
 					
 				<td class="datacell-nowrap"><kul:htmlControlAttribute
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.accountNumber}"
-					property="accountNumber" forceRequired="true" readOnly="${symbol_dollar}{readOnly}" />
-					<c:if test="${symbol_dollar}{!readOnly}">
-						 <kul:lookup boClassName="org.kuali.${parentArtifactId}.coa.businessobject.Account"
+					attributeEntry="${balanceInquiryAttributes.accountNumber}"
+					property="accountNumber" forceRequired="true" readOnly="${readOnly}" />
+					<c:if test="${!readOnly}">
+						 <kul:lookup boClassName="org.kuali.kfs.coa.businessobject.Account"
 						lookupParameters="accountNumber:accountNumber,chartOfAccountsCode:chartOfAccountsCode"
 						fieldConversions="accountNumber:accountNumber,chartOfAccountsCode:chartOfAccountsCode"
-						fieldLabel="${symbol_dollar}{balanceInquiryAttributes.accountNumber.label}" />
+						fieldLabel="${balanceInquiryAttributes.accountNumber.label}" />
 					</c:if>
 				</td>
 			</tr>
 
 			<tr>
 				<kul:htmlAttributeHeaderCell
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.subAccountNumber}"
+					attributeEntry="${balanceInquiryAttributes.subAccountNumber}"
 					horizontal="true" labelFor="subAccountNumber" forceRequired="false"  hideRequiredAsterisk="true"/>
 					
 				<td class="datacell-nowrap"><kul:htmlControlAttribute
-					attributeEntry="${symbol_dollar}{balanceInquiryAttributes.subAccountNumber}"
-					property="subAccountNumber" forceRequired="true" readOnly="${symbol_dollar}{readOnly}" /> 
-					<c:if test="${symbol_dollar}{!readOnly}">
-						<kul:lookup	boClassName="org.kuali.${parentArtifactId}.coa.businessobject.SubAccount"
+					attributeEntry="${balanceInquiryAttributes.subAccountNumber}"
+					property="subAccountNumber" forceRequired="true" readOnly="${readOnly}" /> 
+					<c:if test="${!readOnly}">
+						<kul:lookup	boClassName="org.kuali.kfs.coa.businessobject.SubAccount"
 						lookupParameters="accountNumber:accountNumber,subAccountNumber:subAccountNumber,chartOfAccountsCode:chartOfAccountsCode"
 						fieldConversions="accountNumber:accountNumber,subAccountNumber:subAccountNumber,chartOfAccountsCode:chartOfAccountsCode"
-						fieldLabel="${symbol_dollar}{balanceInquiryAttributes.subAccountNumber.label}" />
+						fieldLabel="${balanceInquiryAttributes.subAccountNumber.label}" />
 					</c:if>
 				</td>
 			</tr>
@@ -123,9 +120,9 @@
             <tr>
             	<td height="30" class="infoline">&nbsp;</td>
             	<td height="30" class="infoline">
-	            	<c:if test="${symbol_dollar}{!readOnly}">
+	            	<c:if test="${!readOnly}">
 		                <gl:balanceInquiryLookup
-								boClassName="org.kuali.${parentArtifactId}.module.ld.businessobject.LedgerBalanceForBenefitExpenseTransfer"
+								boClassName="org.kuali.kfs.module.ld.businessobject.LedgerBalanceForBenefitExpenseTransfer"
 								actionPath="glBalanceInquiryLookup.do"
 								lookupParameters="universityFiscalYear:universityFiscalYear,accountNumber:accountNumber,subAccountNumber:subAccountNumber,chartOfAccountsCode:chartOfAccountsCode,emplid:emplid"
 								tabindexOverride="KualiForm.currentTabIndex"
@@ -151,5 +148,5 @@
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />
-	<sys:documentControls transactionalDocument="true" extraButtons="${symbol_dollar}{KualiForm.extraButtons}" />
+	<sys:documentControls transactionalDocument="true" extraButtons="${KualiForm.extraButtons}" />
 </kul:documentPage>

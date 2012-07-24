@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -16,29 +13,29 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
-<c:set var="readOnly" value="${symbol_dollar}{KualiForm.viewOnlyEntry || KualiForm.salarySettingClosed}" />
+<c:set var="readOnly" value="${KualiForm.viewOnlyEntry || KualiForm.salarySettingClosed}" />
 
 <kul:page showDocumentInfo="false" htmlFormAction="budgetPositionSalarySetting" renderMultipart="true"
-	showTabButtons="true" docTitle="${symbol_dollar}{KualiForm.documentTitle}" transactionalDocument="false">
+	showTabButtons="true" docTitle="${KualiForm.documentTitle}" transactionalDocument="false">
 	
     <html:hidden property="mainWindow" />
 
-    <bc:positionSalarySetting readOnly="${symbol_dollar}{readOnly}" />
+    <bc:positionSalarySetting readOnly="${readOnly}" />
 	<kul:panelFooter />
 
     <div id="globalbuttons" class="globalbuttons">
-        <c:if test="${symbol_dollar}{not readOnly}">
-            <c:if test="${symbol_dollar}{KualiForm.pendingPositionSalaryChange}">
-                <html:image src="${symbol_dollar}{ConfigProperties.externalizable.images.url}buttonsmall_calculate.gif" styleClass="tinybutton" property="methodToCall.recalculateAllSalarySettingLines" title="Recalc" alt="Recalc"/>
+        <c:if test="${not readOnly}">
+            <c:if test="${KualiForm.pendingPositionSalaryChange}">
+                <html:image src="${ConfigProperties.externalizable.images.url}buttonsmall_calculate.gif" styleClass="tinybutton" property="methodToCall.recalculateAllSalarySettingLines" title="Recalc" alt="Recalc"/>
             </c:if>	
         
-	        <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" styleClass="globalbuttons" 
+	        <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" styleClass="globalbuttons" 
 	        	property="methodToCall.save" title="save" alt="save"/>
         </c:if>	
         
-	    <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" 
+	    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" 
        		styleClass="globalbuttons" property="methodToCall.close" title="close" alt="close"/>	
     </div>
 

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -16,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 <c:set var="budgetConstructionMonthlyAttributes"
-	value="${symbol_dollar}{DataDictionary['BudgetConstructionMonthly'].attributes}" />
+	value="${DataDictionary['BudgetConstructionMonthly'].attributes}" />
 
 <kul:page showDocumentInfo="false"
 	htmlFormAction="budgetMonthlyBudget" renderMultipart="true"
@@ -29,16 +26,16 @@
 
     <html:hidden property="mainWindow" />
 
-    <c:set var="readOnly" value="${symbol_dollar}{KualiForm.monthlyReadOnly}" />
+    <c:set var="readOnly" value="${KualiForm.monthlyReadOnly}" />
 
-    <bc:monthlyBudget readOnly="${symbol_dollar}{readOnly}" />
+    <bc:monthlyBudget readOnly="${readOnly}" />
 	<kul:panelFooter />
 
     <div id="globalbuttons" class="globalbuttons">
-        <c:if test="${symbol_dollar}{!readOnly}">
-	        <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" styleClass="globalbuttons" property="methodToCall.save" title="save" alt="save"/>
+        <c:if test="${!readOnly}">
+	        <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" styleClass="globalbuttons" property="methodToCall.save" title="save" alt="save"/>
 	    </c:if>
-        <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" property="methodToCall.close" title="close" alt="close"/>
+        <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" property="methodToCall.close" title="close" alt="close"/>
     </div>
 
 </kul:page>

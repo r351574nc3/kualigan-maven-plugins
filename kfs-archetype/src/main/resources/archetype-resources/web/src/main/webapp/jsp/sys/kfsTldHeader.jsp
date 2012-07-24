@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007 The Kuali Foundation
  
@@ -22,6 +19,7 @@
 <%@ taglib tagdir="/WEB-INF/tags/fp" prefix="fp"%>
 
 <%@ taglib tagdir="/WEB-INF/tags/gl" prefix="gl"%>
+
 <%@ taglib tagdir="/WEB-INF/tags/gl/glcp" prefix="glcp"%>
 
 <%@ taglib tagdir="/WEB-INF/tags/sys" prefix="sys"%>
@@ -55,7 +53,6 @@
 <%@ taglib tagdir="/WEB-INF/tags/module/tem/expenses" prefix="tem-exp" %>
 <%@ taglib tagdir="/WEB-INF/tags/module/tem/arranger" prefix="tem-arranger" %>
 <%@ taglib uri="/WEB-INF/tlds/tem-html.tld" prefix="tem-html"%>
-
 
 <%@ taglib tagdir="/WEB-INF/tags/portal" prefix="portal"%>
 <%@ taglib tagdir="/WEB-INF/tags/portal/channel" prefix="channel"%>

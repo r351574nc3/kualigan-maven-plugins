@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,47 +13,47 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
-<c:set var="readOnly" value="${symbol_dollar}{KualiForm.viewOnlyEntry || KualiForm.salarySettingClosed}" />
+<c:set var="readOnly" value="${KualiForm.viewOnlyEntry || KualiForm.salarySettingClosed}" />
 
 <kul:page showDocumentInfo="false" docTitle="Quick Salary Setting" transactionalDocument="false"
 	htmlFormAction="budgetQuickSalarySetting" renderMultipart="true" showTabButtons="true">
 	
 <%--
-    <c:forEach items="${symbol_dollar}{KualiForm.documentActions}" var="action">
-      <html:hidden property="documentActions(${symbol_dollar}{action.key})"/>
+    <c:forEach items="${KualiForm.documentActions}" var="action">
+      <html:hidden property="documentActions(${action.key})"/>
     </c:forEach>
     
-	<c:forEach items="${symbol_dollar}{KualiForm.editingMode}" var="mode">
-  		<html:hidden property="editingMode(${symbol_dollar}{mode.key})"/>
+	<c:forEach items="${KualiForm.editingMode}" var="mode">
+  		<html:hidden property="editingMode(${mode.key})"/>
 	</c:forEach>
 --%>
     <html:hidden property="mainWindow" />
     
-	<kul:tabTop tabTitle="Quick Salary Setting" defaultOpen="true" tabErrorKey="${symbol_dollar}{BCConstants.ErrorKey.QUICK_SALARY_SETTING_TAB_ERRORS}">
+	<kul:tabTop tabTitle="Quick Salary Setting" defaultOpen="true" tabErrorKey="${BCConstants.ErrorKey.QUICK_SALARY_SETTING_TAB_ERRORS}">
 		<div class="tab-container" align=center>
-			<bc:expenditureSalaryLine readOnly="${symbol_dollar}{readOnly}"/>	
+			<bc:expenditureSalaryLine readOnly="${readOnly}"/>	
 			
 			<br/>
 						
-			<bc:expenditureSalaryLineDetails readOnly="${symbol_dollar}{readOnly}"/>
+			<bc:expenditureSalaryLineDetails readOnly="${readOnly}"/>
 		</div>
 	</kul:tabTop>
 
 	<kul:panelFooter />
 
     <%-- add another copy of the errors since this screen can get long --%>
-    <kul:errors keyMatch="${symbol_dollar}{Constants.GLOBAL_ERRORS}" errorTitle=" " />
-    <kul:errors keyMatch="${symbol_dollar}{BCConstants.ErrorKey.RETURNED_DETAIL_SALARY_SETTING_TAB_ERRORS}" errorTitle=" " />
+    <kul:errors keyMatch="${Constants.GLOBAL_ERRORS}" errorTitle=" " />
+    <kul:errors keyMatch="${BCConstants.ErrorKey.RETURNED_DETAIL_SALARY_SETTING_TAB_ERRORS}" errorTitle=" " />
     
     <div id="globalbuttons" class="globalbuttons">
-        <c:if test="${symbol_dollar}{not readOnly}">
-	        <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" 
+        <c:if test="${not readOnly}">
+	        <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" 
 	        	styleClass="globalbuttons" property="methodToCall.save" title="save" alt="save"/>
 	    </c:if>    	
 	        	
-        <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" 
+        <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" 
        		styleClass="globalbuttons" property="methodToCall.close" title="close" alt="close"/>	
 
     </div>

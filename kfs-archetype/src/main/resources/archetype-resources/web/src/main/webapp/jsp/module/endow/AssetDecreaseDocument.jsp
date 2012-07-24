@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,28 +13,28 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <c:set var="readOnly"
-	value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+	value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 	
 <kul:documentPage showDocumentInfo="true"
 	documentTypeName="AssetDecreaseDocument"
 	htmlFormAction="endowAssetDecreaseDocument" renderMultipart="true"
 	showTabButtons="true">
 
-    <c:if test="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
+    <c:if test="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}">
         <c:set var="fullEntryMode" value="true" scope="request" />
     </c:if>
 
-	<endow:endowmentDocumentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" 
-	                                 endowDocAttributes="${symbol_dollar}{DataDictionary.AssetDecreaseDocument.attributes}" />
+	<endow:endowmentDocumentOverview editingMode="${KualiForm.editingMode}" 
+	                                 endowDocAttributes="${DataDictionary.AssetDecreaseDocument.attributes}" />
 	
 	<sys:hiddenDocumentFields isFinancialDocument="false" />
      
     <endow:endowmentTransactionalDocumentDetails
-         documentAttributes="${symbol_dollar}{DataDictionary.AssetDecreaseDocument.attributes}"
-         readOnly="${symbol_dollar}{readOnly}"
+         documentAttributes="${DataDictionary.AssetDecreaseDocument.attributes}"
+         readOnly="${readOnly}"
          subTypeReadOnly="false"
          tabTitle="Asset Decrease Details"
          headingTitle="Asset Decrease Details"
@@ -48,14 +45,14 @@
     <endow:endowmentTransactionLinesSection hasSource="true" hasTarget="false" hasUnits="true" isTransAmntReadOnly="false"/>     
     
     <endow:endowmentTaxLotLine 
-    	documentAttributes="${symbol_dollar}{DataDictionary.EndowmentTransactionTaxLotLine.attributes}" 
+    	documentAttributes="${DataDictionary.EndowmentTransactionTaxLotLine.attributes}" 
     	isSource="true"
     	isTarget="false"
     	displayGainLoss="true"
     	displayHoldingCost="true"
     	showSourceDeleteButton="true"
     	showTargetDeleteButton="false"
-    	readOnly="${symbol_dollar}{readOnly}"/>            
+    	readOnly="${readOnly}"/>            
         
 	<kul:notes /> 
 	
@@ -63,6 +60,6 @@
 
 	<kul:panelFooter />
 
-	<sys:documentControls transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}" extraButtons="${symbol_dollar}{KualiForm.extraButtons}" />
+	<sys:documentControls transactionalDocument="${documentEntry.transactionalDocument}" extraButtons="${KualiForm.extraButtons}" />
 
 </kul:documentPage>

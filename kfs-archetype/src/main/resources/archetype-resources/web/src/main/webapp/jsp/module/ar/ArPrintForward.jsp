@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2009 The Kuali Foundation
  
@@ -23,23 +20,23 @@
 </head>
 <body>
 <%-- Below form used for non java script enabled browsers --%>
-<form name="disabledJavaScriptPrintForm" id="disabledJavaScriptPrintForm" method="post" action="${symbol_dollar}{printPDFUrl}">
+<form name="disabledJavaScriptPrintForm" id="disabledJavaScriptPrintForm" method="post" action="${printPDFUrl}">
   <noscript>
-    Click this button to see the ${symbol_dollar}{printLabel} PDF:&nbsp;&nbsp;&nbsp;<input type="submit" title="View ${symbol_dollar}{printLabel} PDF" value="View ${symbol_dollar}{printLabel} PDF">
+    Click this button to see the ${printLabel} PDF:&nbsp;&nbsp;&nbsp;<input type="submit" title="View ${printLabel} PDF" value="View ${printLabel} PDF">
   </noscript>
 </form>
-<form name="disabledJavaScriptReturnForm" id="disabledJavaScriptReturnForm" method="post" action="${symbol_dollar}{displayTabbedPageUrl}">
+<form name="disabledJavaScriptReturnForm" id="disabledJavaScriptReturnForm" method="post" action="${displayTabbedPageUrl}">
   <noscript>
-    Click this button return to the ${symbol_dollar}{printLabel} tabbed page:&nbsp;&nbsp;&nbsp;<input type="submit" title="Return to the ${symbol_dollar}{printLabel}" value="Return to the ${symbol_dollar}{printLabel}">
+    Click this button return to the ${printLabel} tabbed page:&nbsp;&nbsp;&nbsp;<input type="submit" title="Return to the ${printLabel}" value="Return to the ${printLabel}">
   </noscript>
 </form>
 
 <%-- Below forms used for java script enabled browsers --%>
 
-<form name="backForm" id="backForm" method="post" action="${symbol_dollar}{displayTabbedPageUrl}">
+<form name="backForm" id="backForm" method="post" action="${displayTabbedPageUrl}">
 </form>
 
-<form name="printPDFForm" id="printPDFForm" method="post" action="${symbol_dollar}{printPDFUrl}">
+<form name="printPDFForm" id="printPDFForm" method="post" action="${printPDFUrl}">
   <input type="hidden" name="useJavascript" value="true"/>
   <script language ="javascript">
     window.onload = dothis();

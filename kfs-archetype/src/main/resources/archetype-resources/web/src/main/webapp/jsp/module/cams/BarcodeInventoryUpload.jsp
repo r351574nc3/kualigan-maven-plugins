@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2007-2008 The Kuali Foundation
  
@@ -16,17 +13,17 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:page showDocumentInfo="false"
 	headerTitle="Barcode Inventory Process" docTitle="" renderMultipart="true"
 	transactionalDocument="false" htmlFormAction="uploadBarcodeInventoryFile" errorKey="foo">
 	<html:hidden property="batchUpload.batchInputTypeName" />
-    <c:set var="batchUploadAttributes" value="${symbol_dollar}{DataDictionary.BatchUpload.attributes}" />
+    <c:set var="batchUploadAttributes" value="${DataDictionary.BatchUpload.attributes}" />
 
 	<strong><h2>	
-	  <bean:message key="${symbol_dollar}{KualiForm.titleKey}"/> <a href="${symbol_dollar}{ConfigProperties.externalizable.help.url}default.htm?turl=WordDocuments%2Fbarcodeinventoryprocess.htm" tabindex="${symbol_dollar}{KualiForm.nextArbitrarilyHighIndex}" target="helpWindow"  title="[Help]Upload">
-	                                        <img src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}my_cp_inf.gif" alt="[Help]Upload" hspace=5 border=0  align="middle"></a>
+	  <bean:message key="${KualiForm.titleKey}"/> <a href="${ConfigProperties.externalizable.help.url}default.htm?turl=WordDocuments%2Fbarcodeinventoryprocess.htm" tabindex="${KualiForm.nextArbitrarilyHighIndex}" target="helpWindow"  title="[Help]Upload">
+	                                        <img src="${ConfigProperties.kr.externalizable.images.url}my_cp_inf.gif" alt="[Help]Upload" hspace=5 border=0  align="middle"></a>
 	  </h2></strong>
 	</br>
 
@@ -37,10 +34,10 @@
 	  			<kul:errors keyMatch="*"/>
 			</td>
 		</tr>
-	    <c:forEach items="${symbol_dollar}{KualiForm.messages}" var="message">
+	    <c:forEach items="${KualiForm.messages}" var="message">
 			<tr>
 				<td>	
-				   ${symbol_dollar}{message}
+				   ${message}
 				</td>
 			</tr>
 		</c:forEach>		
@@ -59,24 +56,24 @@
               <th width="150"> <div align="center">Actions</div></th>
             </tr>
             
-            <c:forEach items="${symbol_dollar}{KualiForm.batchInputFileSetType.fileTypes}" var="fileType" varStatus="loopStatus">
+            <c:forEach items="${KualiForm.batchInputFileSetType.fileTypes}" var="fileType" varStatus="loopStatus">
               <tr>
-                <th scope="row"><div align="right">add <c:out value="${symbol_dollar}{KualiForm.batchInputFileSetType.fileTypeDescription[fileType]}"/>:</div></th>
+                <th scope="row"><div align="right">add <c:out value="${KualiForm.batchInputFileSetType.fileTypeDescription[fileType]}"/>:</div></th>
                 
-                <td class="infoline"><html:file property="uploadedFiles(${symbol_dollar}{fileType})"/>
+                <td class="infoline"><html:file property="uploadedFiles(${fileType})"/>
                   <span class="fineprint"></span>
                 </td>
                 <td class="infoline">
-                  <c:if test="${symbol_dollar}{loopStatus.first}">
+                  <c:if test="${loopStatus.first}">
                     <div align="left">
-                      <kul:htmlControlAttribute attributeEntry="${symbol_dollar}{batchUploadAttributes.fileUserIdentifer}" property="batchUpload.fileUserIdentifer"/>
+                      <kul:htmlControlAttribute attributeEntry="${batchUploadAttributes.fileUserIdentifer}" property="batchUpload.fileUserIdentifer"/>
                     </div>
                   </c:if>
                   <span class="fineprint">&nbsp;</span>
                 </td>
                 <td class="infoline"><div align="center">
-                  <c:if test="${symbol_dollar}{loopStatus.first}">
-                    <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" styleClass="globalbuttons" property="methodToCall.save" title="Upload Batch File" alt="Upload Batch File" />
+                  <c:if test="${loopStatus.first}">
+                    <html:image src="${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif" styleClass="globalbuttons" property="methodToCall.save" title="Upload Batch File" alt="Upload Batch File" />
                   </c:if>
                   &nbsp;
                 </td>

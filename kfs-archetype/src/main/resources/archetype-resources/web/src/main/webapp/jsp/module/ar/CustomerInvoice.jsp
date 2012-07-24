@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -16,9 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 	
-	<c:set var="orgAttributes" value="${symbol_dollar}{DataDictionary.Organization.attributes}" />
+	<c:set var="orgAttributes" value="${DataDictionary.Organization.attributes}" />
 	
 <kul:page  showDocumentInfo="false" 
 	headerTitle="Customer Invoice Generation" docTitle="Customer Invoice Generation" renderMultipart="true"
@@ -32,21 +29,21 @@
             
 			<tr>		
                 <th align=right valign=middle class="grid" style="width: 25%;">
-                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{orgAttributes.chartOfAccountsCode}" readOnly="true" /></div>
+                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${orgAttributes.chartOfAccountsCode}" readOnly="true" /></div>
                 </th>
                 <td align=left valign=middle class="grid" style="width: 25%;">
-					<kul:htmlControlAttribute attributeEntry="${symbol_dollar}{orgAttributes.chartOfAccountsCode}" property="chartCode"  />	
-                    <kul:lookup boClassName="org.kuali.${parentArtifactId}.coa.businessobject.Chart"  fieldConversions="chartOfAccountsCode:chartCode"  />
+					<kul:htmlControlAttribute attributeEntry="${orgAttributes.chartOfAccountsCode}" property="chartCode"  />	
+                    <kul:lookup boClassName="org.kuali.kfs.coa.businessobject.Chart"  fieldConversions="chartOfAccountsCode:chartCode"  />
                 </td>
 				                       
             </tr>
             <tr>
 				<th align=right valign=middle class="grid">
-                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${symbol_dollar}{orgAttributes.organizationCode}" readOnly="true" /></div>
+                    <div align="right"><kul:htmlAttributeLabel attributeEntry="${orgAttributes.organizationCode}" readOnly="true" /></div>
                 </th>
                 <td align=left valign=middle class="grid">
-                    <kul:htmlControlAttribute attributeEntry="${symbol_dollar}{orgAttributes.organizationCode}" property="orgCode"  />
-                    <kul:lookup boClassName="org.kuali.${parentArtifactId}.coa.businessobject.Organization"  fieldConversions="organizationCode:orgCode" lookupParameters="orgCode:organizationCode,chartCode:chartOfAccountsCode"/>
+                    <kul:htmlControlAttribute attributeEntry="${orgAttributes.organizationCode}" property="orgCode"  />
+                    <kul:lookup boClassName="org.kuali.kfs.coa.businessobject.Organization"  fieldConversions="organizationCode:orgCode" lookupParameters="orgCode:organizationCode,chartCode:chartOfAccountsCode"/>
                 </td>                
 				            
             </tr>
@@ -64,7 +61,7 @@
                     <div align="right">Print invoices for date:</div>
                 </th>
                 <td align=left valign=middle class="grid">
-                    <kul:dateInput attributeEntry="${symbol_dollar}{orgAttributes.organizationBeginDate}" property="runDate"/>
+                    <kul:dateInput attributeEntry="${orgAttributes.organizationBeginDate}" property="runDate"/>
                 </td>                
 				            
             </tr>
@@ -83,9 +80,9 @@
            
 <%--            <tr>--%>
 <%--        <c:choose>--%>
-<%--            <c:when test="${symbol_dollar}{!CustomerStatementForm.operationSelected}">--%>
+<%--            <c:when test="${!CustomerStatementForm.operationSelected}">--%>
 <%--         <th>--%>
-<%--            <html-el:image property="methodToCall.selectOperation" styleClass="tinybutton" src="${symbol_dollar}{ConfigProperties.externalizable.images.url}tinybutton-generate.gif" />--%>
+<%--            <html-el:image property="methodToCall.selectOperation" styleClass="tinybutton" src="${ConfigProperties.externalizable.images.url}tinybutton-generate.gif" />--%>
 <%--           </th>--%>
 <%--      --%>
 <%--        </c:when>--%>
@@ -93,8 +90,8 @@
 <%--        --%>
 <%--        <tr>--%>
 <%--        <th>--%>
-<%--           <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="tinybutton" property="methodToCall.cancel" title="cancel" alt="cancel"/>--%>
-<%--            <html:image src="${symbol_dollar}{ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif" styleClass="tinybutton" property="methodToCall.clear" title="clear" alt="clear"/>--%>
+<%--           <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="tinybutton" property="methodToCall.cancel" title="cancel" alt="cancel"/>--%>
+<%--            <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif" styleClass="tinybutton" property="methodToCall.clear" title="clear" alt="clear"/>--%>
 <%--           </th>--%>
 <%--        </tr>--%>
 <%--        --%>
@@ -102,21 +99,21 @@
         </table>
      
 
-    <c:set var="extraButtons" value="${symbol_dollar}{KualiForm.extraButtons}"/>  	
+    <c:set var="extraButtons" value="${KualiForm.extraButtons}"/>  	
   	
 	
      <div id="globalbuttons" class="globalbuttons">
 	        	
-	        	<c:if test="${symbol_dollar}{!empty extraButtons}">
-		        	<c:forEach items="${symbol_dollar}{extraButtons}" var="extraButton">
-		        		<html:image src="${symbol_dollar}{extraButton.extraButtonSource}" styleClass="globalbuttons" property="${symbol_dollar}{extraButton.extraButtonProperty}" title="${symbol_dollar}{extraButton.extraButtonAltText}" alt="${symbol_dollar}{extraButton.extraButtonAltText}"/>
+	        	<c:if test="${!empty extraButtons}">
+		        	<c:forEach items="${extraButtons}" var="extraButton">
+		        		<html:image src="${extraButton.extraButtonSource}" styleClass="globalbuttons" property="${extraButton.extraButtonProperty}" title="${extraButton.extraButtonAltText}" alt="${extraButton.extraButtonAltText}"/>
 		        	</c:forEach>
 	        	</c:if>
 	</div>
 	
 	<div>
-	  <c:if test="${symbol_dollar}{!empty KualiForm.message }">
- 			${symbol_dollar}{KualiForm.message }	
+	  <c:if test="${!empty KualiForm.message }">
+ 			${KualiForm.message }	
       </c:if>
    </div>
 	

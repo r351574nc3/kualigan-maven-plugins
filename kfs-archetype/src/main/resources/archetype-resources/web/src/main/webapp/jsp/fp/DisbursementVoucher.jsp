@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2006 The Kuali Foundation
  
@@ -16,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
 <kul:documentPage showDocumentInfo="true"
 	htmlFormAction="financialDisbursementVoucher"
@@ -26,29 +23,29 @@
 	<fp:dvPrintCoverSheet />
 	<fp:dvMessages />
 	
-	<c:set var="canEdit" value="${symbol_dollar}{KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" scope="request" />
-	<c:set var="fullEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['fullEntry']}" scope="request" />
+	<c:set var="canEdit" value="${KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" scope="request" />
+	<c:set var="fullEntryMode" value="${canEdit && KualiForm.editingMode['fullEntry']}" scope="request" />
 
-	<c:set var="frnEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['frnEntry']}" scope="request" />
-	<c:set var="travelEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['travelEntry']}" scope="request" />
+	<c:set var="frnEntryMode" value="${canEdit && KualiForm.editingMode['frnEntry']}" scope="request" />
+	<c:set var="travelEntryMode" value="${canEdit && KualiForm.editingMode['travelEntry']}" scope="request" />
 	
-	<c:set var="wireEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['wireEntry']}" scope="request" />
-	<c:set var="taxEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['taxEntry']}" scope="request" />
+	<c:set var="wireEntryMode" value="${canEdit && KualiForm.editingMode['wireEntry']}" scope="request" />
+	<c:set var="taxEntryMode" value="${canEdit && KualiForm.editingMode['taxEntry']}" scope="request" />
 	
-	<c:set var="payeeEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['payeeEntry']}" scope="request" />
+	<c:set var="payeeEntryMode" value="${canEdit && KualiForm.editingMode['payeeEntry']}" scope="request" />
 	
-	<c:set var="paymentHandlingEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['paymentHandlingEntry']}" scope="request" />
-	<c:set var="voucherDeadlineEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['voucherDeadlineEntry']}" scope="request" />
-	<c:set var="specialHandlingChangingEntryMode" value="${symbol_dollar}{canEdit && KualiForm.editingMode['specialHandlingChangingEntry']}" scope="request" />
+	<c:set var="paymentHandlingEntryMode" value="${canEdit && KualiForm.editingMode['paymentHandlingEntry']}" scope="request" />
+	<c:set var="voucherDeadlineEntryMode" value="${canEdit && KualiForm.editingMode['voucherDeadlineEntry']}" scope="request" />
+	<c:set var="specialHandlingChangingEntryMode" value="${canEdit && KualiForm.editingMode['specialHandlingChangingEntry']}" scope="request" />
 	
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" includeBankCode="true"
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" includeBankCode="true"
 	  bankProperty="document.disbVchrBankCode" 
 	  bankObjectProperty="document.bank"
 	  disbursementOnly="true" />
 	  
 	<fp:dvPayment />
 
-	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+	<kul:tab tabTitle="Accounting Lines" defaultOpen="true" tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS}">
 		<sys-java:accountingLines>
 			<sys-java:accountingLineGroup newLinePropertyName="newSourceLine" collectionPropertyName="document.sourceAccountingLines" collectionItemPropertyName="document.sourceAccountingLine" attributeGroupName="source" />
 		</sys-java:accountingLines>
@@ -63,12 +60,12 @@
 	<fp:dvPrePaidTravel />
     <fp:dvPDPStatus />
 	<gl:generalLedgerPendingEntries />
-	<kul:notes attachmentTypesValuesFinderClass="${symbol_dollar}{documentEntry.attachmentTypesValuesFinderClass}" />
+	<kul:notes attachmentTypesValuesFinderClass="${documentEntry.attachmentTypesValuesFinderClass}" />
 	<kul:adHocRecipients />
 
 	<kul:routeLog />
 
 	<kul:panelFooter />
 	
-	<sys:documentControls transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}" />
+	<sys:documentControls transactionalDocument="${documentEntry.transactionalDocument}" />
 </kul:documentPage>

@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2006-2008 The Kuali Foundation
  
@@ -17,50 +14,50 @@
  limitations under the License.
 --%>
 
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
 
-<c:set var="documentAttributes"	value="${symbol_dollar}{DataDictionary.EffortCertificationDocument.attributes}" />
-<c:set var="detailAttributes" value="${symbol_dollar}{DataDictionary.EffortCertificationDetail.attributes}" />
+<c:set var="documentAttributes"	value="${DataDictionary.EffortCertificationDocument.attributes}" />
+<c:set var="detailAttributes" value="${DataDictionary.EffortCertificationDetail.attributes}" />
 
-<c:set var="detailLines" value="${symbol_dollar}{KualiForm.detailLines}"/>
+<c:set var="detailLines" value="${KualiForm.detailLines}"/>
 
 <c:set var="documentTypeName" value="EffortCertificationDocument"/>
 <c:set var="htmlFormAction" value="effortCertificationRecreate"/>
 
-<c:set var="readOnly" value="${symbol_dollar}{empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+<c:set var="readOnly" value="${empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
-<kul:documentPage showDocumentInfo="true" documentTypeName="${symbol_dollar}{documentTypeName}"
-	htmlFormAction="${symbol_dollar}{htmlFormAction}" renderMultipart="true"
+<kul:documentPage showDocumentInfo="true" documentTypeName="${documentTypeName}"
+	htmlFormAction="${htmlFormAction}" renderMultipart="true"
     showTabButtons="true">
     
     <sys:hiddenDocumentFields isFinancialDocument="false" />
     
-    <sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+    <sys:documentOverview editingMode="${KualiForm.editingMode}" />
     
     <c:set var="hiddenFieldNames" value="emplid,universityFiscalYear,effortCertificationReportNumber,effortCertificationDocumentCode,totalOriginalPayrollAmount"/>
-	<c:forTokens var="fieldName" items="${symbol_dollar}{hiddenFieldNames}" delims=",">	
-		<input type="hidden" name="document.${symbol_dollar}{fieldName}" id="document.${symbol_dollar}{fieldName}" value="${symbol_dollar}{KualiForm.document[fieldName]}"/>		  
+	<c:forTokens var="fieldName" items="${hiddenFieldNames}" delims=",">	
+		<input type="hidden" name="document.${fieldName}" id="document.${fieldName}" value="${KualiForm.document[fieldName]}"/>		  
 	</c:forTokens>
     
 	<kul:tab tabTitle="Effort Detail" defaultOpen="true"
-		tabErrorKey="${symbol_dollar}{EffortConstants.EFFORT_DETAIL_IMPORT_ERRORS}">
+		tabErrorKey="${EffortConstants.EFFORT_DETAIL_IMPORT_ERRORS}">
 		
 		<div class="tab-container" align=center>
 			<h3>Retrieve Data</h3>
-			<ec:detailLineImport readOnly="${symbol_dollar}{readOnly}" attributes="${symbol_dollar}{documentAttributes}" />				
+			<ec:detailLineImport readOnly="${readOnly}" attributes="${documentAttributes}" />				
 		</div>
 		
-		<div class="tab-container-error"><div class="left-errmsg-tab"><kul:errors keyMatch="${symbol_dollar}{EffortConstants.EFFORT_CERTIFICATION_TAB_ERRORS}"/></div></div>
+		<div class="tab-container-error"><div class="left-errmsg-tab"><kul:errors keyMatch="${EffortConstants.EFFORT_CERTIFICATION_TAB_ERRORS}"/></div></div>
 					
 		<div class="tab-container" align=center>			
 			<h3>Effort Detail Lines</h3>
 			
-			<ec:detailLines detailLines="${symbol_dollar}{detailLines}" attributes="${symbol_dollar}{detailAttributes}"
+			<ec:detailLines detailLines="${detailLines}" attributes="${detailAttributes}"
 				detailFieldNames="chartOfAccountsCode,accountNumber,subAccountNumber,financialObjectCode,sourceChartOfAccountsCode,sourceAccountNumber,positionNumber,effortCertificationCalculatedOverallPercent,effortCertificationOriginalPayrollAmount"
 				detailFieldNamesWithHiddenFormWhenReadonly="chartOfAccountsCode,accountNumber,subAccountNumber,financialObjectCode,sourceChartOfAccountsCode,sourceAccountNumber,positionNumber,effortCertificationOriginalPayrollAmount,effortCertificationCalculatedOverallPercent"				
 				hiddenFieldNames="universityFiscalYear,effortCertificationUpdatedOverallPercent,effortCertificationPayrollAmount,costShareSourceSubAccountNumber,versionNumber"
-				inquirableUrl="${symbol_dollar}{KualiForm.detailLineFieldInquiryUrl}"
-				fieldInfo="${symbol_dollar}{KualiForm.fieldInfo}"/>
+				inquirableUrl="${KualiForm.detailLineFieldInquiryUrl}"
+				fieldInfo="${KualiForm.fieldInfo}"/>
 		</div>		
 	</kul:tab>
 	

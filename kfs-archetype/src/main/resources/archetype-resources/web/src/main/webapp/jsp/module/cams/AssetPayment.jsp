@@ -1,6 +1,3 @@
-#set( $symbol_pound = '#' )
-#set( $symbol_dollar = '$' )
-#set( $symbol_escape = '\' )
 <%--
  Copyright 2005-2008 The Kuali Foundation
  
@@ -17,22 +14,24 @@
  limitations under the License.
 --%>
 
-<%@ include file="/jsp/sys/${parentArtifactId}TldHeader.jsp"%>
-<c:set var="readOnly" value="${symbol_dollar}{!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
+<%@ include file="/jsp/sys/kfsTldHeader.jsp"%>
+<c:set var="readOnly" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]}" />
 
 <kul:documentPage showDocumentInfo="true"
 	htmlFormAction="camsAssetPayment"
 	documentTypeName="AssetPaymentDocument" renderMultipart="true"
 	showTabButtons="true">
-	<sys:documentOverview editingMode="${symbol_dollar}{KualiForm.editingMode}" />
+	<sys:documentOverview editingMode="${KualiForm.editingMode}" />
 	<html:hidden property="document.capitalAssetNumber" />
+	
+	<cams:assetPaymentAllocation />
 	<cams:assetPayments />
 
 	<kul:tab tabTitle="Accounting Lines" defaultOpen="true"
-		tabErrorKey="${symbol_dollar}{KFSConstants.ACCOUNTING_LINE_ERRORS}">
+		tabErrorKey="${KFSConstants.ACCOUNTING_LINE_ERRORS}">
 		<c:choose>
 			<c:when
-				test="${symbol_dollar}{KualiForm.document.capitalAssetBuilderOriginIndicator }">
+				test="${KualiForm.document.capitalAssetBuilderOriginIndicator }">
 				<sys-java:accountingLines>
 					<sys-java:accountingLineGroup
 						collectionPropertyName="document.sourceAccountingLines"
@@ -51,14 +50,14 @@
 		</c:choose>
 	</kul:tab>
 	<cams:viewPaymentInProcessByAsset
-		assetPaymentAssetDetail="${symbol_dollar}{KualiForm.document.assetPaymentAssetDetail}"
-		assetPaymentDetail="${symbol_dollar}{KualiForm.document.sourceAccountingLines}" 
-		assetPaymentDistribution="${symbol_dollar}{KualiForm.document.assetPaymentDistributor.assetPaymentDistributions}" />
+		assetPaymentAssetDetail="${KualiForm.document.assetPaymentAssetDetail}"
+		assetPaymentDetail="${KualiForm.document.sourceAccountingLines}" 
+		assetPaymentDistribution="${KualiForm.document.assetPaymentDistributor.assetPaymentDistributions}" />
 
 	<kul:notes />
 	<kul:adHocRecipients />
 	<kul:routeLog />
 	<kul:panelFooter />
 	<sys:documentControls
-		transactionalDocument="${symbol_dollar}{documentEntry.transactionalDocument}" />
+		transactionalDocument="${documentEntry.transactionalDocument}" />
 </kul:documentPage>
