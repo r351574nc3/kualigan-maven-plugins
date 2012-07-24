@@ -68,6 +68,8 @@ limitations under the License.
     <ojdbc6.version>11.2.0.2</ojdbc6.version>
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
     <jetty.phase>none</jetty.phase>
+    <struts.version>1.3.10</struts.version> 
+    <rice.version>1.0.3</rice.version>
 
     <kfs.maven.groupId>org.kualigan.kfs</kfs.maven.groupId>
     <kfs.maven.version>4.1.1-7</kfs.maven.version>
@@ -272,6 +274,11 @@ limitations under the License.
                     <artifactId>${kfsPrototypeArtifactId}</artifactId>
                     <version>${kfsPrototypeVersion}</version>
                     <type>jar</type>
+                </dependency>
+                <dependency>
+                    <groupId>${project.groupId}</groupId>
+                    <artifactId>${project.artifactId}-web</artifactId>
+                    <version>${project.version}</version>
                 </dependency>
             </dependencies>
         </plugin>
