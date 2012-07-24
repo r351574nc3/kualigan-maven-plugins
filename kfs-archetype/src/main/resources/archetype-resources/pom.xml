@@ -61,7 +61,7 @@ limitations under the License.
   <properties>
     <bouncycastle.version>1.46</bouncycastle.version>
     <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
-    <cxf.version>2.3.8</cxf.version>
+    <cxf.version>2.2.9</cxf.version>
     <jetty.version>8.1.5.v20120716</jetty.version>
     <jsp-api.version>2.1</jsp-api.version>
     <jsp.version>2.1</jsp.version>
@@ -230,50 +230,6 @@ limitations under the License.
           </exclusions>
         </dependency>
     
-        <dependency>
-	      <groupId>org.apache.struts</groupId>
-	      <artifactId>struts-core</artifactId>
-	      <version>${struts-framework.version}</version>
-	      <exclusions>
-	        <exclusion>
-	          <artifactId>commons-logging</artifactId>
-	          <groupId>commons-logging</groupId>
-	        </exclusion>
-	        <exclusion>
-	          <artifactId>antlr</artifactId>
-	          <groupId>antlr</groupId>
-	        </exclusion>
-	        <exclusion>
-	          <artifactId>commons-beanutils</artifactId>
-	          <groupId>commons-beanutils</groupId>
-	        </exclusion>
-	      </exclusions>
-	    </dependency>
-        <dependency>
-          <groupId>org.apache.struts</groupId>
-          <artifactId>struts-el</artifactId>
-          <version>${struts-framework.version}</version>
-          <exclusions>
-            <exclusion>
-              <artifactId>standard</artifactId>
-              <groupId>taglibs</groupId>
-            </exclusion>
-            <exclusion>
-              <artifactId>jstl</artifactId>
-              <groupId>javax.servlet</groupId>
-            </exclusion>
-          </exclusions>
-        </dependency>
-        <dependency>
-          <groupId>org.apache.struts</groupId>
-          <artifactId>struts-extras</artifactId>
-          <version>${struts-framework.version}</version>
-        </dependency>
-        <dependency>
-    	      <groupId>org.apache.struts</groupId>
-    	      <artifactId>struts-taglib</artifactId>
-    	      <version>${struts-framework.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
