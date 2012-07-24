@@ -66,6 +66,56 @@
       <groupId>${kfsPrototypeGroupId}</groupId>
       <artifactId>${kfsPrototypeArtifactId}</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.ldap</groupId>
+      <artifactId>spring-ldap-ldif-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ldap</groupId>
+      <artifactId>spring-ldap-ldif-batch</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ldap</groupId>
+      <artifactId>spring-ldap-test</artifactId>
+    </dependency>
+
+    <dependency>        
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts-el</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.struts</groupId>
+      <artifactId>struts-extras</artifactId>
+    </dependency>
+    <dependency>
+	      <groupId>org.apache.struts</groupId>
+	      <artifactId>struts-taglib</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.kuali.commons</groupId>
+	    <artifactId>commons-beanutils</artifactId>
+	</dependency>
+
+	<dependency>
+	    <groupId>commons-collections</groupId>
+	    <artifactId>commons-collections</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>commons-lang</groupId>
+		<artifactId>commons-lang</artifactId>
+	</dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk16</artifactId>
+    </dependency>    
   </dependencies>
   
     <profiles>
