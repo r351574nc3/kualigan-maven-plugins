@@ -2,7 +2,6 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 <config>
-    <param name="appserver.url">http://localhost:8080/</param>
     <param name="external.directory">${symbol_dollar}{user.home}/kuali/main/${symbol_dollar}{environment}/${symbol_dollar}{module.name}</param>
 
     <param name="kim.mode">local</param>
@@ -34,17 +33,16 @@
     <param name="module.endowment.enabled">true</param>
     <param name="module.travel.enabled">true</param>
 
-    <param name="application.url">${symbol_dollar}{appserver.url}/${symbol_dollar}{module.name}/</param>
-    <param name="externalizable.help.url">${symbol_dollar}{appserver.url}/static/help/</param>
-    <param name="externalizable.images.url">${symbol_dollar}{appserver.url}/static/images/</param>
-    <param name="externalizable.static.content.url">${symbol_dollar}{appserver.url}/static</param>
-    <param name="kr.url">${symbol_dollar}{appserver.url}/kr</param>
-    <param name="ksb.url">${symbol_dollar}{appserver.url}/ksb</param>
-    <param name="kim.url">${symbol_dollar}{appserver.url}/kim</param>
+    <param name="externalizable.help.url">${symbol_dollar}{application.url}/static/help/</param>
+    <param name="externalizable.images.url">${symbol_dollar}{application.url}/static/images/</param>
+    <param name="externalizable.static.content.url">${symbol_dollar}{application.url}/static</param>
+    <param name="kr.url">${symbol_dollar}{application.url}/kr</param>
+    <param name="ksb.url">${symbol_dollar}{application.url}/ksb</param>
+    <param name="kim.url">${symbol_dollar}{application.url}/kim</param>
     <param name="kc.application.url">http://test.kc.kuali.org/kc-trunk</param>
-    <param name="workflow.url">${symbol_dollar}{appserver.url}/kew</param>
-    <param name="workflow.documentsearch.base.url">${symbol_dollar}{appserver.url}/kr/lookup.do?methodToCall=start&amp;businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&amp;docFormKey=88888888&amp;returnLocation=${symbol_dollar}{appserver.url}/portal.do&amp;hideReturnLink=true</param>
-    <param name="kr.externalizable.images.url">${symbol_dollar}{appserver.url}/kr/static/images/</param>
+    <param name="workflow.url">${symbol_dollar}{application.url}/kew</param>
+    <param name="workflow.documentsearch.base.url">${symbol_dollar}{application.url}/kr/lookup.do?methodToCall=start&amp;businessObjectClassName=org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO&amp;docFormKey=88888888&amp;returnLocation=${symbol_dollar}{application.url}/portal.do&amp;hideReturnLink=true</param>
+    <param name="kr.externalizable.images.url">${symbol_dollar}{application.url}/kr/static/images/</param>
 
 
     <param name="logs.directory">${symbol_dollar}{external.directory}/logs/</param>
@@ -160,7 +158,7 @@
 
     <param name="b2b.environment">test</param>
     <param name="b2b.purchase.order.url">https://usertest.sciquest.com/apps/Router/POXMLImport</param>
-    <param name="b2b.punch.back.url">${symbol_dollar}{appserver.url}/b2b.do?methodToCall=returnFromShopping</param>
+    <param name="b2b.punch.back.url">${symbol_dollar}{application.url}/b2b.do?methodToCall=returnFromShopping</param>
     <param name="b2b.punch.out.url">http://usertest.sciquest.com/apps/Router/ExternalAuth/cXML/KualiDemo</param>
 
     <param name="spring.transaction.bean.file">spring-jta.xml</param>
