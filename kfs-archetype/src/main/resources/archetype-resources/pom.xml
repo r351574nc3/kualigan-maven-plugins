@@ -250,7 +250,7 @@ limitations under the License.
                     <contextPath>/${default.context.path}</contextPath>
                     <descriptor>web/src/main/webapp/WEB-INF/web.xml</descriptor>
                 </webApp>
-                <classesDirectory>core/target/classes</classesDirectory>
+                <classesDirectory>web/target/classes</classesDirectory>
             </configuration>
             <executions>
                 <execution>
