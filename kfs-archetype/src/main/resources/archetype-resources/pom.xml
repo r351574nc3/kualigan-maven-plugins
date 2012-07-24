@@ -267,6 +267,12 @@ limitations under the License.
                     <artifactId>${driver.artifactId}</artifactId>
                     <version>${driver.version}</version>
                 </dependency>
+                <dependency>
+                    <groupId>${kfsPrototypeGroupId}</groupId>
+                    <artifactId>${kfsPrototypeArtifactId}</artifactId>
+                    <version>${kfsPrototypeVersion}</version>
+                    <type>jar</type>
+                </dependency>
             </dependencies>
         </plugin>
     </plugins>
