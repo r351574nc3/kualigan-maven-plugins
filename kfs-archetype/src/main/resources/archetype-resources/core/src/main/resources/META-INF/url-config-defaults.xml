@@ -5,7 +5,7 @@
 
     <param name="appserver.url">http://localhost:8080</param>
 
-    <param name="application.url">${symbol_dollar}{appserver.url}/kfs-${symbol_dollar}{build.environment}</param>
+    <param name="application.url">${symbol_dollar}{appserver.url}/${symbol_dollar}{module.name}</param>
 
     <param name="cas.url">${symbol_dollar}{appserver.url}/cas</param>
 
