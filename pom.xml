@@ -132,12 +132,12 @@
     <dependency>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-archetype-plugin</artifactId>
-      <version>1.0-alpha-4</version>
+      <version>1.0-alpha-7</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-interactivity-api</artifactId>
-      <version>1.0-alpha-4</version>
+      <version>1.0-alpha-6</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
@@ -158,7 +158,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
-      <version>3.0</version>
+      <version>1.5.15</version>
     </dependency>
   </dependencies>
 
