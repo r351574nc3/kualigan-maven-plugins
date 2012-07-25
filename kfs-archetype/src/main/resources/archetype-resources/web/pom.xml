@@ -125,7 +125,7 @@ limitations under the License.
                   <type>war</type>
                   <overWrite>false</overWrite>
                   <outputDirectory>src/main/webapp</outputDirectory>
-                  <includes>jsp/**,kr/**,ksb/**,kcb/**,kim/**,ken/**,kew/**</includes>
+                  <includes>kr/**,ksb/**,kcb/**,kim/**,ken/**,kew/**</includes>
                 </artifactItem>
               </artifactItems>
             </configuration>
@@ -141,7 +141,6 @@ limitations under the License.
                     <directory>src/main/webapp</directory>
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <includes>
-                        <include>jsp/**</include>
                         <include>kr/**</include>
                         <include>ksb/**</include>
                         <include>kcb/**</include>
