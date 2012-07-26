@@ -209,7 +209,7 @@ public class CreateOverlayMojo extends AbstractMojo {
                         setProperty("version", version);
                         setProperty("kfsPrototypeGroupId", prototypeGroupId);
                         setProperty("kfsPrototypeArtifactId", prototypeArtifactId);
-                        setProperty("kfsPrototypeVersionId", prototypeVersion);
+                        setProperty("kfsPrototypeVersion", prototypeVersion);
                     }});
                     
         try {
