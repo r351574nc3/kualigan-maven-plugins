@@ -23,16 +23,11 @@ The KFS maven plugin works in 2 separate use cases
 
 *** Migrate an existing KFS distribution that is located in a local path
 
-#+BEGIN_EXAMPLE
-
 This is actually Deprecated now!!! I decided not to support migration since it's virtually impossible to dig up all the changes
 you might have done on your project and move them to your overlay. Instead, I recommend taking your current project, building its 
 war, then creating a prototype from it, and an overlay off of that.
 
 Instead, migrate is now going to be used in a different way. See after.
-
-
-#+END_EXAMPLE
 
 *** Create a new prototype based-on a war file
 #+BEGIN_EXAMPLE
