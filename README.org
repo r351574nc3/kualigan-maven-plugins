@@ -9,7 +9,15 @@ The KFS maven plugin works in 2 separate use cases
 *** Create a new KFS Overlay
 
 
-*** Convert an existing KFS distribution into a maven project
+** Setup
+
+*** Add the following to your $HOME/.m2/settings.xml
+
+#+BEGIN_EXAMPLE
+  <pluginGroups>
+    <pluginGroup>org.kualigan.maven.plugins</pluginGroup>
+  </pluginGroups>
+#+END_EXAMPLE
 
 ** Usage
 
