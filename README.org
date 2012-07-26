@@ -60,7 +60,7 @@ mvn -cpu kfs:create-overlay -Dgav=org.kualigan:kfs:4.0.0
 
 #+BEGIN_EXAMPLE
 
-mvn -cpu kfs:overlay -DgroupId=org.kualigan -DartifactId=kfs -Dversion=4.0.0
+mvn -cpu kfs:create-overlay -DgroupId=org.kualigan -DartifactId=kfs -Dversion=4.0.0
 
 #+END_EXAMPLE
 
