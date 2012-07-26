@@ -25,7 +25,12 @@ The KFS maven plugin works in 2 separate use cases
 
 #+BEGIN_EXAMPLE
 
-mvn -cpu kfs:migrate -Dkfs.local.path=$HOME/workspace/kfs/trunk
+This is actually Deprecated now!!! I decided not to support migration since it's virtually impossible to dig up all the changes
+you might have done on your project and move them to your overlay. Instead, I recommend taking your current project, building its 
+war, then creating a prototype from it, and an overlay off of that.
+
+Instead, migrate is now going to be used in a different way. See after.
+
 
 #+END_EXAMPLE
 
