@@ -24,7 +24,7 @@ Maven plugin for creating mavenized KC Overlay distributions
 *** Overlay using simplified GAV syntax
 #+BEGIN_EXAMPLE
 
-mvn -cpu kfs:create-overlay -Dgav=org.kualigan:kfs:4.0.0
+mvn -cpu kfs:create-overlay -Dgav=org.kualigan:kc:4.0
 
 #+END_EXAMPLE
 
@@ -32,7 +32,7 @@ mvn -cpu kfs:create-overlay -Dgav=org.kualigan:kfs:4.0.0
 
 #+BEGIN_EXAMPLE
 
-mvn -cpu kfs:create-overlay -DgroupId=org.kualigan -DartifactId=kfs -Dversion=4.0.0
+mvn -cpu kfs:create-overlay -DgroupId=org.kualigan -DartifactId=kc -Dversion=5.0
 
 #+END_EXAMPLE
 
