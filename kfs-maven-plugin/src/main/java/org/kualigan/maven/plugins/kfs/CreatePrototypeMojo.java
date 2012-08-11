@@ -187,10 +187,21 @@ public class CreatePrototypeMojo extends AbstractMojo {
     protected File file;
 
     /**
+     * Assembled sources file.
+     */
+    @Parameter(property="sources")
+    protected File sources;
+
+    /**
      */
     @Parameter(property="project")
     protected MavenProject project;
     
+    /**
+     */
+    @Parameter(property="repositoryId")
+    protected String repositoryId;
+
     /**
      * The {@code M2_HOME} parameter to use for forked Maven invocations.
      *
@@ -537,7 +548,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * 
      * @param artifact {@link File} instance to install
      */
-    public void installArtifact(final File artifact) throws MojoExecutionException {
+    public void installArtifact(final File artifact, final File sources) throws MojoExecutionException {
         final Invoker invoker = new DefaultInvoker().setMavenHome(getMavenHome());
         
         final String additionalArguments = "";
@@ -550,6 +561,15 @@ public class CreatePrototypeMojo extends AbstractMojo {
                         setProperty("version", version);
                         setProperty("packaging", artifact.getName().endsWith("jar") ? "jar" : "war");
                         setProperty("pomFile", getTempPomPath());
+                        setProperty("repositoryId", getRepositoryId());
+                        if (sources != null) {
+                            try {
+                                setProperty("sources", sources.getCanonicalPath());
+                            }
+                            catch (Exception e) {
+                                throw new MojoExecutionException("Cannot get path for the sources file ", e);
+                            }                            
+                        }
                         try {
                             setProperty("file", artifact.getCanonicalPath());
                         }
@@ -562,7 +582,12 @@ public class CreatePrototypeMojo extends AbstractMojo {
         try {
             setupRequest(req, additionalArguments);
 
-            req.setGoals(new ArrayList<String>() {{ add("install:install-file"); }});
+            if (getRepositoryId() == null) {
+                req.setGoals(new ArrayList<String>() {{ add("install:install-file"); }});
+            }
+            else {
+                req.setGoals(new ArrayList<String>() {{ add("deploy:deploy-file"); }});
+            }
 
             try {
                 final InvocationResult invocationResult = invoker.execute(req);
@@ -696,8 +721,8 @@ public class CreatePrototypeMojo extends AbstractMojo {
             
             final File prototypeJar = repack(file);
             extractTempPom();
-            installArtifact(file);
-            installArtifact(prototypeJar);
+            installArtifact(file, null);            
+            installArtifact(prototypeJar, sources);
 
             /* TODO: Was this really necessary?
             Properties props = new Properties();
@@ -718,4 +743,11 @@ public class CreatePrototypeMojo extends AbstractMojo {
         return this.mavenHome;
     }
         
+    public void setRepositoryId(final String repositoryId) {
+        this.repositoryId = repositoryId;
+    }
+    
+    public String getRepositoryId() {
+        return this.repositoryId;
+    }
 }

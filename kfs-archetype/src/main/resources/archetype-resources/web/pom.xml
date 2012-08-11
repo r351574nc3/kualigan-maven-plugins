@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-
-Copyright 2005-2012 The Kuali Foundation
-
-Licensed under the Educational Community License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.opensource.org/licenses/ecl2.php
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
+    Copyright 2005-2012 The Kuali Foundation
+    
+    Licensed under the Educational Community License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    http://www.opensource.org/licenses/ecl2.php
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
@@ -36,8 +34,6 @@ limitations under the License.
     <default.context.path>${project.parent.artifactId}</default.context.path>
   </properties>
   
-  
-
   <build>
     <finalName>${project.parent.artifactId}-${environment}</finalName>
     
@@ -133,26 +129,26 @@ limitations under the License.
           </executions>
       </plugin>
       <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-clean-plugin</artifactId>
-            <configuration>
-                <filesets>
-                  <fileset>
-                    <directory>src/main/webapp</directory>
-                    <useDefaultExcludes>true</useDefaultExcludes>
-                    <includes>
-                        <include>kr/**</include>
-                        <include>ksb/**</include>
-                        <include>kcb/**</include>
-                        <include>kim/**</include>
-                        <include>ken/**</include>
-                        <include>kew/**</include>
-                        <include>WEB-INF/classes/**</include>
-                    </includes>
-                  </fileset>
-                </filesets>
-            </configuration>
-        </plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <configuration>
+            <filesets>
+              <fileset>
+                <directory>src/main/webapp</directory>
+                <useDefaultExcludes>true</useDefaultExcludes>
+                <includes>
+                    <include>kr/**</include>
+                    <include>ksb/**</include>
+                    <include>kcb/**</include>
+                    <include>kim/**</include>
+                    <include>ken/**</include>
+                    <include>kew/**</include>
+                    <include>WEB-INF/classes/**</include>
+                </includes>
+              </fileset>
+            </filesets>
+        </configuration>
+      </plugin>
 
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
@@ -170,14 +166,28 @@ limitations under the License.
                         <name>log4j.settings.file</name><value>${user.home}/main/${build.environment}/j2ee/log4j.properties</value>
                     </systemProperty>
                 </systemProperties>
-                <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
-                <contextPath>/${default.context.path}</contextPath>
-                <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
-                <webApp>
-                    <contextPath>/${default.context.path}</contextPath>
+                <scanIntervalSeconds>0</scanIntervalSeconds>
+                <webAppConfig>
+                    <contextPath>/${project.build.finalName}</contextPath>
                     <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
-                </webApp>
-                <classesDirectory>target/classes</classesDirectory>
+                </webAppConfig>
+            </configuration>
+        </plugin>
+        <plugin>
+            <groupId>org.zeroturnaround</groupId>
+            <artifactId>jrebel-maven-plugin</artifactId>
+            <configuration>
+              <alwaysGenerate>true</alwaysGenerate>
+              <addResourcesDirToRebelXml>true</addResourcesDirToRebelXml>
+              <!--
+                root is 2 directories away from jar/war modules
+              -->
+              <relativePath>../../</relativePath>
+              <!--
+                use a system property for specifing root directory (note the double $)
+                start your application with -Drebel.root=c:/projects/
+              -->
+              <rootPath>${rebel.root}</rootPath>
             </configuration>
         </plugin>
     </plugins>

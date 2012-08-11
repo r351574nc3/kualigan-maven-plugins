@@ -6,9 +6,9 @@
     <version>1.0.5</version>
     <relativePath />
   </parent>
-  <groupId>${groupId}</groupId>
-  <artifactId>${artifactId}</artifactId>
-  <packaging>${packaging}</packaging>
+  <groupId>$${groupId}</groupId>
+  <artifactId>$${artifactId}</artifactId>
+  <packaging>$${packaging}</packaging>
   <name>Kuali Financial System</name>
   <inceptionYear>2005</inceptionYear>
   <version>1.0.6-SNAPSHOT</version>
