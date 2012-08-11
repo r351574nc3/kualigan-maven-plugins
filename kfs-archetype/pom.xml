@@ -2,40 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.kuali.pom</groupId>
-    <artifactId>kuali-maven</artifactId>
-    <version>1.3.13</version>
+    <groupId>org.kualigan.maven.plugins</groupId>
+    <artifactId>kualigan-maven-plugins</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
   </parent>
 
   <groupId>org.kualigan.maven.archetypes</groupId>
   <artifactId>kfs-archetype</artifactId>
-  <version>1.0.6-SNAPSHOT</version>
   <packaging>maven-archetype</packaging>
 
-  <name>kfs-archetype</name>
+  <name>KFS Archetype</name>
 
   <build>
     <extensions>
-      <extension>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-gitexe</artifactId>
-        <version>1.3</version>
-      </extension>
-      <extension>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-manager-plexus</artifactId>
-        <version>1.3</version>
-      </extension>
-      <extension>
-        <groupId>org.kathrynhuxtable.maven.wagon</groupId>
-        <artifactId>wagon-gitsite</artifactId>
-        <version>0.3.1</version>
-      </extension>
-      <extension>
-        <groupId>org.kuali.maven.wagons</groupId>
-        <artifactId>maven-s3-wagon</artifactId>
-        <version>1.1.12</version>
-      </extension>
       <extension>
         <groupId>org.apache.maven.archetype</groupId>
         <artifactId>archetype-packaging</artifactId>
@@ -59,79 +38,31 @@
 
   </build>
 
-    <profiles>
-        <profile>
-            <id>kualigan-release</id>
-            <properties>
-                <kuali.gpg.phase>install</kuali.gpg.phase>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>gpg</id>
-                                <phase>${kuali.gpg.phase}</phase>
-                                <goals>
-                                  <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
-
     <url>https://github.com/r351574nc3/kfs-overlay-reference/</url>
 
-  <developers>
-    <developer>
-      <id>leo</id>
-      <name>Leo Przybylski</name>
-      <email>leo@rsmart.com</email>
-      <url>http://kualigan.blogspot.com</url>
-      <organization>rsmart</organization>
-      <organizationUrl>http://www.rsmart.com</organizationUrl>
-      <roles>
-        <role>developer</role>
-      </roles>
-      <timezone>-7</timezone>
-      <properties>
-        <picUrl>http://www.gravatar.com/avatar/6be04114e185b6fa626a0ee530db34e4.png</picUrl>
-      </properties>
-    </developer>
-  </developers>
+    <developers>
+        <developer>
+            <id>leo</id>
+            <name>Leo Przybylski</name>
+            <email>leo@rsmart.com</email>
+            <url>http://kualigan.blogspot.com</url>
+            <organization>rsmart</organization>
+            <organizationUrl>http://www.rsmart.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-7</timezone>
+            <properties>
+                <picUrl>http://www.gravatar.com/avatar/6be04114e185b6fa626a0ee530db34e4.png</picUrl>
+            </properties>
+        </developer>
+    </developers>
 
-  <licenses>
-    <license>
-      <name>Educational Community License 2.0</name>
-      <url>http://www.opensource.org/licenses/ecl2.txt</url>
-      <distribution>manual</distribution>
-    </license>
-  </licenses>
-
-  <scm>
-    <connection>scm:git:git@github.com:r351574nc3/kfs-maven-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:r351574nc3/kfs-maven-plugin.git</developerConnection>
-    <url>http://www.github.com/r351574nc3/kfs-maven-plugin</url>
-  </scm>
-
-  <distributionManagement>
-    <repository>
-      <id>sonatype-nexus-staging</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-    </repository>
-    <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <site>
-      <id>kuali.site</id>
-      <name>Kuali Maven Site</name>
-      <url>${kuali.site.publish.url}/kuali-common/kfs-common</url>
-    </site>
-    <downloadUrl>${kuali.site.download.url}</downloadUrl>
-  </distributionManagement>
+    <licenses>
+        <license>
+            <name>Educational Community License 2.0</name>
+            <url>http://www.opensource.org/licenses/ecl2.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
 </project>

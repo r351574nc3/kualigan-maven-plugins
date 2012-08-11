@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   
   <name>Kualigan Maven Plugins</name>
-  <version>1.0.10-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
   <description>A collection of maven plugins</description>
 
   <licenses>
@@ -60,6 +60,26 @@
         </plugins>
     </pluginManagement>
     <extensions>
+      <extension>
+        <groupId>org.apache.maven.scm</groupId>
+        <artifactId>maven-scm-provider-gitexe</artifactId>
+        <version>1.3</version>
+      </extension>
+      <extension>
+        <groupId>org.apache.maven.scm</groupId>
+        <artifactId>maven-scm-manager-plexus</artifactId>
+        <version>1.3</version>
+      </extension>
+      <extension>
+        <groupId>org.kathrynhuxtable.maven.wagon</groupId>
+        <artifactId>wagon-gitsite</artifactId>
+        <version>0.3.1</version>
+      </extension>
+      <extension>
+        <groupId>org.kuali.maven.wagons</groupId>
+        <artifactId>maven-s3-wagon</artifactId>
+        <version>1.1.12</version>
+      </extension>
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
          <artifactId>wagon-ssh</artifactId>
@@ -211,10 +231,10 @@
   
   <modules>
     <module>kualigan-maven-plugin-api</module>
-    <!--
     <module>kc-maven-plugin</module>
     <module>kfs-archetype</module>
     <module>kfs-maven-plugin</module>
+    <!--
     <module>kuali-maven-plugin</module>
     -->
   </modules>

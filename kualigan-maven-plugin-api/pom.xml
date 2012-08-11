@@ -3,14 +3,12 @@
   <parent>
     <groupId>org.kualigan.maven.plugins</groupId>
     <artifactId>kualigan-maven-plugins</artifactId>
-    <version>1.0.10-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
   </parent>
   
   <artifactId>kualigan-maven-plugin-api</artifactId>
-  <packaging>jar</packaging>
-  
+  <packaging>jar</packaging>  
   <name>Kualigan Maven Plugin API</name>
-  <version>1.0.10-SNAPSHOT</version>
   <description>API for Kualigan Maven Plugin building. Mostly helpers.</description>
 
   <licenses>
