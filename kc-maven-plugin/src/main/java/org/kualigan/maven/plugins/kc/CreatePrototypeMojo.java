@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kualigan.maven.plugins.kfs;
+package org.kualigan.maven.plugins.kc;
 
 
 import org.kualigan.maven.plugins.api.PrototypeHelper;
@@ -72,12 +72,12 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
- * Creates a prototype from the given KFS project resource. A KFS project resource can be either
+ * Creates a prototype from the given kc project resource. A kc project resource can be either
  * of the following:
  * <ul>
- *   <li>KFS war file</li>
- *   <li>KFS project directory with source</li>
- *   <li>KFS svn repo</li>
+ *   <li>kc war file</li>
+ *   <li>kc project directory with source</li>
+ *   <li>kc svn repo</li>
  * </ul>
  * 
  */
@@ -96,25 +96,25 @@ public class CreatePrototypeMojo extends AbstractMojo {
     protected ArtifactRepository localRepository;
     
     /**
-     * Path for where the KFS instance is we want to migrate
+     * Path for where the kc instance is we want to migrate
      * 
      */
-    @Parameter(property="kfs.local.path")
-    protected String kfsPath;
+    @Parameter(property="kc.local.path")
+    protected String kcPath;
 
     /**
      */
-    @Parameter(property="packageName",defaultValue="org.kuali.kfs")
+    @Parameter(property="packageName",defaultValue="org.kuali.kc")
     protected String packageName;
 
     /**
      */
-    @Parameter(property="groupId",defaultValue="org.kuali.kfs")
+    @Parameter(property="groupId",defaultValue="org.kuali.kc")
     protected String groupId;
 
     /**
      */
-    @Parameter(property="artifactId",defaultValue="kfs")
+    @Parameter(property="artifactId",defaultValue="kc")
     protected String artifactId;
 
     /**
@@ -154,7 +154,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
     /**
      * <p>Create a prototype</p>
      * 
-     * <p>The following are the steps for creating a prototype from a KFS instance</p>
+     * <p>The following are the steps for creating a prototype from a kc instance</p>
      * <p>
      * When using a war file:
      * <ol>
@@ -173,7 +173,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      * </ol>
      * </p>
      * 
-     * The basic way to understand how this works is the kfs-archetype is used to create kfs
+     * The basic way to understand how this works is the kc-archetype is used to create kc
      * maven projects, but it is dynamically generated. Then, source files are copied to it.
      */ 
     public void execute() throws MojoExecutionException {
