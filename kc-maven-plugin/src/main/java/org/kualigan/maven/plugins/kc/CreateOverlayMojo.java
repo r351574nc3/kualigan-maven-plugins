@@ -135,6 +135,7 @@ public class CreateOverlayMojo extends AbstractMojo {
                                  archetypeVersion,
                                  groupId,
                                  artifactId,
+                                 version,
                                  prototypeGroupId,
                                  prototypeArtifactId,
                                  prototypeVersion);

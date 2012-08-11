@@ -30,6 +30,9 @@ public interface PrototypeHelper {
                          final String groupId,
                          final String artifactId,
                          final String version,
-                         final String pomFile,
                          final String repositoryId) throws MojoExecutionException;
+
+    File repack(final File file, final String artifactId) throws MojoExecutionException;
+
+    void extractTempPom() throws MojoExecutionException;
 }

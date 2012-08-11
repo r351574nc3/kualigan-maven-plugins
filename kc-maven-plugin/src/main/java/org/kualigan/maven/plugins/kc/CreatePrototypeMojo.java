@@ -203,10 +203,21 @@ public class CreatePrototypeMojo extends AbstractMojo {
                 }
             }*/
             
-            final File prototypeJar = repack(file);
-            extractTempPom();
-            installArtifact(file, null);            
-            installArtifact(prototypeJar, sources);
+            final File prototypeJar = helper.repack(file, artifactId);
+            helper.extractTempPom();
+            helper.installArtifact(file, null, 
+                                   getMavenHome(), 
+                                   groupId, 
+                                   artifactId, 
+                                   version, 
+                                   repositoryId);
+            helper.installArtifact(prototypeJar, 
+                                   sources, 
+                                   getMavenHome(), 
+                                   groupId, 
+                                   artifactId, 
+                                   version, 
+                                   repositoryId);
 
             /* TODO: Was this really necessary?
             Properties props = new Properties();

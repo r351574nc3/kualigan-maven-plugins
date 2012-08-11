@@ -187,7 +187,7 @@ public class PrototypeUtil {
      * @param file is the war file to repackage
      * @return {@link File} instance of the repacked jar
      */
-    protected File repack(final File file, final String artifactId) throws MojoExecutionException {
+    public File repack(final File file, final String artifactId) throws MojoExecutionException {
         final File workingDirectory = new File(System.getProperty("java.io.tmpdir") + File.separator
                 + artifactId + "-repack");
         final File warDirectory     = new File(workingDirectory, "war");
@@ -482,7 +482,6 @@ public class PrototypeUtil {
                                 final String groupId,
                                 final String artifactId,
                                 final String version,
-                                final String pomFile,
                                 final String repositoryId) throws MojoExecutionException {
         final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
         
@@ -564,7 +563,7 @@ public class PrototypeUtil {
      * Puts a POM file in the system temp directory for prototype-pom.xml. prototype-pom.xml is extracted
      * from the plugin.
      */
-    protected void extractTempPom() throws MojoExecutionException {
+    public void extractTempPom() throws MojoExecutionException {
         getCaller().getLog().info("Extracting the Temp POM");
         
         final InputStream pom_is = getClass().getClassLoader().getResourceAsStream("prototype-resources/pom.xml");
