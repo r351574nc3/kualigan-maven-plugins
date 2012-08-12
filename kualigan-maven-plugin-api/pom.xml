@@ -11,12 +11,33 @@
   <name>Kualigan Maven Plugin API</name>
   <description>API for Kualigan Maven Plugin building. Mostly helpers.</description>
 
-  <licenses>
-    <license>
-      <name>Educational Community License, Version 2.0 (ECL-2.0)</name>
-      <url>http://www.opensource.org/licenses/ecl2.php</url>
-    </license>
-  </licenses>
+    <url>https://github.com/r351574nc3/kualigan-maven-plugins/</url>
+
+    <developers>
+        <developer>
+            <id>leo</id>
+            <name>Leo Przybylski</name>
+            <email>leo@rsmart.com</email>
+            <url>http://kualigan.blogspot.com</url>
+            <organization>rsmart</organization>
+            <organizationUrl>http://www.rsmart.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-7</timezone>
+            <properties>
+                <picUrl>http://www.gravatar.com/avatar/6be04114e185b6fa626a0ee530db34e4.png</picUrl>
+            </properties>
+        </developer>
+    </developers>
+
+    <licenses>
+        <license>
+            <name>Educational Community License 2.0</name>
+            <url>http://www.opensource.org/licenses/ecl2.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>  
   
 
   <build>
