@@ -242,9 +242,9 @@
   </modules>
   
   <scm>
-    <connection>scm:git:git://github.com/r351574nc3/kuali-maven-plugins.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/r351574nc3/kuali-maven-plugins.git</developerConnection>
-    <url>https://github.com/r351574nc3/kfs-maven-plugins</url>
+    <connection>scm:git:git://github.com/r351574nc3/kualigan-maven-plugins.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/r351574nc3/kualigan-maven-plugins.git</developerConnection>
+    <url>https://github.com/r351574nc3/kualigan-maven-plugins</url>
   </scm>
 
   <distributionManagement>
