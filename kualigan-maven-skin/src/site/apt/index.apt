@@ -1,0 +1,10 @@
+  Welcome to the maven-kuali-skin Project, we hope you enjoy your time
+on this project site.  We've tried to assemble some
+great user documentation and developer information, and
+we're really excited that you've taken the time to visit
+this site.
+
+What is maven-kuali-skin
+
+  It is a maven skin for customizing the look and feel of your maven site generated from the maven-site-plugin. What it does is it
+takes your kuali related project and makes it look more like the current kuali site.
