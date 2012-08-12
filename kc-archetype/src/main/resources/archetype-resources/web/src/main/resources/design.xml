@@ -1,0 +1,58 @@
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.opensource.org/licenses/ecl2.php
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<design>
+  <!-- Non-kuali packages that all modules can depend on (javax, org.apache, etc) -->
+	<package name="apache" package="org.apache" subpackages="include" needdeclarations="false"/>
+	<package name="displaytag" package="org.displaytag" subpackages="include" needdeclarations="false"/>
+	<package name="edu" package="edu" subpackages="include" needdeclarations="false"/>
+	<package name="javax" package="javax" subpackages="include" needdeclarations="false"/>
+	<package name="lowagie" package="com.lowagie" subpackages="include" needdeclarations="false"/>
+	<package name="rice" package="org.kuali.rice" subpackages="include" needdeclarations="false"/>
+	<package name="springmodules" package="org.springmodules" subpackages="include" needdeclarations="false"/>
+	<package name="springframework" package="org.springframework" subpackages="include" needdeclarations="false"/>
+	<package name="w3c" package="org.w3c" subpackages="include" needdeclarations="false"/>
+	<package name="jasper" package="net.sf.jasperreports" subpackages="include" needdeclarations="false" />
+	<package name="sax" package="org.xml" subpackages="include" needdeclarations="false"/>
+	<package name="opensymphony" package="com.opensymphony" subpackages="include" needdeclarations="false"/>
+    <package name="junit" package="junit" subpackages="include" needdeclarations="false"/>
+	
+  <!-- Core Kuali packages that all optional modules can depend on -->
+	<package name="quartz" package="org.quartz" subpackages="include" />
+	<package name="dwr" package="uk.ltd.getahead.dwr" subpackages="include" />
+	<package name="coa" package="org.kuali.kfs.coa" subpackages="include" needdeclarations="false" />
+	<package name="fp" package="org.kuali.kfs.fp" subpackages="include" needdeclarations="false"/>
+	<package name="gl" package="org.kuali.kfs.gl" subpackages="include" needdeclarations="false"/>
+	<package name="pdp" package="org.kuali.kfs.pdp" subpackages="include" needdeclarations="false" />
+	<package name="sys" package="org.kuali.kfs.sys" subpackages="include" needdeclarations="false">
+		<depends>quartz</depends>
+		<depends>dwr</depends>
+	</package>
+	<package name="vnd" package="org.kuali.kfs.vnd" subpackages="include" needdeclarations="false"/>
+	<package name="integration" package="org.kuali.kfs.integration" subpackages="include" needdeclarations="false"/>
+  
+  <!-- Optional module packages -->
+	<package name="ar" package="org.kuali.kfs.module.ar" subpackages="include"/>
+	<package name="bc" package="org.kuali.kfs.module.bc" subpackages="include"/>
+	<package name="cam" package="org.kuali.kfs.module.cam" subpackages="include"/>
+	<package name="cg" package="org.kuali.kfs.module.cg" subpackages="include"/>
+	<package name="ec" package="org.kuali.kfs.module.ec" subpackages="include"/>
+	<package name="ld" package="org.kuali.kfs.module.ld" subpackages="include"/>
+	<package name="purap" package="org.kuali.kfs.module.purap" subpackages="include"/>
+	<package name="cab" package="org.kuali.kfs.module.cab" subpackages="include">
+		<depends>cam</depends>
+		<depends>purap</depends>
+	</package>
+</design>
