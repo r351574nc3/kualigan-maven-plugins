@@ -18,6 +18,9 @@
     </license>
   </licenses>
   
+    <properties>
+        <kualigan.plugin.prefix>kfs</kualigan.plugin.prefix>
+    </properties>
 
   <build>
     <resources>
@@ -98,6 +101,11 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-utils</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>${groupId}</groupId>
+        <artifactId>kualigan-maven-plugin-api</artifactId>
+        <version>${version}</version>
     </dependency>
   </dependencies>
 </project>  

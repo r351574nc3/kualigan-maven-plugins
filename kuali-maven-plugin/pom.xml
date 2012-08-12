@@ -21,6 +21,9 @@
     </license>
   </licenses>
   
+    <properties>
+        <kualigan.plugin.prefix>kuali</kualigan.plugin.prefix>
+    </properties>
 
   <build>
     <resources>
