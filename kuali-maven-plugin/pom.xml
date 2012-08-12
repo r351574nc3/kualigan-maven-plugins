@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>org.kuali.pom</groupId>
-    <artifactId>kuali-maven</artifactId>
-    <version>1.3.13</version>
+    <groupId>org.kualigan.maven.plugins</groupId>
+    <artifactId>kualigan-maven-plugins</artifactId>
+    <version>1.1.2-SNAPSHOT</version>
   </parent>
   
   <groupId>org.kualigan.maven.plugins</groupId>
-  <artifactId>kfs-maven-plugin</artifactId>
+  <artifactId>kuali-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
   
-  <name>KFS Maven Plugin</name>
-  <version>1.0.10-SNAPSHOT</version>
-  <description>Maven plugin for creating KFS distributions</description>
+  <name>Kuali Maven Plugin</name>
+  <version>1.1.2-SNAPSHOT</version>
+  <description>Maven plugin for creating Kuali Applications</description>
 
   <licenses>
     <license>
