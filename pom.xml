@@ -1,20 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.kuali.pom</groupId>
-    <artifactId>kuali-maven</artifactId>
-    <version>1.4.6</version>
-  </parent>
-  
-  <groupId>org.kualigan.maven.plugins</groupId>
-  <artifactId>kualigan-maven-plugins</artifactId>
-  <packaging>pom</packaging>
-  
-  <name>Kualigan Maven Plugins</name>
-  <version>1.1.1-SNAPSHOT</version>
-  <description>A collection of maven plugins</description>
-
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.kuali.pom</groupId>
+        <artifactId>kuali-maven</artifactId>
+        <version>1.4.6</version>
+    </parent>
+    
+    <groupId>org.kualigan.maven.plugins</groupId>
+    <artifactId>kualigan-maven-plugins</artifactId>
+    <packaging>pom</packaging>
+    
+    <name>Kualigan Maven Plugins</name>
+    <version>1.1.1-SNAPSHOT</version>
+    <description>A collection of maven plugins</description>
     <url>https://github.com/r351574nc3/kualigan-maven-plugins/</url>
+    <licenses>
+        <license>
+            <name>Educational Community License 2.0</name>
+            <url>http://www.opensource.org/licenses/ecl2.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>  
 
     <developers>
         <developer>
@@ -34,13 +40,11 @@
         </developer>
     </developers>
 
-    <licenses>
-        <license>
-            <name>Educational Community License 2.0</name>
-            <url>http://www.opensource.org/licenses/ecl2.txt</url>
-            <distribution>manual</distribution>
-        </license>
-    </licenses>  
+    <organization>
+        <name>Kualigan</name>
+        <url>http://kualigan.blogspot.com</url>
+    </organization>
+ 
 
   <build>
     <resources>
