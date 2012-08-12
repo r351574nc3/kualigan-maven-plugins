@@ -110,7 +110,7 @@ public class CreateOverlayMojo extends AbstractMojo {
     @Parameter(property = "archetypeArtifactId", defaultValue = "kc-archetype")
     protected String archetypeArtifactId;
     
-    @Parameter(property = "archetypeVersion", defaultValue = "1.0.6-SNAPSHOT")
+    @Parameter(property = "archetypeVersion", defaultValue = "1.1.1")
     protected String archetypeVersion;
     
     /**
