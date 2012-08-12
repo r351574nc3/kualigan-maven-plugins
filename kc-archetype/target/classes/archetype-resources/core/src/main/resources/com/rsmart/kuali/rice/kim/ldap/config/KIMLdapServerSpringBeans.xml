@@ -1,0 +1,94 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+                           http://www.springframework.org/schema/cache
+                           http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
+  <!--
+
+  <bean id="embeddedLdapServer" class="${package}.service.impl.ApacheDsEmbeddedServer">
+    <property name="server">
+      <bean class="org.apache.directory.server.ldap.LdapServer">
+        <property name="directoryService">
+          <bean class="org.apache.directory.server.core.DefaultDirectoryService">
+            <property name="setShutdownHookEnabled" value="true" />
+          </bean>
+        </property>
+        <property name="setAllowAnonymousAccess" value="true" />
+        <property name="extendedOperationHandlers">
+          <list>
+            <bean class="org.apache.directory.server.ldap.handlers.extended.StartTlsHandler"/>
+            <bean class="org.apache.directory.server.ldap.handlers.extended.GracefulShutdownHandler"/>
+            <bean class="org.apache.directory.server.ldap.handlers.extended.LaunchDiagnosticUiHandler"/>
+          </list>
+        </property>
+        <property name="searchBaseDn" value="o=Whoniverse" />
+      </bean>
+    </property>
+    <property name="loadFile"          value="${packageInPathFormat}/demo.ldif" />
+    <property name="port"              value="10389" />
+    <property name="baseDn"            value="o=Whoniverse" />
+    -->
+    <!--
+    <property name="principal"         value="uid=admin,ou=system" />
+    <property name="credentials"       value="secret" />
+    -->
+<!--
+  </bean>
+  -->
+  <bean id="embeddedLdapServer" class="${package}.service.impl.ApacheDsEmbeddedServer">
+    <property name="configuration" ref="configuration" />
+    <property name="port"              value="10389" />
+    <property name="baseDn"            value="o=Whoniverse" />
+    <property name="principal"         value="uid=admin,ou=system" />
+    <property name="credentials"       value="secret" />
+    <property name="loadFiles">
+      <list>
+        <!-- Dynamic schema updates are not yet supported in apacheds 1.0. Wait for 2.0.
+       <value>${packageInPathFormat}/eduperson.ldif</value>
+       <value>${packageInPathFormat}/eduMember.ldif</value>
+       <value>${packageInPathFormat}/eduOrg.ldif</value>
+       -->
+       <value>${packageInPathFormat}/demo.ldif</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="configuration" class="org.apache.directory.server.configuration.MutableServerStartupConfiguration">
+    <property name="ldapPort" value="10389" />
+    <property name="allowAnonymousAccess" value="false" />
+
+    <!-- limits searches by non-admin users to a max time of 15000          -->
+    <!-- milliseconds and has a default value of 10000                      -->
+    <property name="maxTimeLimit" value="15000" />
+
+    <!-- limits searches to max size of 1000 entries: default value is 100  -->
+    <property name="maxSizeLimit" value="1000" />
+
+    <property name="enableLdaps" value="true" />
+    <property name="ldapsPort" value="10636" />
+    <property name="ldapsCertificateFile" 
+              value="${packageInPathFormat}/demo.ks" />
+    <property name="ldapsCertificatePassword" value="secret" />
+
+    <property name="extendedOperationHandlers">
+      <list>
+        <bean class="org.apache.directory.server.ldap.support.extended.GracefulShutdownHandler"/>
+        <bean class="org.apache.directory.server.ldap.support.extended.LaunchDiagnosticUiHandler"/>
+      </list>
+    </property>
+    <property name="contextPartitionConfigurations">
+      <list>
+        <bean class="org.apache.directory.server.core.partition.impl.btree.MutableBTreePartitionConfiguration">
+          <property name="name"   value="demo" />
+          <property name="suffix" value="o=Whoniverse" />
+        </bean>
+      </list>
+    </property>
+  </bean>
+</beans>

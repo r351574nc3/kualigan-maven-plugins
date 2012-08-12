@@ -1,0 +1,141 @@
+dn: ou=Extras,o=Whoniverse
+objectClass: organizationalUnit
+objectClass: top
+ou: Blizzard
+
+dn: ou=Enemies,o=Whoniverse
+objectClass: organizationalUnit
+objectClass: top
+ou: Blizzard
+
+dn: ou=Assistants,o=Whoniverse
+objectClass: organizationalUnit
+objectClass: top
+ou: Blizzard
+
+dn: ou=Doctors,o=Whoniverse
+objectClass: organizationalUnit
+objectClass: top
+ou: NCSoft
+
+dn: cn=Keisha Huntley,ou=Extras,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: Keisha Huntley
+sn: Huntley
+uid: khuntley
+givenname: Keisha
+mail: khuntley@test.edu
+businessCategory: STAFF
+#eduPersonAffiliation: faculty
+
+dn: cn=William Hartnell,ou=Doctors,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: William Hartnell
+description: First Doctor
+description: Grumpy
+sn: Hartnell
+uid: williamh
+givenname: William
+mail: williamh@test.edu
+businessCategory: STAFF
+#eduPersonAffiliation: faculty
+
+
+dn: cn=Patrick Troughton,ou=Doctors,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: Patrick Troughton
+description: Second Doctor
+description:Clown
+sn: Troughton
+#eduPersonAffiliation: faculty
+
+dn: cn=Jon Pertwee,ou=Doctors,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: Jon Pertwee
+description: Third Doctor
+description: Dandy
+sn: Pertwee
+#eduPersonAffiliation: faculty
+
+dn: cn=Tom Baker,ou=Doctors,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: Tom Baker
+description: Fourth Doctor
+description: The one and only!
+sn: Baker
+#eduPersonAffiliation: faculty
+
+dn: cn=Peter Davison,ou=Doctors,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: Peter Davison
+description: Fifth Doctor
+sn: Davison
+#eduPersonAffiliation: faculty
+
+dn: cn=Paul Harvey,ou=Doctors,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+objectClass: userSecurityInformation
+cn: Paul Harvey
+description: Not a Doctor
+sn: Harvey
+#eduPersonAffiliation: faculty
+
+dn: cn=Bramble Harvey,ou=Doctors,o=Whoniverse
+objectClass: person
+objectClass: top
+cn: Bramble
+description: Really not a Doctor
+sn: Harvey
+#eduPersonAffiliation: faculty
+
+dn: cn=Davros,ou=Enemies,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: Davros
+description: Creator of the Daleks
+description: Kaled head scientist
+sn: Unknown
+#eduPersonAffiliation: faculty
+
+dn: cn=Daleks,ou=Enemies,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: Daleks
+description: The Doctor's greatest foe
+sn: NA
+#eduPersonAffiliation: faculty
+
+dn: cn=Master,ou=Enemies,o=Whoniverse
+objectClass: person
+objectClass: inetorgperson
+objectclass: organizationalperson
+objectClass: top
+cn: Master
+description: An evil Time Lord
+sn: Unknown
+#eduPersonAffiliation: faculty
