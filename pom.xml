@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   
   <name>Kualigan Maven Plugins</name>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
   <description>A collection of maven plugins</description>
 
   <licenses>
@@ -57,6 +57,93 @@
               </execution>
             </executions>
           </plugin>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-site-plugin</artifactId>
+              <version>${plugin.site.version}</version>
+              <configuration>
+                <reportPlugins>
+                  <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <!-- Version is included here only because it does not inherit correctly from the pluginManagement section
+                      of the parent pom -->
+                    <version>${javadoc.plugin.version}</version>
+                    <configuration>
+                      <excludePackageNames>${kuali.javadoc.exclude.package.names}</excludePackageNames>
+                      <links>
+                        <link>${kuali.javadoc.link.1}</link>
+                        <link>${kuali.javadoc.link.2}</link>
+                        <link>${kuali.javadoc.link.3}</link>
+                        <link>${kuali.javadoc.link.4}</link>
+                        <link>${kuali.javadoc.link.5}</link>
+                        <link>${kuali.javadoc.link.6}</link>
+                        <link>${kuali.javadoc.link.7}</link>
+                        <link>${kuali.javadoc.link.8}</link>
+                        <link>${kuali.javadoc.link.9}</link>
+                        <link>${kuali.javadoc.link.10}</link>
+                      </links>
+                      <additionalJOption>${kuali.javadoc.additional.joption}</additionalJOption>
+                      <maxmemory>${kuali.javadoc.maxmemory}</maxmemory>
+                      <linksource>${kuali.javadoc.linksource}</linksource>
+                      <javadocVersion>${kuali.javadoc.tool.version}</javadocVersion>
+                      <show>${kuali.javadoc.show}</show>
+                      <debug>${kuali.javadoc.debug}</debug>
+                      <source>${kuali.compile.source}</source>
+                      <quiet>${kuali.javadoc.quiet}</quiet>
+                      <aggregate>${kuali.javadoc.aggregate}</aggregate>
+                      <encoding>${project.build.sourceEncoding}</encoding>
+                    </configuration>
+                    <reportSets>
+                      <reportSet>
+                        <id>generate-javadocs</id>
+                        <reports>
+                          <report>${kuali.javadoc.report.2}</report>
+                        </reports>
+                      </reportSet>
+                    </reportSets>
+                  </plugin>
+                  <plugin>
+                    <artifactId>maven-project-info-reports-plugin</artifactId>
+                    <!-- Version is included here only because it does not inherit correctly from the pluginManagement section
+                      of the parent pom -->
+                    <version>${plugin.project.info.reports.version}</version>
+                    <configuration>
+                      <dependencyDetailsEnabled>${dependency.details.enabled}</dependencyDetailsEnabled>
+                      <dependencyLocationsEnabled>${dependency.locations.enabled}</dependencyLocationsEnabled>
+                    </configuration>
+                    <reportSets>
+                      <reportSet>
+                        <reports>
+                          <report>${kuali.report.1}</report>
+                          <report>${kuali.report.2}</report>
+                          <report>${kuali.report.3}</report>
+                          <report>${kuali.report.4}</report>
+                          <report>${kuali.report.5}</report>
+                          <report>${kuali.report.6}</report>
+                          <report>${kuali.report.7}</report>
+                          <report>${kuali.report.8}</report>
+                          <report>${kuali.report.9}</report>
+                          <report>${kuali.report.10}</report>
+                          <report>${kuali.report.11}</report>
+                          <report>${kuali.report.12}</report>
+                          <report>${kuali.report.13}</report>
+                          <report>${kuali.report.14}</report>
+                          <report>${kuali.report.15}</report>
+                        </reports>
+                      </reportSet>
+                    </reportSets>
+                  </plugin>
+                </reportPlugins>
+              </configuration>
+              <dependencies>
+                <dependency>
+                  <groupId>org.kuali.common</groupId>
+                  <artifactId>kuali-cm</artifactId>
+                  <version>${kuali-cm.version}</version>
+                </dependency>
+              </dependencies>
+            </plugin>          
         </plugins>
     </pluginManagement>
     <extensions>
