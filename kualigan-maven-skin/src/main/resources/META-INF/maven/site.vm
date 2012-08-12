@@ -173,11 +173,7 @@
 ##
 #macro ( copyright )
   #if ( $project )
-    #if ( ${project.organization} && ${project.organization.name} )
-      #set ( $period = "" )
-    #else
-      #set ( $period = "." )
-   #end
+
 ##
    #set ( $currentYear = ${currentDate.year} + 1900 )
 ##
@@ -187,13 +183,6 @@
       ${currentYear}${period}
     #end
 ##
-    #if ( ${project.organization} )
-      #if ( ${project.organization.name} && ${project.organization.url} )
-          <a href="$project.organization.url">${project.organization.name}</a>.
-      #elseif ( ${project.organization.name} )
-        ${project.organization.name}.
-      #end
-    #end
   #end
 #end
 ##
