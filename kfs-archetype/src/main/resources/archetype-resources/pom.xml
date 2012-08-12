@@ -494,10 +494,6 @@ limitations under the License.
     				<artifactId>junit</artifactId>
     			</exclusion>
     			<exclusion>
-    				<groupId>jdom</groupId>
-          			<artifactId>jdom</artifactId>
-        		</exclusion>
-    			<exclusion>
     				<groupId>mysql</groupId>
     				<artifactId>mysql-connector-java</artifactId>
     			</exclusion>
@@ -532,14 +528,6 @@ limitations under the License.
     			<exclusion>
     				<groupId>javax.servlet</groupId>
     				<artifactId>jstl</artifactId>
-    			</exclusion>
-    			<exclusion>
-    				<artifactId>mail</artifactId>
-    				<groupId>javax.mail</groupId>
-    			</exclusion>
-    			<exclusion>
-    				<artifactId>quartz</artifactId>
-    				<groupId>opensymphony</groupId>
     			</exclusion>
     			<exclusion>
     	    		<artifactId>commons-logging</artifactId>
