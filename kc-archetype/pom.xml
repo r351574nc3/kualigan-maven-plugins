@@ -8,10 +8,10 @@
   </parent>
 
   <groupId>org.kualigan.maven.archetypes</groupId>
-  <artifactId>kfs-archetype</artifactId>
+  <artifactId>kc-archetype</artifactId>
   <packaging>maven-archetype</packaging>
 
-  <name>KFS Archetype</name>
+  <name>KC Archetype</name>
 
   <build>
     <extensions>
@@ -38,7 +38,7 @@
 
   </build>
 
-    <url>https://github.com/r351574nc3/kfs-overlay-reference/</url>
+    <url>https://github.com/r351574nc3/kualigan-maven-plugins/</url>
 
     <developers>
         <developer>

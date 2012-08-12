@@ -1,0 +1,47 @@
+* kc-maven-plugin
+
+Maven plugin for creating mavenized KC Overlay distributions
+
+** How does it work?
+
+
+*** Create a new KC Overlay
+
+
+** Setup
+
+*** Add the following to your $HOME/.m2/settings.xml
+
+#+BEGIN_EXAMPLE
+  <pluginGroups>
+    <pluginGroup>org.kualigan.maven.plugins</pluginGroup>
+  </pluginGroups>
+#+END_EXAMPLE
+
+** Usage
+
+
+*** Overlay using simplified GAV syntax
+#+BEGIN_EXAMPLE
+
+mvn -cpu kfs:create-overlay -Dgav=org.kualigan:kc:4.0
+
+#+END_EXAMPLE
+
+*** Overlay using more verbose/formal syntax
+
+#+BEGIN_EXAMPLE
+
+mvn -cpu kfs:create-overlay -DgroupId=org.kualigan -DartifactId=kc -Dversion=5.0
+
+#+END_EXAMPLE
+
+*** ROR-style database migrate command
+
+Command to migrate database changes. Will retrieve waiting changes from SCM.
+
+#+BEGIN_EXAMPLE
+
+mvn -cpu kfs:migrate
+
+#+END_EXAMPLE

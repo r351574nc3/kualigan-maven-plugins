@@ -25,7 +25,7 @@
   <packaging>war</packaging>
   
   <properties>
-    <kfs.web.unpack.phase>none</kfs.web.unpack.phase>
+    <kc.web.unpack.phase>none</kc.web.unpack.phase>
     <help.unpack.phase>none</help.unpack.phase>
     <help.unpack.phase>none</help.unpack.phase>
     <build.environment>dev</build.environment>
@@ -99,7 +99,7 @@
         </executions>
       </plugin>
 
-      <!-- Unpacks the datadictionary because KFS has trouble accessing the datadictionary from a jar -->       
+      <!-- Unpacks the datadictionary because kc has trouble accessing the datadictionary from a jar -->       
       <!-- When we add modules, make sure we unpack the DD -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -115,9 +115,9 @@
             <configuration>
               <artifactItems>
                 <artifactItem>
-                  <groupId>${kfsPrototypeGroupId}</groupId>
-                  <artifactId>${kfsPrototypeArtifactId}</artifactId>
-                  <version>${kfsPrototypeVersion}</version>  
+                  <groupId>${kcPrototypeGroupId}</groupId>
+                  <artifactId>${kcPrototypeArtifactId}</artifactId>
+                  <version>${kcPrototypeVersion}</version>  
                   <type>war</type>
                   <overWrite>false</overWrite>
                   <outputDirectory>src/main/webapp</outputDirectory>
@@ -192,30 +192,12 @@
         </plugin>
     </plugins>
 
-
-        <extensions>
-          <extension>
-            <groupId>org.apache.maven.scm</groupId>
-            <artifactId>maven-scm-provider-gitexe</artifactId>
-            <version>1.3</version>
-          </extension>
-          <extension>
-            <groupId>org.apache.maven.scm</groupId>
-            <artifactId>maven-scm-manager-plexus</artifactId>
-            <version>1.3</version>
-          </extension>
-          <extension>
-            <groupId>org.kathrynhuxtable.maven.wagon</groupId>
-            <artifactId>wagon-gitsite</artifactId>
-            <version>0.3.1</version>
-          </extension>
-        </extensions>
     </build> 
   
     <dependencies>
         <dependency>
-            <groupId>${kfsPrototypeGroupId}</groupId>
-            <artifactId>${kfsPrototypeArtifactId}</artifactId>
+            <groupId>${kcPrototypeGroupId}</groupId>
+            <artifactId>${kcPrototypeArtifactId}</artifactId>
             <type>war</type>
         </dependency>
         
