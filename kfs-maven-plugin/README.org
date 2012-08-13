@@ -21,14 +21,6 @@ The KFS maven plugin works in 2 separate use cases
 
 ** Usage
 
-*** Migrate an existing KFS distribution that is located in a local path
-
-#+BEGIN_EXAMPLE
-
-mvn -cpu kfs:migrate -Dkfs.local.path=$HOME/workspace/kfs/trunk
-
-#+END_EXAMPLE
-
 *** Create a new prototype based-on a war file
 #+BEGIN_EXAMPLE
 
@@ -58,19 +50,54 @@ war, then creating a prototype from it, and an overlay off of that.
 
 Instead, migrate is now going to be used in a different way. See after.
 
-
-*** Overlay using simplified GAV syntax
-#+BEGIN_EXAMPLE
-
-mvn -cpu kfs:create-overlay -Dgav=org.kualigan:kfs:4.0.0
-
-#+END_EXAMPLE
-
 *** Overlay using more verbose/formal syntax
 
 #+BEGIN_EXAMPLE
 
 mvn -cpu kfs:create-overlay -DgroupId=org.kualigan -DartifactId=kfs -Dversion=4.0.0
+
+#+END_EXAMPLE
+
+*** Start Jetty/Tomcat with JRebel
+
+Now you can get hot code replacement with both tomcat and jetty using JRebel. The configuration is already builtin to
+the overlay created from the archetype. Here's how:
+
+Run the following from your overlay project
+
+#+BEGIN_EXAMPLE
+
+export MAVEN_OPTS="$MAVEN_OPTS -javaagent:<wherever you stuck jrebel>/jrebel.jar"
+
+mvn -Drebel.root=$PWD/../ -pl web jetty:run-war
+
+#+END_EXAMPLE
+
+Or for tomcat7:
+
+#+BEGIN_EXAMPLE
+
+export MAVEN_OPTS="$MAVEN_OPTS -javaagent:<wherever you stuck jrebel>/jrebel.jar"
+
+mvn -Drebel.root=$PWD/../ tomcat7:run-war
+
+#+END_EXAMPLE
+
+There are plans to build in the rebel.root property. Right now, I am using it to define the profile that enables the jrebel maven plugin. This way, 
+it isn't part of regular environment deployments. There are other ways to do this though.
+
+Another thing of note is that the above uses /run-war/ goal. This is significant because it differs from the /run/ goal by 
+running an assembled war. In the past, this is ill-advised because jetty picks up changes better in an unassembled app, plus
+IDE's are capable of updating during runtime. However, with JRebel, this is unnecessary. We can now run a fully assembled webapp
+and get runtime updates in a far-and-away more superior method than what we see with Jetty and Hotspot replacement. Check it out,
+you won't be disappointed.
+
+** Welcome to the Future (commands yet to be implemented)
+
+*** Overlay using simplified GAV syntax
+#+BEGIN_EXAMPLE
+
+mvn -cpu kfs:create-overlay -Dgav=org.kualigan:kfs:4.0.0
 
 #+END_EXAMPLE
 
