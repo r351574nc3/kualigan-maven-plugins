@@ -103,7 +103,7 @@
       <artifactId>plexus-utils</artifactId>
     </dependency>
     <dependency>
-        <groupId>${groupId}</groupId>
+        <groupId>${project.groupId}</groupId>
         <artifactId>kualigan-maven-plugin-api</artifactId>
         <version>${version}</version>
     </dependency>
