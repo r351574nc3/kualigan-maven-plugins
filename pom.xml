@@ -51,6 +51,16 @@
       <resource>
         <directory>src/main/resources</directory>
         <filtering>true</filtering>
+        <excludes>
+            <exclude>**/prototype-resources/**</exclude>    
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources/</directory>
+        <filtering>false</filtering>
+        <includes>
+            <include>**/prototype-resources/**</include>
+        </includes>
       </resource>
     </resources>
     

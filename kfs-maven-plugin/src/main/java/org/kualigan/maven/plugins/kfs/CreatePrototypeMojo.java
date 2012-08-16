@@ -177,17 +177,19 @@ public class CreatePrototypeMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         final String basedir = System.getProperty("user.dir");
         helper.setCaller(this);
-        
-        try {
-            final Map<String, String> map = new HashMap<String, String>();
-            map.put("basedir", basedir);
-            map.put("package", packageName);
-            map.put("packageName", packageName);
-            map.put("groupId", groupId);
-            map.put("artifactId", artifactId);
-            map.put("version", version);
 
-            List archetypeRemoteRepositories = new ArrayList();
+        final Map<String, String> map = new HashMap<String, String>();
+        map.put("basedir", basedir);
+        map.put("package", packageName);
+        map.put("packageName", packageName);
+        map.put("groupId", groupId);
+        map.put("artifactId", artifactId);
+        map.put("version", version);
+
+        try {
+
+            final List archetypeRemoteRepositories = new ArrayList();
+            
             /* TODO: Allow remote repositories later 
 
             if (remoteRepositories != null) {
@@ -218,12 +220,8 @@ public class CreatePrototypeMojo extends AbstractMojo {
                                    version, 
                                    repositoryId);
 
-            /* TODO: Was this really necessary?
-            Properties props = new Properties();
-            props.load(getClass().getResourceAsStream("plugin.properties"));
-            */
-
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
             throw new MojoExecutionException("Failed to create a new KFS Prototype",e);
         }
     }
