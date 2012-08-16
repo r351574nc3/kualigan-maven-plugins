@@ -70,8 +70,7 @@ import java.util.StringTokenizer;
      requiresProject = false
      )
 public class CreateOverlayMojo extends AbstractMojo {
-    @Component(role = org.kualigan.maven.plugins.api.OverlayHelper.class,
-               hint = "default")
+    @Component(role = org.kualigan.maven.plugins.api.OverlayHelper.class)
     private OverlayHelper helper;
 
     /**
@@ -128,6 +127,7 @@ public class CreateOverlayMojo extends AbstractMojo {
      * Produce an overlay from a given prototype. 
      */
     public void execute() throws MojoExecutionException {
+        helper.setCaller(this);
         helper.generateArchetype(getMavenHome(),
                                  archetypeGroupId,
                                  archetypeArtifactId,

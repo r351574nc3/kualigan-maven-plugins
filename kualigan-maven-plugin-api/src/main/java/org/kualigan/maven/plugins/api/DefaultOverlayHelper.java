@@ -28,8 +28,6 @@ import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
 
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
@@ -40,10 +38,9 @@ import org.apache.maven.shared.invoker.Invoker;
 import org.apache.maven.shared.invoker.InvokerLogger;
 import org.apache.maven.shared.invoker.MavenInvocationException;
 
+import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
-
-import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -65,8 +62,10 @@ import java.util.StringTokenizer;
  * 
  * @author Leo Przybylski (przybyls [at] arizona.edu)
  */
-@Component(role = org.kualigan.maven.plugins.api.OverlayHelper.class, hint = "default" )
-public class OverlayUtil {
+@Component(role = org.kualigan.maven.plugins.api.OverlayHelper.class, hint="default")
+public class DefaultOverlayHelper implements OverlayHelper {
+    public static final String ROLE_HINT = "default";
+
     private static final Options OPTIONS = new Options();
 
     private static final char SET_SYSTEM_PROPERTY = 'D';

@@ -17,12 +17,14 @@ package org.kualigan.maven.plugins.api;
 
 import java.io.File;
 
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
 /**
  * @author Leo Przybylski (leo [at] rsmart.com)
  */
 public interface PrototypeHelper {
+    String ROLE = PrototypeHelper.class.getName();
 
     void installArtifact(final File artifact, 
                          final File sources,
@@ -35,4 +37,9 @@ public interface PrototypeHelper {
     File repack(final File file, final String artifactId) throws MojoExecutionException;
 
     void extractTempPom() throws MojoExecutionException;
+    
+    void setCaller(final AbstractMojo caller);
+    
+    AbstractMojo getCaller();
+
 }

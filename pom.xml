@@ -201,7 +201,6 @@
 
   <properties>
     <plexus-archiver.version>2.1.1</plexus-archiver.version>
-    <maven-plugin-annotations.version>3.1</maven-plugin-annotations.version>
     <maven-plugin-plugin.version>3.1</maven-plugin-plugin.version>
     <mavenVersion>3.0.3</mavenVersion>
       <!-- used for escape -->
@@ -215,13 +214,6 @@
 
     <dependencyManagement>
       <dependencies>
-          <dependencies>
-            <dependency>
-              <groupId>org.apache.maven.plugin-tools</groupId>
-              <artifactId>maven-plugin-annotations</artifactId>
-              <version>${maven-plugin-annotations.version}</version>
-            </dependency>
-          </dependencies>
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-archiver</artifactId>

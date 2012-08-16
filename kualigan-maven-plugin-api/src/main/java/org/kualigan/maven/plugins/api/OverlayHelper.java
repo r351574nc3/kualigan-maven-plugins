@@ -18,11 +18,14 @@ package org.kualigan.maven.plugins.api;
 import java.io.File;
 
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.AbstractMojo;
+
 
 /**
  * @author Leo Przybylski (leo [at] rsmart.com)
  */
 public interface OverlayHelper {
+    String ROLE = OverlayHelper.class.getName();
 
     /**
      * Invokes the maven goal {@code archetype:generate} with the appropriate properties.
@@ -38,4 +41,8 @@ public interface OverlayHelper {
                            final String prototypeGroupId,
                            final String prototypeArtifactId,
                            final String prototypeVersion) throws MojoExecutionException;
+
+    void setCaller(final AbstractMojo caller);
+    
+    AbstractMojo getCaller();
 }

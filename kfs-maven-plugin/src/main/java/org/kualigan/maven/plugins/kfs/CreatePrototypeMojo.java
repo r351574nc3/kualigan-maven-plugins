@@ -66,7 +66,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-´∑import java.util.Map;
+import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 
@@ -85,8 +85,7 @@ import java.util.StringTokenizer;
      requiresProject = false
      )
 public class CreatePrototypeMojo extends AbstractMojo {
-    @Component(role = org.kualigan.maven.plugins.api.PrototypeHelper.class,
-               hint = "default")
+    @Component
     private PrototypeHelper helper;
 
     /**
@@ -177,6 +176,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
      */ 
     public void execute() throws MojoExecutionException {
         final String basedir = System.getProperty("user.dir");
+        helper.setCaller(this);
         
         try {
             final Map<String, String> map = new HashMap<String, String>();
@@ -224,7 +224,7 @@ public class CreatePrototypeMojo extends AbstractMojo {
             */
 
         } catch (Exception e) {
-            throw new MojoExecutionException("Failed to create a new Jenkins plugin",e);
+            throw new MojoExecutionException("Failed to create a new KFS Prototype",e);
         }
     }
     

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kualigan.maven.plugins.kfs;
+package org.kualigan.maven.plugins.api;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
@@ -37,8 +37,6 @@ import org.apache.maven.shared.invoker.MavenInvocationException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
 import org.codehaus.plexus.archiver.Archiver;
@@ -47,10 +45,10 @@ import org.codehaus.plexus.archiver.UnArchiver;
 import org.codehaus.plexus.archiver.manager.ArchiverManager;
 import org.codehaus.plexus.archiver.manager.NoSuchArchiverException;
 import org.codehaus.plexus.archiver.util.DefaultFileSet;
-import org.codehaus.plexus.component.annotations.Component;
-import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelector;
 
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 import org.codehaus.plexus.components.interactivity.Prompter;
 import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.IOUtil;
@@ -78,9 +76,12 @@ import java.util.StringTokenizer;
  *   <li>KFS svn repo</li>
  * </ul>
  * 
+ * @author Leo Przybylski
  */
-@Component(role = org.kualigan.maven.plugins.api.PrototypeHelper.class, hint = "default" )
-public class PrototypeUtil {
+@Component(role = org.kualigan.maven.plugins.api.PrototypeHelper.class, hint="default")
+public class DefaultPrototypeHelper implements PrototypeHelper {
+    public static final String ROLE_HINT = "default";
+    
     private static final Options OPTIONS = new Options();
 
     private static final char SET_SYSTEM_PROPERTY = 'D';
@@ -495,7 +496,9 @@ public class PrototypeUtil {
                         setProperty("version", version);
                         setProperty("packaging", artifact.getName().endsWith("jar") ? "jar" : "war");
                         setProperty("pomFile", getTempPomPath());
-                        setProperty("repositoryId", repositoryId);
+                        if (repositoryId != null) {
+                            setProperty("repositoryId", repositoryId);
+                        }
                         if (sources != null) {
                             try {
                                 setProperty("sources", sources.getCanonicalPath());
