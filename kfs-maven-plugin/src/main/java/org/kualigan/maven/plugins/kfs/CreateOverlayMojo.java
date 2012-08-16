@@ -108,7 +108,7 @@ public class CreateOverlayMojo extends AbstractMojo {
     @Parameter(property = "archetypeArtifactId", defaultValue = "kfs-archetype")
     protected String archetypeArtifactId;
     
-    @Parameter(property = "archetypeVersion", defaultValue = "1.1.1")
+    @Parameter(property = "archetypeVersion", defaultValue = "1.1.2")
     protected String archetypeVersion;
     
     /**
