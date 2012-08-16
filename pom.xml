@@ -56,7 +56,26 @@
     
     <pluginManagement>
         <plugins>
-          <plugin>
+            <plugin>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-component-metadata</artifactId>
+                <version>${plexus-component-metadata.version}</version>
+                <executions>
+                    <execution>
+                        <id>process-classes</id>
+                        <goals>
+                          <goal>generate-metadata</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>process-test-classes</id>
+                        <goals>
+                          <goal>generate-test-metadata</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-plugin-plugin</artifactId>
             <version>${maven-plugin-plugin.version}</version>
@@ -201,6 +220,7 @@
 
   <properties>
     <plexus-archiver.version>2.1.1</plexus-archiver.version>
+    <plexus-component-metadata.version>1.5.5</plexus-component-metadata.version>
     <maven-plugin-plugin.version>3.1</maven-plugin-plugin.version>
     <mavenVersion>3.0.3</mavenVersion>
       <!-- used for escape -->
