@@ -32,7 +32,7 @@ public interface OverlayHelper {
      * Invokes the maven goal {@code archetype:generate} with the appropriate properties.
      * 
      */
-    void generateArchetype(final File mavenHome, final Properties) throws MojoExecutionException;
+    void generateArchetype(final File mavenHome, final Properties archetypeProperties) throws MojoExecutionException;
 
     void setCaller(final AbstractMojo caller);
     
