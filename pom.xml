@@ -60,7 +60,7 @@
         <directory>src/main/resources/</directory>
         <filtering>false</filtering>
         <includes>
-            <exclude>**/archetype-resources/**</exclude>    
+            <include>**/archetype-resources/**</include>    
             <include>**/prototype-resources/**</include>
         </includes>
       </resource>
