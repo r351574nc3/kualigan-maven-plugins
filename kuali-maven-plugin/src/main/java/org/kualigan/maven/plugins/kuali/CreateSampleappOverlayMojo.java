@@ -99,7 +99,7 @@ public class CreateSampleappOverlayMojo extends AbstractMojo {
     @Parameter(property = "kr.prototype.artifactId", defaultValue = "rice-sampleapp")
     protected String prototypeArtifactId;
     
-    @Parameter(property = "kr.prototype.version", defaultValue = "2.2.0-M3")
+    @Parameter(property = "kr.prototype.version", defaultValue = "2.1.0")
     protected String prototypeVersion;
     
     @Parameter(property = "archetypeGroupId", defaultValue = "org.kualigan.maven.archetypes")

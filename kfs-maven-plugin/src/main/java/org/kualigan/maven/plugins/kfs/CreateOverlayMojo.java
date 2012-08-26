@@ -129,12 +129,12 @@ public class CreateOverlayMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         helper.setCaller(this);
         helper.generateArchetype(getMavenHome(), new Properties() {{
-                        setProperty("archetypeGroupId",      archetypeGroupId);
-                        setProperty("archetypeArtifactId",   archetypeArtifactId);
-                        setProperty("archetypeVersion",      archetypeVersion);
-                        setProperty("groupId",               groupId);
-                        setProperty("artifactId",            artifactId);
-                        setProperty("version",               version);
+                        setProperty("archetypeGroupId",       archetypeGroupId);
+                        setProperty("archetypeArtifactId",    archetypeArtifactId);
+                        setProperty("archetypeVersion",       archetypeVersion);
+                        setProperty("groupId",                groupId);
+                        setProperty("artifactId",             artifactId);
+                        setProperty("version",                version);
                         setProperty("kfsPrototypeGroupId",    prototypeGroupId);
                         setProperty("kfsPrototypeArtifactId", prototypeArtifactId);
                         setProperty("kfsPrototypeVersion",    prototypeVersion);
