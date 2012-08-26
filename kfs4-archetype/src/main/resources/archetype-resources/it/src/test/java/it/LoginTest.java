@@ -1,4 +1,8 @@
-package edu.uconn.kuali.rice.ucorg.it;
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+
+package ${package}.it;
 
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
@@ -13,7 +17,7 @@ import static org.junit.Assert.*;
 
 public class LoginTest {
 
-	WebDriver driver;
+    WebDriver driver;
 	Selenium selenium;
 
 	@Before
@@ -29,7 +33,7 @@ public class LoginTest {
 
 	@Test
 	public void testLogin() {
-		selenium.open("/organizationDelegate/portal.do");
+		selenium.open("/yourapp/portal.do");
 		selenium.type("name=__login_user", "admin");
 		selenium.click("css=input[type=\"submit\"]");
 		selenium.waitForPageToLoad("30000");
