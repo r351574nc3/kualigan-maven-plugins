@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kualigan.maven.plugins.kfs;
+package org.kualigan.maven.plugins.kuali;
 
 import org.kualigan.maven.plugins.api.OverlayHelper;
 
@@ -61,7 +61,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 
 /**
- * Creates a maven overlay for the given KFS prototype
+ * Creates a maven overlay for the given rice prototype
  * 
  * @author Leo Przybylski (przybyls [at] arizona.edu)
  */
@@ -93,19 +93,19 @@ public class CreateOverlayMojo extends AbstractMojo {
     @Parameter(property="version", defaultValue="1.0-SNAPSHOT")
     private String version;
     
-    @Parameter(property = "kfs.prototype.groupId", defaultValue = "org.kuali.kfs")
+    @Parameter(property = "kr.prototype.groupId", defaultValue = "org.kuali.rice")
     protected String prototypeGroupId;
     
-    @Parameter(property = "kfs.prototype.artifactId", defaultValue = "kfs")
+    @Parameter(property = "kr.prototype.artifactId", defaultValue = "rice")
     protected String prototypeArtifactId;
     
-    @Parameter(property = "kfs.prototype.version", defaultValue = "5.0")
+    @Parameter(property = "kr.prototype.version", defaultValue = "5.0")
     protected String prototypeVersion;
     
     @Parameter(property = "archetypeGroupId", defaultValue = "org.kualigan.maven.archetypes")
     protected String archetypeGroupId;
     
-    @Parameter(property = "archetypeArtifactId", defaultValue = "kfs-archetype")
+    @Parameter(property = "archetypeArtifactId", defaultValue = "kr-archetype")
     protected String archetypeArtifactId;
     
     @Parameter(property = "archetypeVersion", defaultValue = "1.1.4")
