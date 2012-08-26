@@ -16,6 +16,7 @@
 package org.kualigan.maven.plugins.api;
 
 import java.io.File;
+import java.util.Properties;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -31,16 +32,7 @@ public interface OverlayHelper {
      * Invokes the maven goal {@code archetype:generate} with the appropriate properties.
      * 
      */
-    void generateArchetype(final File mavenHome,
-                           final String archetypeGroupId,
-                           final String archetypeArtifactId,
-                           final String archetypeVersion,
-                           final String groupId,
-                           final String artifactId,
-                           final String version,
-                           final String prototypeGroupId,
-                           final String prototypeArtifactId,
-                           final String prototypeVersion) throws MojoExecutionException;
+    void generateArchetype(final File mavenHome, final Properties) throws MojoExecutionException;
 
     void setCaller(final AbstractMojo caller);
     

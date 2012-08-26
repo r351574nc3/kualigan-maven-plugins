@@ -135,33 +135,14 @@ public class DefaultOverlayHelper implements OverlayHelper {
      * Invokes the maven goal {@code archetype:generate} with the appropriate properties.
      * 
      */
-    public void generateArchetype(final File mavenHome,
-                                  final String archetypeGroupId,
-                                  final String archetypeArtifactId,
-                                  final String archetypeVersion,
-                                  final String groupId,
-                                  final String artifactId,
-                                  final String version,
-                                  final String prototypeGroupId,
-                                  final String prototypeArtifactId,
-                                  final String prototypeVersion) throws MojoExecutionException {
+    public void generateArchetype(final File mavenHome, final Properties archetypeProperties) throws MojoExecutionException {
         final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
         
         final String additionalArguments = "";
 
         final InvocationRequest req = new DefaultInvocationRequest()
                 .setInteractive(false)
-                .setProperties(new Properties() {{
-                        setProperty("archetypeGroupId", archetypeGroupId);
-                        setProperty("archetypeArtifactId", archetypeArtifactId);
-                        setProperty("archetypeVersion", archetypeVersion);
-                        setProperty("groupId", groupId);
-                        setProperty("artifactId", artifactId);
-                        setProperty("version", version);
-                        setProperty("kfsPrototypeGroupId", prototypeGroupId);
-                        setProperty("kfsPrototypeArtifactId", prototypeArtifactId);
-                        setProperty("kfsPrototypeVersion", prototypeVersion);
-                    }});
+                .setProperties(archetypeProperties);
                     
         try {
             setupRequest(req, additionalArguments);

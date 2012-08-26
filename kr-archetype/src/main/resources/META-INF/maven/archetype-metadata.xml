@@ -7,10 +7,10 @@
             <defaultValue>org.kuali.rice</defaultValue>
         </requiredProperty>
         <requiredProperty key="krPrototypeArtifactId">
-            <defaultValue>kr</defaultValue>
+            <defaultValue>rice</defaultValue>
         </requiredProperty>
         <requiredProperty key="krPrototypeVersion">
-            <defaultValue>5.0</defaultValue>
+            <defaultValue>2.2.0</defaultValue>
         </requiredProperty>
     </requiredProperties>
   <modules>

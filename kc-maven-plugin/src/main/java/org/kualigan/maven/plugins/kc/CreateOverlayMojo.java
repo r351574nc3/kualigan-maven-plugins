@@ -129,16 +129,17 @@ public class CreateOverlayMojo extends AbstractMojo {
      * Produce an overlay from a given prototype. 
      */
     public void execute() throws MojoExecutionException {
-        helper.generateArchetype(getMavenHome(),
-                                 archetypeGroupId,
-                                 archetypeArtifactId,
-                                 archetypeVersion,
-                                 groupId,
-                                 artifactId,
-                                 version,
-                                 prototypeGroupId,
-                                 prototypeArtifactId,
-                                 prototypeVersion);
+        helper.generateArchetype(getMavenHome(), new Properties() {{
+                        setProperty("archetypeGroupId",      archetypeGroupId);
+                        setProperty("archetypeArtifactId",   archetypeArtifactId);
+                        setProperty("archetypeVersion",      archetypeVersion);
+                        setProperty("groupId",               groupId);
+                        setProperty("artifactId",            artifactId);
+                        setProperty("version",               version);
+                        setProperty("kcPrototypeGroupId",    prototypeGroupId);
+                        setProperty("kcPrototypeArtifactId", prototypeArtifactId);
+                        setProperty("kcPrototypeVersion",    prototypeVersion);
+                    }});
     }
 
     public void setMavenHome(final File mavenHome) {
