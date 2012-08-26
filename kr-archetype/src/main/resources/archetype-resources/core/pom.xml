@@ -35,14 +35,6 @@
       <artifactId>${krPrototypeArtifactId}</artifactId>
     </dependency>
     <dependency>
-       <groupId>jasperreports</groupId>
-       <artifactId>jasperreports</artifactId>
-    </dependency>
-    <dependency>
-       <groupId>org.apache.velocity</groupId>
-       <artifactId>velocity</artifactId>
-    </dependency>
-    <dependency>
     	<groupId>org.kuali.rice</groupId>
 		<artifactId>rice-ldap</artifactId>
     </dependency>
