@@ -66,7 +66,7 @@ import java.util.StringTokenizer;
  * @author Leo Przybylski (przybyls [at] arizona.edu)
  */
  @Mojo(
-     name="create-overlay",
+     name="create-rice-overlay",
      requiresProject = false
      )
 public class CreateOverlayMojo extends AbstractMojo {
@@ -80,26 +80,26 @@ public class CreateOverlayMojo extends AbstractMojo {
     
     /**
      */
-    @Parameter(property = "groupId")
+    @Parameter(property = "groupId", required = true)
     private String groupId;
 
     /**
      */
-    @Parameter(property = "artifactId")
+    @Parameter(property = "artifactId", required = true)
     private String artifactId;
 
     /**
      */
-    @Parameter(property="version", defaultValue="1.0-SNAPSHOT")
+    @Parameter(property="version", required = true, defaultValue="1.0-SNAPSHOT")
     private String version;
     
     @Parameter(property = "kr.prototype.groupId", defaultValue = "org.kuali.rice")
     protected String prototypeGroupId;
     
-    @Parameter(property = "kr.prototype.artifactId", defaultValue = "rice")
+    @Parameter(property = "kr.prototype.artifactId", defaultValue = "rice-web")
     protected String prototypeArtifactId;
     
-    @Parameter(property = "kr.prototype.version", defaultValue = "5.0")
+    @Parameter(property = "kr.prototype.version", defaultValue = "2.2.0-M3")
     protected String prototypeVersion;
     
     @Parameter(property = "archetypeGroupId", defaultValue = "org.kualigan.maven.archetypes")
