@@ -1,13 +1,15 @@
-* kfs-maven-plugin
+* kuali-maven-plugin
 
-Maven plugin for converting/creating mavenized KFS/Overlay distributions
+Maven plugin for creating/maintaining Rice Maven Overlay distributions
 
 ** How does it work?
 
-The KFS maven plugin works in 2 separate use cases
+In the case where an overlay distribution is being created, the kuali-maven-plugin is simply a wrapper on the kr-archetype. The kr-archetype is like any other maven archetype
+except the kuali-maven-plugin is used as a way to simplify its use by sprinkling it with some convention-over-configuration flavor.
 
-*** Create a new KFS Overlay
-
+Normally, you have to either enter your parameters as java properties or go through the tedious interactive mode. In neither case is it
+smart enough to guess what you want without you having to enter it in. The kuali-maven-plugin is used much the same way the hpi plugin works
+for jenkins/hudson by wrapping the kr-archetype.
 
 ** Setup
 
