@@ -33,6 +33,7 @@
     <dependency>
       <groupId>${krPrototypeGroupId}</groupId>
       <artifactId>${krPrototypeArtifactId}</artifactId>
+      <type>war</type>
     </dependency>
     <dependency>
       <groupId>org.springframework.ldap</groupId>
