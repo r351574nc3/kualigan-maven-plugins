@@ -105,12 +105,11 @@ limitations under the License.
         <type>war</type>
       </dependency>
       
-      <dependency>
-        <groupId>${krPrototypeGroupId}</groupId>
-        <artifactId>${krPrototypeArtifactId}</artifactId>
-        <version>${krPrototypeVersion}</version>
-        <type>jar</type>
-      </dependency>
+        <dependency>
+            <groupId>${krPrototypeGroupId}</groupId>
+            <artifactId>rice-impl</artifactId>
+            <version>${krPrototypeVersion}</version>
+        </dependency>
 
         <dependency>
             <groupId>net.bull.javamelody</groupId>
@@ -175,6 +174,12 @@ limitations under the License.
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
             <version>2.0.6.RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>
