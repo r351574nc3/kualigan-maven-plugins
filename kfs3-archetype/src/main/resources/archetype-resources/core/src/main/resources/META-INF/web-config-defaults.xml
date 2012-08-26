@@ -1,0 +1,170 @@
+<config>
+
+    <param name="http.session.timeout.minutes">15</param>
+
+
+    <param name="core.struts.config.files">/WEB-INF/struts-config.xml</param>
+
+    <param name="core.rice.struts.message.resources"><![CDATA[KR-ApplicationResources,
+org.kuali.rice.kew.ApplicationResources,
+org.kuali.rice.ksb.messaging.ApplicationResources,
+KIM-ApplicationResources,
+org.kuali.kfs.coa.coa-resources,
+org.kuali.kfs.fp.fp-resources,
+org.kuali.kfs.gl.gl-resources,
+org.kuali.kfs.pdp.pdp-resources,
+org.kuali.kfs.sys.sys-resources,
+org.kuali.kfs.vnd.vnd-resources,
+org.kuali.kfs.sec.messages-sec]]></param>
+
+    <param name="optional.module.rice.struts.message.resources"><![CDATA[org.kuali.kfs.module.ar.ar-resources,
+org.kuali.kfs.module.bc.bc-resources,
+org.kuali.kfs.module.cab.cab-resources,
+org.kuali.kfs.module.cam.cam-resources,
+org.kuali.kfs.module.cg.cg-resources,
+org.kuali.kfs.module.ec.ec-resources,
+org.kuali.kfs.module.endow.endow-resources,
+org.kuali.kfs.module.external.kc.kc-resources,
+org.kuali.kfs.module.ld.ld-resources,
+org.kuali.kfs.module.tem.tem-resources,
+org.kuali.kfs.module.purap.purap-resources]]></param>
+
+    <param name="core.jstl.constants.classnames">org.kuali.kfs.sys.KFSConstants,org.kuali.kfs.sys.KfsAuthorizationConstants,org.kuali.kfs.gl.GeneralLedgerConstants,org.kuali.kfs.sec.SecConstants,org.kuali.kfs.module.cg.CGConstants,org.kuali.kfs.module.purap.PurapConstants,org.kuali.kfs.module.bc.BCConstants,org.kuali.kfs.module.ec.EffortConstants,org.kuali.kfs.module.cam.CamsConstants,org.kuali.kfs.module.endow.EndowConstants,org.kuali.kfs.module.tem.TemKeyConstants,org.kuali.kfs.module.tem.TemConstants</param>
+
+    <param name="jstl.constants.main.class">org.kuali.kfs.sys.KFSConstants</param>
+
+    <param name="core.javascript.files"><![CDATA[kr/scripts/core.js,
+kr/scripts/dhtml.js,
+kr/scripts/my_common.js,
+kr/scripts/jscalendar-1.0/calendar.js,
+kr/scripts/jscalendar-1.0/lang/calendar-en.js,
+kr/scripts/jscalendar-1.0/calendar-setup.js,
+dwr/engine.js,dwr/util.js,
+dwr/interface/PersonService.js,
+kr/scripts/objectInfo.js,
+scripts/rice-overrides.js]]></param>
+
+    <param name="core.portal.javascript.files">kr/scripts/my_common.js</param>
+
+    <param name="core.css.files">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
+    <param name="core.portal.css.files">css/portal.css</param>
+
+    <param name="javamelody.system.actions.enabled">false</param>
+
+    <param name="monitoring.filter.definitions"><![CDATA[
+    <filter>
+            <filter-name>monitoring</filter-name>
+            <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+	        <init-param>
+	                <param-name>url-exclude-pattern</param-name>
+	                <param-value>/static/.*|/kr/static/.*|/kr/images/.*|/images-portal/.*</param-value>
+	        </init-param>
+	        <init-param>
+	                <param-name>system-actions-enabled</param-name>
+	                <param-value>${javamelody.system.actions.enabled}</param-value>
+	        </init-param>
+    </filter>
+    <filter-mapping>
+            <filter-name>monitoring</filter-name>
+            <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <listener>
+            <listener-class>net.bull.javamelody.SessionListener</listener-class>
+    </listener>]]></param>
+
+    <param name="authentication.filter.definition"><![CDATA[
+    <filter>
+        <filter-name>CAS Authentication Filter</filter-name>
+        <filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
+        <init-param>
+            <param-name>casServerLoginUrl</param-name>
+            <param-value>${cas.url}/login</param-value>
+        </init-param>
+        <init-param>
+            <param-name>serverName</param-name>
+            <param-value>${appserver.url}</param-value>
+        </init-param>
+    </filter>
+    <filter>
+        <filter-name>CAS Validation Filter</filter-name>
+        <filter-class>org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</filter-class>
+        <init-param>
+            <param-name>casServerUrlPrefix</param-name>
+            <param-value>${cas.url}</param-value>
+        </init-param>
+        <init-param>
+            <param-name>serverName</param-name>
+            <param-value>${appserver.url}</param-value>
+        </init-param>
+    </filter>
+    <filter>
+        <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+        <filter-class>org.jasig.cas.client.util.HttpServletRequestWrapperFilter</filter-class>
+    </filter>]]></param>
+
+    <param name="authentication.filter.mappings"><![CDATA[<filter-mapping>
+        <filter-name>CAS Authentication Filter</filter-name>
+            <servlet-name>action</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+            <filter-name>CAS Validation Filter</filter-name>
+            <servlet-name>action</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+            <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+            <servlet-name>action</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+            <filter-name>CAS Authentication Filter</filter-name>
+            <servlet-name>dwr-invoker</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+            <filter-name>CAS Validation Filter</filter-name>
+            <servlet-name>dwr-invoker</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+            <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+            <servlet-name>dwr-invoker</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+            <filter-name>CAS Authentication Filter</filter-name>
+            <servlet-name>batchFileUpload</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+            <filter-name>CAS Validation Filter</filter-name>
+            <servlet-name>batchFileUpload</servlet-name>
+        </filter-mapping>
+        <filter-mapping>
+            <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+            <servlet-name>batchFileUpload</servlet-name>
+        </filter-mapping>]]></param>
+
+
+
+
+    <param name="institution.struts.config.files"></param>
+
+    <param name="institution.rice.struts.message.resources"></param>
+
+    <param name="institution.jstl.constants.classnames"></param>
+
+    <param name="institution.javascript.files"></param>
+
+    <param name="institution.portal.javascript.files"></param>
+
+    <param name="institution.css.files"></param>
+
+    <param name="institution.portal.css.files"></param>
+
+
+    <param name="struts.config.files">${core.struts.config.files}${institution.struts.config.files}</param>
+    <param name="rice.struts.message.resources">${core.rice.struts.message.resources}${optional.module.rice.struts.message.resources}${institution.rice.struts.message.resources}</param>
+
+    <param name="jstl.constants.classnames">${core.jstl.constants.classnames}${institution.jstl.constants.classnames}</param>
+
+    <param name="javascript.files">${core.javascript.files}${institution.javascript.files}</param>
+    <param name="portal.javascript.files">${core.portal.javascript.files}${institution.portal.javascript.files}</param>
+
+    <param name="css.files">${core.css.files}${institution.css.files}</param>
+    <param name="portal.css.files">${core.portal.css.files}${institution.portal.css.files}</param>
+</config>

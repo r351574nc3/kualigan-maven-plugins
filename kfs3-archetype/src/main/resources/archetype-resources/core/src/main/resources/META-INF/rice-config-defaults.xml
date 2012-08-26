@@ -1,0 +1,124 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<config>
+    <param name="rice.standalone">false</param>
+    <param name="deploy.local.rice.server">false</param>
+    <param name="rice.config.property.file">${symbol_dollar}{appserver.home}/conf/rice-config.xml</param>
+
+    <param name="rice.server.datasource.username">${symbol_dollar}{datasource.username}</param>
+    <param name="rice.server.datasource.password">${symbol_dollar}{datasource.password}</param>
+    <param name="rice.server.datasource.pool.size">${symbol_dollar}{datasource.pool.size}</param>
+    <param name="rice.server.datasource.connection.timeout">${symbol_dollar}{datasource.connection.timeout}</param>
+    <param name="rice.server.datasource.validating.query">${symbol_dollar}{datasource.validating.query}</param>
+    <param name="rice.server.datasource.maximum.cached.preparedstatements">${symbol_dollar}{datasource.maximum.cached.preparedstatements}</param>
+
+    <param name="rice.custom.ojb.properties">${symbol_dollar}{ojb.properties.file}</param>
+
+    <param name="rice.name">rice</param>
+    <param name="kfs.rice.version">1.0.3.3</param>
+    <param name="rice.output.licenses.suffix">-licenses.zip</param>
+    <param name="rice.server.war.file.name.prefix">${symbol_dollar}{rice.name}-web-</param>
+    <param name="rice.server.war.file.name">${symbol_dollar}{rice.server.war.file.name.prefix}${symbol_dollar}{kfs.rice.version}.war</param>
+
+    <param name="rice.application">kr</param>
+    <param name="kew.application">kew</param>
+    <param name="ksb.application">ksb</param>
+    <param name="kim.application">kim</param>
+
+    <param name="rice.ksb.url">${symbol_dollar}{application.url}/${symbol_dollar}{ksb.application}</param>
+
+    <param name="keystore.alias">rice</param>
+    <param name="keystore.password">r1c3pw</param>
+    <param name="encryption.key">7IC64w6ksLU</param>
+
+    <param name="rice.enable.nonproduction.data.unmasking">false </param>
+
+    <param name="rice.kew.enableKENNotification">false</param>
+
+    <param name="rice.struts.config.files">/${symbol_dollar}{rice.application}/WEB-INF/struts-config.xml</param>
+    <param name="rice.kns.struts.config.files">/${symbol_dollar}{rice.application}/WEB-INF/struts-config.xml</param>
+    <param name="rice.kew.struts.config.files">/${symbol_dollar}{kew.application}/WEB-INF/struts-config.xml</param>
+    <param name="rice.kew.log4j.settings.path">${symbol_dollar}{log4j.settings.file}</param>
+    <param name="rice.ksb.struts.config.files">/${symbol_dollar}{ksb.application}/WEB-INF/struts-config.xml</param>
+    <param name="rice.kim.struts.config.files">/${symbol_dollar}{kim.application}/WEB-INF/struts-config.xml</param>
+
+    <param name="rice.kew.attachment.directory">${symbol_dollar}{attachments.directory}</param>
+    <param name="rice.kew.xml.directory">${symbol_dollar}{staging.directory}/workflow</param>
+    <param name="rice.kew.xml.poll.interval.secs">30</param>
+    <param name="rice.kew.xml.initial.delay.secs">60</param>
+
+    <param name="rice.kew.actionlist.outbox">false</param>
+
+    <param name="rice.kew.secure.workflowdocument.javaservice.endpoint">true</param>
+    <param name="rice.kew.secure.workflowutility.javaservice.endpoint">true</param>
+    <param name="rice.kew.simpleDocumentActionsService.security">true</param>
+    <param name="rice.kew.secure.workflowutility.soapservice.endpoint">true</param>
+    <param name="rice.kim.soapExposedService.jaxws.security">true</param>
+
+    <param name="rice.kim.identityArchiveServiceImpl.executionIntervalSeconds">600</param>
+    <param name="rice.kim.identityArchiveServiceImpl.maxWriteQueueSize">300</param>
+
+    <param name="rice.ksb.message.delivery">async</param>
+    <param name="rice.ksb.route.queue.max.retry.attempts">3</param>
+    <param name="rice.ksb.route.queue.time.increment">1000</param>
+    <param name="rice.ksb.thread.pool.size">20</param>
+
+    <param name="rice.ksb.bus.refresh.rate.seconds">120</param>
+
+    <param name="rice.cxf.client.connectionTimeout">30000</param>
+    <param name="rice.cxf.client.receiveTimeout">120000</param>
+    <param name="rice.cxf.client.allowChunking">false</param>
+
+    <param name="rice.ksb.batch.mode">false</param>
+
+
+    <param name="rice.kim.cache.entity.max.size">3000</param>
+    <param name="rice.kim.cache.entity.max.age.seconds">3600</param>
+    <param name="rice.kim.cache.group.max.size">3000</param>
+    <param name="rice.kim.cache.group.max.age.seconds">3600</param>
+    <param name="rice.kim.cache.role.max.size">3000</param>
+    <param name="rice.kim.cache.role.max.age.seconds">300</param>
+    <param name="rice.kim.cache.permission.max.size">3000</param>
+    <param name="rice.kim.cache.permission.max.age.seconds">30</param>
+    <param name="rice.kim.cache.responsibility.max.size">3000</param>
+    <param name="rice.kim.cache.responsibility.max.age.seconds">30</param>
+    <param name="rice.kim.cache.person.max.size">3000</param>
+    <param name="rice.kim.cache.person.max.age.seconds">3600</param>
+
+    <param name="rice.org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo.hidden">baseSalaryAmount</param>
+    <param name="rice.kim.hide.PersonDocumentAddress.type">HM</param>
+    <param name="rice.kim.hide.PersonDocumentPhone.type">HM</param>
+    <param name="rice.kim.show.blank.qualifiers">true</param>
+
+
+    <param name="rice.kns.cache.parameter.max.size">1000</param>
+    <param name="rice.kns.cache.parameter.max.age.seconds">3600</param>
+    <param name="rice.kns.cache.nonDatabaseComponent.max.size">2000</param>
+    <param name="rice.kns.cache.nonDatabaseComponent.max.age.seconds">3600</param>
+
+    <param name="rice.kns.cache.methodresult.max.size">1000</param>
+    <param name="rice.kns.cache.methodresult.max.age.seconds">60</param>
+    <param name="rice.kns.cache.methodresult.nocopy.max.size">1000</param>
+    <param name="rice.kns.cache.methodresult.nocopy.max.age.seconds">600</param>
+
+    <param name="rice.kns.session.document.cache.size">1000</param>
+
+    <param name="rice.kim.cache.permission.refresh.period.seconds">3600</param>
+    <param name="rice.kim.cache.role.refresh.period.seconds">3600</param>
+
+    <param name="rice.kew.email.reminder.lifecycle.enabled">false</param>
+    <param name="rice.kew.mail.smtp.host">${symbol_dollar}{mail.relay.server}</param>
+    <param name="rice.kew.mail.transport.protocol">${symbol_dollar}{mail.transport.protocol}</param>
+
+    <param name="rice.kew.daily.email">false</param>
+    <param name="rice.kew.weekly.email">false</param>
+    <param name="rice.kew.daily.email.cron.expression">0 0 1 * * ?</param>
+    <param name="rice.kew.weekly.email.cron.expression">0 0 2 ? * 2</param>
+
+    <param name="classpath.resource.prefix">/WEB-INF/classes/</param>
+
+    <param name="validate.data.dictionary">true</param>
+    <param name="validate.ebo.references">true</param>
+
+</config>
