@@ -53,6 +53,7 @@
         <filtering>true</filtering>
         <excludes>
             <exclude>**/prototype-resources/**</exclude>    
+            <exclude>**/archetype-resources/**</exclude>    
         </excludes>
       </resource>
       <resource>
