@@ -77,8 +77,13 @@ mvn kuali:new-system-parameter \
 
 *** Assign a permission to a role
 
+This will assign "Modify Accounting Lines" permission to the KFS-TEM fiscal officer
+
 #+BEGIN_EXAMPLE
 
 mvn kuali:assign-role-permission \
+-Dpermission="Modify Accounting Lines" \
+-Dnamespace="KFS-TEM" \
+-Drole="Fiscal Officer"
 
 #+END_EXAMPLE
