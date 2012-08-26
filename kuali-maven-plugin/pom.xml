@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.kualigan.maven.plugins</groupId>
     <artifactId>kualigan-maven-plugins</artifactId>
-    <version>1.1.2-SNAPSHOT</version>
+    <version>1.1.4-SNAPSHOT</version>
   </parent>
   
   <groupId>org.kualigan.maven.plugins</groupId>
@@ -20,10 +20,6 @@
     </license>
   </licenses>
   
-    <properties>
-        <kualigan.plugin.prefix>kuali</kualigan.plugin.prefix>
-    </properties>
-
   <build>
     <resources>
       <resource>
@@ -68,6 +64,7 @@
   </build>
 
   <properties>
+    <kualigan.plugin.prefix>kuali</kualigan.plugin.prefix>
     <plexus-archiver.version>2.1.1</plexus-archiver.version>
     <maven-plugin-plugin.version>3.1</maven-plugin-plugin.version>
     <mavenVersion>3.0.3</mavenVersion>

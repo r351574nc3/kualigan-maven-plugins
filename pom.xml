@@ -360,7 +360,6 @@
     <module>kfs3-archetype</module>
     <module>kfs4-archetype</module>
     <module>kfs-maven-plugin</module>
-    <module>kfs-archetype</module>
     <module>kr-archetype</module>
     <module>kuali-maven-plugin</module>
   </modules>

@@ -207,6 +207,7 @@ limitations under the License.
          <driver.version>${ojdbc6.version}</driver.version>
      </properties>
    </profile>
+  </profiles>
 
   <repositories>
     <repository>

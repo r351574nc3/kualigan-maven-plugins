@@ -8,10 +8,10 @@
   </parent>
 
   <groupId>org.kualigan.maven.archetypes</groupId>
-  <artifactId>kfs-archetype</artifactId>
+  <artifactId>kfs4-archetype</artifactId>
   <packaging>maven-archetype</packaging>
 
-  <name>KFS Archetype</name>
+  <name>KFS 4.x Archetype</name>
 
   <build>
     <extensions>

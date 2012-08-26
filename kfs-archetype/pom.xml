@@ -11,7 +11,7 @@
   <artifactId>kfs-archetype</artifactId>
   <packaging>maven-archetype</packaging>
 
-  <name>KFS Archetype</name>
+  <name>KFS 5.x Archetype</name>
 
   <build>
     <extensions>
