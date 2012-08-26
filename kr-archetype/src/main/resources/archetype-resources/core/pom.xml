@@ -35,14 +35,6 @@
       <artifactId>${krPrototypeArtifactId}</artifactId>
     </dependency>
     <dependency>
-    	<groupId>org.kuali.rice</groupId>
-		<artifactId>rice-ldap</artifactId>
-    </dependency>
-    <dependency>
-        <groupId>org.kuali.rice</groupId>
-		<artifactId>rice-impl</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.springframework.ldap</groupId>
       <artifactId>spring-ldap-ldif-core</artifactId>
     </dependency>
