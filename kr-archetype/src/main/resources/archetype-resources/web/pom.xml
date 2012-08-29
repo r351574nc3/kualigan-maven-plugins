@@ -33,8 +33,6 @@
     <default.context.path>${web.launch.context.path}</default.context.path>
     <bootstrap.spring.file>classpath:SampleAppBeans.xml</bootstrap.spring.file>
     <maven.surefire.skip>true</maven.surefire.skip>
-    <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
-    <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
   </properties>
   
   <build>
@@ -108,7 +106,7 @@
                 <groupId>${krPrototypeGroupId}</groupId>
                 <artifactId>${krPrototypeArtifactId}</artifactId>
                 <includes>
-                  <include>${war.overlay.pattern.1}</include>
+                  <include>WEB-INF/web.xml</include>
                 </includes>
                 <filtered>true</filtered>
               </overlay>
@@ -116,8 +114,8 @@
                 <groupId>${krPrototypeGroupId}</groupId>
                 <artifactId>${krPrototypeArtifactId}</artifactId>
                 <excludes>
-                  <exclude>${war.overlay.pattern.1}</exclude>
-                  <exclude>${war.overlay.exclude.2}</exclude>
+                  <exclude>WEB-INF/web.xml</exclude>
+                  <exclude>DO_NOT_MATCH_ANYTHING_PATTERN</exclude>
                 </excludes>
                 <filtered>false</filtered>
               </overlay>
@@ -135,6 +133,9 @@
                     </systemProperty>
                     <systemProperty>
                         <name>log4j.settings.file</name><value>${user.home}/main/${build.environment}/j2ee/log4j.properties</value>
+                    </systemProperty>
+                    <systemProperty>
+                        <name>rebel.spring_plugin</name><value>false</value>
                     </systemProperty>
                 </systemProperties>
                 <scanIntervalSeconds>0</scanIntervalSeconds>
