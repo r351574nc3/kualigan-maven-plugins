@@ -238,25 +238,11 @@ limitations under the License.
                 </dependency>
             </dependencies>
         </plugin>
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-war-plugin</artifactId>
           <version>${maven-war-plugin.version}</version>
-          <configuration>
-            <overlays>
-              <overlay>
-                <groupId>${krPrototypeGroupId}</groupId>
-                <artifactId>${krPrototypeArtifactId}</artifactId>
-                <excludes>
-                  <exclude>WEB-INF/classes/ApplicationResources.properties</exclude>
-                  <exclude>WEB-INF/tags/portal/</exclude>
-                  <exclude>WEB-INF/web.xml</exclude>
-                  <exclude>**/web.xml</exclude>
-                  <exclude>**/lib/**</exclude>
-                </excludes>
-              </overlay>
-            </overlays>
-          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

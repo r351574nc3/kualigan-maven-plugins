@@ -29,7 +29,12 @@
     <build.environment>dev</build.environment>
     <env.filter>${filter.directory}/${build.environment}-build.properties</env.filter>
     <login.user>williamh</login.user>
-    <default.context.path>${project.parent.artifactId}</default.context.path>
+    <web.launch.context.path>/sample-app</web.launch.context.path>
+    <default.context.path>${web.launch.context.path}</default.context.path>
+    <bootstrap.spring.file>classpath:SampleAppBeans.xml</bootstrap.spring.file>
+    <maven.surefire.skip>true</maven.surefire.skip>
+    <war.overlay.pattern.1>WEB-INF/web.xml</war.overlay.pattern.1>
+    <war.overlay.exclude.2>DO_NOT_MATCH_ANYTHING_PATTERN</war.overlay.exclude.2>
   </properties>
   
   <build>
@@ -96,7 +101,28 @@
       </plugin>
 
       <plugin>
-        <artifactId>maven-war-plugin</artifactId>
+          <artifactId>maven-war-plugin</artifactId>
+          <configuration>
+            <overlays>
+              <overlay>
+                <groupId>${krPrototypeGroupId}</groupId>
+                <artifactId>${krPrototypeArtifactId}</artifactId>
+                <includes>
+                  <include>${war.overlay.pattern.1}</include>
+                </includes>
+                <filtered>true</filtered>
+              </overlay>
+              <overlay>
+                <groupId>${krPrototypeGroupId}</groupId>
+                <artifactId>${krPrototypeArtifactId}</artifactId>
+                <excludes>
+                  <exclude>${war.overlay.pattern.1}</exclude>
+                  <exclude>${war.overlay.exclude.2}</exclude>
+                </excludes>
+                <filtered>false</filtered>
+              </overlay>
+            </overlays>
+          </configuration>
       </plugin>
       
       <plugin>
