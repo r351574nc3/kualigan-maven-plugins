@@ -140,7 +140,7 @@
                 </systemProperties>
                 <scanIntervalSeconds>0</scanIntervalSeconds>
                 <webAppConfig>
-                    <contextPath>/${project.build.finalName}</contextPath>
+                    <contextPath>${default.context.path}</contextPath>
                     <descriptor>src/main/webapp/WEB-INF/web.xml</descriptor>
                 </webAppConfig>
             </configuration>
