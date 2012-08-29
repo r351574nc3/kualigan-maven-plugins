@@ -60,7 +60,7 @@
         <groupId>org.apache.tomcat.maven</groupId>
         <artifactId>tomcat7-maven-plugin</artifactId>
         <configuration>
-            <path>/${default.context.path}</path>
+            <path>${default.context.path}</path>
             <systemProperties>
                 <java.util.logging.config.file>logging.properties</java.util.logging.config.file>
                 <environment>${build.environment}</environment>
