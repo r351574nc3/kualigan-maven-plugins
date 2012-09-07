@@ -1,0 +1,294 @@
+Testing with lb-maven-plugin
+
+* Overview
+
+  These are some instructions for developers using the <a href="https://github.com/r351574nc3/lb-maven-plugin">lb-maven-plugin</a> on how to test your changelogs to verify they work on varying database platforms before committing changes to your VCS.
+
+* Setup
+
+  I'm going to assume you have already installed the <a href="https://github.com/r351574nc3/lb-maven-plugin">lb-maven-plugin</a>. Here are some preliminary setups we need to do before actual testing:
+<li>Add <a href="https://github.com/r351574nc3/lb-maven-plugin">lb-maven-plugin</a> to the pom.xml</li>
+<li>Create connection information for each database to test.</li>
+<li>Create an actual changelog</li>
+</ul>
+
+** Setup the lb-maven-plugin
+
+  This is what I added to my pom.xml. This ensures my changelogs are run whenever I do any kind of testing. Since I am testing both mysql and oracle databases, it requires the drivers during testing.
+
+---
+<plugin>
+  <groupId>com.rsmart.kuali.tools</groupId>
+  <artifactId>lb-maven-plugin</artifactId>
+  <version>0.0.1</version>
+  <configuration>
+    <changeLogTagUrl>https://svn.rsmart.com/svn/kuali/contribution/community/travel_module/tags/</changeLogTagUrl>
+  </configuration>
+  <executions>
+    <execution>
+      <id>test-liquibase-changelogs</id>
+      <phase>test</phase>
+      <goals>
+        <goal>test</goal>
+      </goals>
+    </execution>
+  </executions>
+  <dependencies>
+    <dependency>
+      <groupId>com.rsmart.kuali.tools.liquibase</groupId>
+      <artifactId>rsmart-lb-extensions</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.oracle</groupId>
+      <artifactId>ojdbc14</artifactId>
+      <version>${oracle.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+</plugin>
+---
+
+  This may seem a little weird, but I also modified the <b>resources plugin</b>
+
+---
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-resources-plugin</artifactId>
+  <version>2.5</version>
+  <executions>
+    <execution>
+      <id>copy-test-changelogs</id>
+      <!-- here the phase you need -->
+      <phase>validate</phase>
+      <goals>
+        <goal>copy-resources</goal>
+      </goals>
+      <configuration>
+        <outputDirectory>${basedir}/target/changelogs/update</outputDirectory>
+        <resources>          
+          <resource>
+            <directory>src/main/changelogs/update</directory>
+          </resource>
+        </resources>              
+      </configuration>            
+    </execution>
+  </executions>
+</plugin>
+---
+
+  The reason is because the <a href="https://github.com/r351574nc3/lb-maven-plugin">lb-maven-plugin</a> assumes by convention changelogs are located in <b>src/main/changelogs</b> and your updates are within the <b>update</b> directory. Further, the target location of the changelogs is in <b>target/changelogs/update</b>. The resources plugin needs to be modified to recognize this. 
+
+** Setup the Liquibase Properties Files
+
+  The <a href="https://github.com/r351574nc3/lb-maven-plugin">lb-maven-plugin</a> regards any properties files in <b>target/test-classes/liquibase</b> to be considered a liquibase properties file. It will iterate over each one and run the changelog in <b>target/changelogs/update</b> for each one. In order to get properties files into <b>target/test-classes/liquibase</b>, I created a directory called <b>src/test/resources/liquibase</b>. These are already moved to the appropriate location. All I need to do is create the files:
+
+---
+driver: oracle.jdbc.driver.OracleDriver
+url: jdbc:oracle:thin:@localhost:1521:KFS
+username: TEM
+password: TEMPORARY
+---
+
+---
+driver: com.mysql.jdbc.Driver
+url: jdbc:mysql://localhost:3306/TEM
+username: TEM
+password: TEMPORARY</pre>
+---
+
+** Create a Changelog
+  
+  Next, I just need to make a change to test out. I'm just going to do something simple:
+
+---
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">	
+  <changeSet author="kuali (generated)" id="CM-156-1">
+    <comment>Adding System Parameter for testing</comment>
+    <sql><![CDATA[
+insert into KRNS_PARM_T (NMSPC_CD, PARM_DTL_TYP_CD, PARM_NM, OBJ_ID, VER_NBR, PARM_TYP_CD, TXT, PARM_DESC_TXT, CONS_CD, APPL_NMSPC_CD) 
+values ('KFS-TEM','TravelReimbursement','TEST_PARAMETER',sys_guid(),1,'CONFG','Y','System parameter to test update and rollback','A','KFS');
+    
+    ]]></sql>
+    <rollback><![CDATA[
+    delete from KRNS_PARM_T where PARM_DTL_TYP_CD = 'TravelReimbursement' AND PARM_NM = 'TEST_PARAMETER';
+    ]]></rollback>
+  </changeSet>
+</databaseChangeLog>---
+
+  I'm just adding your basic system parameter. Testing requires that I rollback the change when I'm done, so I'm forced into providing a rollback. Imagine that. Testing forcing good practices on developers. That's the way it should be. 
+
+** Prepare for Testing
+
+  Now that I have created these files, I simply run the following:<pre class="brush: plain">mvn validate testResources</pre>
+. You may recall that the changelogs are copied during the <b>validate</b> goal. I run <b>testResources</b> to copy my properties files to the appropriate locations. After doing that, I should see this in <b>target/changelogs/update/</b>
+
+---
+leo@behemoth~/.workspace/kfs/release-4-0-overlay
+(21:38:19) [540] ls target/changelogs/update
+CM-156.xml
+---
+
+  I see the changelog I created. Good. I should also see my properties in <b>target/test-classes/liquibase</b>
+
+---
+leo@behemoth~/.workspace/kfs/release-4-0-overlay
+(22:02:22) [541] ls target/test-classes/liquibase/
+TEM.properties			TEMNIGHTLY.properties		liquibase.properties.template
+---
+
+  There you have it. Now we're ready to test. 
+
+---
+leo@behemoth~/.workspace/kfs/release-4-0-overlay
+(21:29:10) [537] mvn validate lb:test
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building kfs 4.0M2
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-resources-plugin:2.5:copy-resources (copy-test-changelogs) @ kfs ---
+[debug] execute contextualize
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] 
+[INFO] --- lb-maven-plugin:0.0.1:test (default-cli) @ kfs ---
+[WARNING] Artifact with no actual file, 'org.kuali.kfs:kfs'
+[WARNING] Artifact with no actual file, 'commons-lang:commons-lang'
+[WARNING] Artifact with no actual file, 'com.lowagie:itext'
+[WARNING] Artifact with no actual file, 'jasperreports:jasperreports'
+[WARNING] Artifact with no actual file, 'org.kuali.kfs:kfs'
+[WARNING] Artifact with no actual file, 'mysql:mysql-connector-java'
+[WARNING] Artifact with no actual file, 'junit:junit'
+[WARNING] Artifact with no actual file, 'javax.servlet:servlet-api'
+[WARNING] Artifact with no actual file, 'javax.servlet:jstl'
+[WARNING] Artifact with no actual file, 'taglibs:standard'
+[WARNING] Artifact with no actual file, 'javax.servlet:jsp-api'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-deploy'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-jsp-2.1'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-server'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-webapp'
+[WARNING] Artifact with no actual file, 'org.hamcrest:hamcrest-library'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-beans'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-context'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-context-support'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-core'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-jdbc'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-tx'
+[WARNING] Artifact with no actual file, 'org.springmodules:spring-modules-ojb'
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: /Users/leo/.workspace/kfs/release-4-0-overlay/target/test-classes/liquibase/TEM.properties
+[INFO] ------------------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[WARNING] Artifact with no actual file, 'org.kuali.kfs:kfs'
+[WARNING] Artifact with no actual file, 'commons-lang:commons-lang'
+[WARNING] Artifact with no actual file, 'com.lowagie:itext'
+[WARNING] Artifact with no actual file, 'jasperreports:jasperreports'
+[WARNING] Artifact with no actual file, 'org.kuali.kfs:kfs'
+[WARNING] Artifact with no actual file, 'mysql:mysql-connector-java'
+[WARNING] Artifact with no actual file, 'junit:junit'
+[WARNING] Artifact with no actual file, 'javax.servlet:servlet-api'
+[WARNING] Artifact with no actual file, 'javax.servlet:jstl'
+[WARNING] Artifact with no actual file, 'taglibs:standard'
+[WARNING] Artifact with no actual file, 'javax.servlet:jsp-api'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-deploy'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-jsp-2.1'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-server'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-webapp'
+[WARNING] Artifact with no actual file, 'org.hamcrest:hamcrest-library'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-beans'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-context'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-context-support'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-core'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-jdbc'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-tx'
+[WARNING] Artifact with no actual file, 'org.springmodules:spring-modules-ojb'
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: /Users/leo/.workspace/kfs/release-4-0-overlay/target/test-classes/liquibase/TEM.properties
+[INFO] ------------------------------------------------------------------------
+[INFO] Executing on Database: jdbc:mysql://localhost:3306/TEM
+[INFO] Tagging the database
+INFO 9/21/11 9:29 PM:liquibase: Successfully acquired change log lock
+INFO 9/21/11 9:29 PM:liquibase: Reading from `DATABASECHANGELOG`
+INFO 9/21/11 9:29 PM:liquibase: Successfully released change log lock
+[INFO] Doing update
+INFO 9/21/11 9:29 PM:liquibase: Successfully acquired change log lock
+INFO 9/21/11 9:29 PM:liquibase: Reading from `DATABASECHANGELOG`
+INFO 9/21/11 9:29 PM:liquibase: ChangeSet /Users/leo/.workspace/kfs/release-4-0-overlay/target/changelogs/update/CM-156.xml::CM-156-1::kuali (generated) ran successfully in 37ms
+INFO 9/21/11 9:29 PM:liquibase: Successfully released change log lock
+[INFO] Doing rollback
+INFO 9/21/11 9:29 PM:liquibase: Successfully acquired change log lock
+INFO 9/21/11 9:29 PM:liquibase: Rolling Back Changeset:/Users/leo/.workspace/kfs/release-4-0-overlay/target/changelogs/update/CM-156.xml::CM-156-1::kuali (generated)::(Checksum: 3:85a5e658332342fba8b60df3a29fc393)
+INFO 9/21/11 9:29 PM:liquibase: Successfully released change log lock
+INFO 9/21/11 9:29 PM:liquibase: Successfully released change log lock
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: /Users/leo/.workspace/kfs/release-4-0-overlay/target/test-classes/liquibase/TEMNIGHTLY.properties
+[INFO] ------------------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[WARNING] Artifact with no actual file, 'org.kuali.kfs:kfs'
+[WARNING] Artifact with no actual file, 'commons-lang:commons-lang'
+[WARNING] Artifact with no actual file, 'com.lowagie:itext'
+[WARNING] Artifact with no actual file, 'jasperreports:jasperreports'
+[WARNING] Artifact with no actual file, 'org.kuali.kfs:kfs'
+[WARNING] Artifact with no actual file, 'mysql:mysql-connector-java'
+[WARNING] Artifact with no actual file, 'junit:junit'
+[WARNING] Artifact with no actual file, 'javax.servlet:servlet-api'
+[WARNING] Artifact with no actual file, 'javax.servlet:jstl'
+[WARNING] Artifact with no actual file, 'taglibs:standard'
+[WARNING] Artifact with no actual file, 'javax.servlet:jsp-api'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-deploy'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-jsp-2.1'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-server'
+[WARNING] Artifact with no actual file, 'org.eclipse.jetty:jetty-webapp'
+[WARNING] Artifact with no actual file, 'org.hamcrest:hamcrest-library'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-beans'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-context'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-context-support'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-core'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-jdbc'
+[WARNING] Artifact with no actual file, 'org.springframework:spring-tx'
+[WARNING] Artifact with no actual file, 'org.springmodules:spring-modules-ojb'
+[INFO] Parsing Liquibase Properties File
+[INFO]   File: /Users/leo/.workspace/kfs/release-4-0-overlay/target/test-classes/liquibase/TEMNIGHTLY.properties
+[INFO] ------------------------------------------------------------------------
+[INFO] Executing on Database: jdbc:oracle:thin:@heisenberg.rsmart.com:1521:KFS
+[INFO] Tagging the database
+INFO 9/21/11 9:29 PM:liquibase: Successfully acquired change log lock
+INFO 9/21/11 9:29 PM:liquibase: Reading from DATABASECHANGELOG
+INFO 9/21/11 9:29 PM:liquibase: Successfully released change log lock
+[INFO] Doing update
+INFO 9/21/11 9:29 PM:liquibase: Successfully acquired change log lock
+INFO 9/21/11 9:29 PM:liquibase: Reading from DATABASECHANGELOG
+INFO 9/21/11 9:29 PM:liquibase: ChangeSet /Users/leo/.workspace/kfs/release-4-0-overlay/target/changelogs/update/CM-156.xml::CM-156-1::kuali (generated) ran successfully in 205ms
+INFO 9/21/11 9:29 PM:liquibase: Successfully released change log lock
+[INFO] Doing rollback
+INFO 9/21/11 9:29 PM:liquibase: Successfully acquired change log lock
+INFO 9/21/11 9:29 PM:liquibase: Rolling Back Changeset:/Users/leo/.workspace/kfs/release-4-0-overlay/target/changelogs/update/CM-156.xml::CM-156-1::kuali (generated)::(Checksum: 3:85a5e658332342fba8b60df3a29fc393)
+INFO 9/21/11 9:29 PM:liquibase: Successfully released change log lock
+INFO 9/21/11 9:29 PM:liquibase: Successfully released change log lock
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 28.920s
+[INFO] Finished at: Wed Sep 21 21:29:49 MST 2011
+[INFO] Final Memory: 11M/262M
+[INFO] ------------------------------------------------------------------------
+leo@behemoth~/.workspace/kfs/release-4-0-overlay
+(21:29:49) [538]
+--
+
+* Conclusion
+  You can see that it ran against two separate databases relatively quickly. It's a good way to test your changes and make sure they work everywhere you need them to.

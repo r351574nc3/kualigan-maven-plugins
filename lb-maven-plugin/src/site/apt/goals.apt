@@ -1,0 +1,14 @@
+Full name:
+
+com.rsmart.kuali.tools.liquibase:lb-maven-plugin:0.0.1
+
+Description:
+
+
+Attributes:
+
+Requires a Maven project to be executed.
+Requires dependency resolution of artifacts in scope: test.
+Optional Parameters
+
+

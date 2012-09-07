@@ -1,0 +1,57 @@
+  Welcome to the lb-maven-plugin Project, we hope you enjoy your time
+on this project site.  We've tried to assemble some
+great user documentation and developer information, and
+we're really excited that you've taken the time to visit
+this site.
+
+What is lb-maven-plugin
+
+  It's true that liquibase already has a maven plugin, but liquibase is so configuration intensive. I believe there needs to be a more standardized approach to developing with liquibase. Maven is a paragon for the methodology of "convention over configuration". I sincerely believe this methodology is a simpler way to go as far as configuration is concerned. With that in mind, my goal is to make development with liquibase more constrained and simpler for developers. This is especially the case in Kuali.
+
+  lb-maven-plugin is another {{{http://www.liquibase.org}Liquibase}}
+maven plugin with an emphasis on development migration and environment
+upgrades. It adheres to a strict convention policy to simplify
+configuration. There isn't very much that can be done about the
+convention, so if you don't agree with it, you probably don't want to
+use this plugin. For information about the convention, read the
+{{{usage.html}Usage}} page.
+
+* Migrations for developers
+
+  Normal liquibase plugins do not consider that developers need to be
+able to easily bring their databases to the correct version. This
+plugin will allow developers to easily do that with the migrate
+goal. The plugin connects with Maven SCM configuration to retrieve
+missing changelogs from SCM and play them back.
+
+* Environment upgrades
+
+  Much the same way that migrations work for developers, environments
+can easily be upgrade in part by the convention that ensures where
+changelogs can be found, and how they are structured to work together.
+
+* The Problem
+
+  You may recall from a
+  {{{http://kualigan.blogspot.com/2010/04/kismet-game-changer-structuring-project.html}previous
+  blog post}} the structure and style of Liquibase implementation I
+  recommend. To summarize, I recommend only publishing updates to your
+  VCS. This makes it easier on developers and also eliminates
+  confusion when making essentially the same change to multiple
+  files. This approach does have its complications though. For
+  example, it raises the question, "How do you create a database to
+  start with?" Also, "What if an environment or a developer gets
+  several revisions behind? How do we bring them back up to the
+  current version?" The maven plugin basically answers those
+  questions. Especially, for developers.
+
+* lb-maven-plugin
+
+  This plugin is an extension of the liquibase-maven-plugin, so it has all the same configuration and goals. In addition, it has 2 more goals: migrate and test.
+
+** migrate
+
+  You may recall that there used to be a migrate task in the liquibase-maven-plugin. I think they renamed it to be consistent with the CLI and Ant. I have brought it back to be more consistent with RoR migrations. The objective here is to not just update the database, but to bring the database up to the current version. Right now, liquibase update just runs whatever changelogs you want to update with. They might not be the ones that will get you to the right version. Liquibase doesn't know what changelogs to run to get you to the right version. This goal takes into consideration the structure outlined in a previous blog post, and retrieves from the SCM the relevant changelogs to update your database.
+
+** test
+  There's already an updateAndRollback goal. Unfortunately, this tests the update and rollback, but does another update. This is great if you want to test your script while updating your database. In development, this isn't as realistic though. Sometimes, you want to group your changes. Developers are likely to continually add to a change log, then commit it to the VCS. This is especially the case if the changes are related to the same Jira issue. If you update, you can't really keep updating. You could get around this by being really hacky with your changelogs, but it would just be better if the tool did what you expected: run the test, and then rollback to a state prior to do more testing. That's exactly what this goal does. It basically tests your changelogs out. You can define multiple databases to run it against. If you are concerned about changelog compatibility, you can run the changes against as many databases as you want (local or remote). Continue to follow this blog, and I'll post shortly an example on testing your changelogs with this tool.

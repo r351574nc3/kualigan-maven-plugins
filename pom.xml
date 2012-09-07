@@ -212,6 +212,9 @@
   </build>
 
   <properties>
+    <svnkit.version>1.7.5-v1</svnkit.version>
+    <liquibase.version>2.0.5</liquibase.version>
+    <kualigan-lb-extensions.version>1.0.1</kualigan-lb-extensions.version>
     <plexus-archiver.version>2.1.1</plexus-archiver.version>
     <maven-plugin-plugin.version>3.1</maven-plugin-plugin.version>
     <mavenVersion>3.0.3</mavenVersion>
@@ -312,6 +315,11 @@
           <groupId>org.codehaus.plexus</groupId>
           <artifactId>plexus-utils</artifactId>
           <version>3.0.2</version>
+        </dependency>
+        <dependency>
+          <groupId>org.kualigan.liquibase</groupId>
+          <artifactId>kualigan-lb-extensions</artifactId>
+          <version>${kualigan-lb-extensions.version}</version>
         </dependency>
       </dependencies>
     </dependencyManagement>
