@@ -777,7 +777,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
 */
     }
     
-    protected void export(final Diff diff, final Database target, final String diffTypes, final String suffix) {
+    protected void export(final Diff diff, final Database target, final String diffTypes, final String suffix) throws MojoExecutionException {
         diff.setDiffTypes(diffTypes);
 
         try {
@@ -789,7 +789,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
     }
 
-    protected void exportSchema(final Database source, final Database target) {
+    protected void exportSchema(final Database source, final Database target) throws MojoExecutionException {
         try {
             Diff diff = new Diff(source, source.getDefaultSchemaName());
             exportTables(diff, target);
