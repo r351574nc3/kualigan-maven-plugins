@@ -125,7 +125,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
     /**
      * The server id in settings.xml to use when authenticating the source server with.
      */
-    @Parameter(property = "lb.copy.source.driver", required = true)
+    @Parameter(property = "lb.copy.source.driver")
     private String sourceDriverClass;
 
     /**
@@ -147,7 +147,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
     /**
      * The server id in settings.xml to use when authenticating the source server with.
      */
-    @Parameter(property = "lb.copy.target.driver", required = true)
+    @Parameter(property = "lb.copy.target.driver")
     private String targetDriverClass;
 
     /**
@@ -274,6 +274,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
         
         targetDriverClass = lookupDriverFor(targetUrl);
+        
 
     /*
         String shouldRunProperty = System.getProperty(Liquibase.SHOULD_RUN_SYSTEM_PROPERTY);
