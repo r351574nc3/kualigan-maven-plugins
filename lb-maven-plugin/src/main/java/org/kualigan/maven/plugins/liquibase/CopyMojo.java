@@ -706,23 +706,23 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
     }
 
-    protected void exportConstraints(Diff diff, Database target) {
+    protected void exportConstraints(Diff diff, Database target) throws MojoExecutionException {
         export(diff, target, "foreignKeys", "-cst.xml");
     }
 
-    protected void exportIndexes(Diff diff, Database target) {
+    protected void exportIndexes(Diff diff, Database target) throws MojoExecutionException {
         export(diff, target, "indexes", "-idx.xml");
     }
 
-    protected void exportViews(Diff diff, Database target) {
+    protected void exportViews(Diff diff, Database target) throws MojoExecutionException {
     export(diff, target, "views", "-vw.xml");
     }
 
-    protected void exportTables(Diff diff, Database target) {
+    protected void exportTables(Diff diff, Database target) throws MojoExecutionException  {
         export(diff, target, "tables, primaryKeys, uniqueConstraints", "-tab.xml");
     }
 
-    protected void exportSequences(Diff diff, Database target) {
+    protected void exportSequences(Diff diff, Database target) throws MojoExecutionException {
         export(diff, target, "sequences", "-seq.xml");
     }
 
