@@ -34,10 +34,13 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.manager.WagonManager;
 
+import org.liquibase.maven.plugins.MavenUtils;
 import org.liquibase.maven.plugins.AbstractLiquibaseMojo;
 import org.liquibase.maven.plugins.AbstractLiquibaseUpdateMojo;
 
 import liquibase.Liquibase;
+import liquibase.database.Database;
+import liquibase.database.DatabaseFactory;
 import liquibase.exception.LiquibaseException;
 import liquibase.serializer.ChangeLogSerializer;
 import liquibase.parser.core.xml.LiquibaseEntityResolver;
@@ -103,18 +106,6 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
     private static final String DEFAULT_FIELD_SUFFIX = "Default";
 
     /**
-     * The fully qualified name of the driver class to use to connect to the database.
-     */
-    @Parameter(property = "liquibase.driver", required = true)
-    protected String driver;
-
-    /**
-     * The Database URL to connect to for executing Liquibase.
-     */
-    @Parameter(property = "liquibase.url", required = true)
-    protected String url;
-
-    /**
      * 
      * The Maven Wagon manager to use when obtaining server authentication details.
      */
@@ -122,56 +113,49 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
     protected WagonManager wagonManager;
 
     /**
-     * The server id in settings.xml to use when authenticating with.
+     * The server id in settings.xml to use when authenticating the source server with.
      */
-    @Parameter(property = "liquibase.server", required = true)
-    private String server;
+    @Parameter(property = "lb.copy.source", required = true)
+    private String source;
+
+    private String sourceUser;
+
+    private String sourcePass;
 
     /**
-     * The database username to use to connect to the specified database.
+     * The server id in settings.xml to use when authenticating the source server with.
      */
-    @Parameter(property = "liquibase.username", required = true)
-    protected String username;
+    @Parameter(property = "lb.copy.source.driver", required = true)
+    private String sourceDriverClass;
 
     /**
-     * The database password to use to connect to the specified database.
+     * The server id in settings.xml to use when authenticating the source server with.
      */
-    @Parameter(property = "liquibase.password", required = true)
-    protected String password;
-    
-    /**
-     * The default schema name to use the for database connection.
-     */
-    @Parameter(property = "liquibase.defaultSchemaName")
-    protected String defaultSchemaName;
+    @Parameter(property = "lb.copy.source.url", required = true)
+    private String sourceUrl;
 
     /**
-     * The class to use as the database object.
+     * The server id in settings.xml to use when authenticating the target server with.
      */
-    @Parameter(property = "liquibase.databaseClass", required = true)
-    protected String databaseClass;
+    @Parameter(property = "lb.copy.target", required = true)
+    private String target;
+
+    private String targetUser;
+
+    private String targetPass;
 
     /**
-     * Controls the prompting of users as to whether or not they really want to run the
-     * changes on a database that is not local to the machine that the user is current
-     * executing the plugin on.
+     * The server id in settings.xml to use when authenticating the source server with.
      */
-    @Parameter(property = "liquibase.promptOnNonLocalDatabase", defaultValue = "true")
-    protected boolean promptOnNonLocalDatabase;
+    @Parameter(property = "lb.copy.target.driver", required = true)
+    private String targetDriverClass;
 
     /**
-     * Allows for the maven project artifact to be included in the class loader for
-     * obtaining the Liquibase property and DatabaseChangeLog files.
+     * The server id in settings.xml to use when authenticating the source server with.
      */
-    @Parameter(property = "liquibase.includeArtifact", defaultValue = "true")
-    protected boolean includeArtifact;
+    @Parameter(property = "lb.copy.target.url", required = true)
+    private String targetUrl;
 
-    /**
-     * Allows for the maven test output directory to be included in the class loader for
-     * obtaining the Liquibase property and DatabaseChangeLog files.
-     */
-    @Parameter(property = "liquibase.includeTestOutputDirectory", defaultValue = "true")
-    protected boolean includeTestOutputDirectory;
 
     /**
      * Controls the verbosity of the output from invoking the plugin.
@@ -197,40 +181,6 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
      */
     @Parameter(property = "liquibase.propertyFile")
     protected String propertyFile;
-
-    /**
-     * Flag allowing for the Liquibase properties file to override any settings provided in
-     * the Maven plugin configuration. By default if a property is explicity specified it is
-     * not overridden if it also appears in the properties file.
-     */
-    @Parameter(property = "liquibase.propertyFileWillOverride", defaultValue = "false")
-    protected boolean propertyFileWillOverride;
-
-    /**
-     * Flag for forcing the checksums to be cleared from teh DatabaseChangeLog table.
-     */
-    @Parameter(property = "liquibase.clearCheckSums", defaultValue = "false")
-    protected boolean clearCheckSums;
-
-    /**                                                                                                                                                                          
-     * List of system properties to pass to the database.                                                                                                                        
-     */
-    @Parameter(property = "systemProperties")
-    protected Properties systemProperties;
-
-    @Parameter(property = "lb.svnUsername")
-    protected String svnUsername;
-    
-    @Parameter(property = "lb.svnPassword")
-    protected String svnPassword;
-
-    /**
-     * The server id in settings.xml to use when authenticating with.
-     *
-     * @parameter expression="${lb.svnServer}"
-     */
-    @Parameter(property = "lb.svnServer")
-    protected String svnServer;
     
     /**
      * Specifies the change log file to use for Liquibase. No longer needed with updatePath.
@@ -245,19 +195,6 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
     protected File changeLogSavePath;
 
     /**
-     * @parameter expression="${lb.changeLogTagUrl}"
-     */
-    @Parameter(property = "lb.changeLogTagUrl") 
-    protected URL changeLogTagUrl;
-
-    /**
-     * Location of an update.xml
-     *
-     */
-    @Parameter(property = "lb.updatePath", defaultValue = "${project.basedir}/src/main/changelogs")
-    protected File updatePath;
-    
-    /**
      * Whether or not to perform a drop on the database before executing the change.
      */
     @Parameter(property = "liquibase.dropFirst", defaultValue = "false")
@@ -265,13 +202,6 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
 
     protected File getBasedir() {
         return project.getBasedir();
-    }
-
-    protected SVNURL getChangeLogTagUrl() throws SVNException {
-        if (changeLogTagUrl == null) {
-            return getProjectSvnUrlFrom(getBasedir()).appendPath("tags", true);
-        }
-        return SVNURL.parseURIEncoded(changeLogTagUrl.toString());
     }
 
     protected void doFieldHack() {
@@ -287,7 +217,8 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             }
         }
     }
-
+    
+    /*
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         doFieldHack();
@@ -306,153 +237,138 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         
         doFieldHack();
 
-        if (svnServer != null) {
-            final AuthenticationInfo info = wagonManager.getAuthenticationInfo(svnServer);
-            if (info != null) {
-                svnUsername = info.getUserName();
-                svnPassword = info.getPassword();
+        
+        super.execute();
+    }
+    */
+    
+    public String lookupDriverFor(final String url) {
+        for (final Database databaseImpl : DatabaseFactory.getInstance().getImplementedDatabases()) {
+            final String driver = databaseImpl.getDefaultDriver(url);
+            if (driver != null) {
+                return driver;
             }
         }
-        DAVRepositoryFactory.setup();
+        return null;
+    }
+    
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        getLog().info(MavenUtils.LOG_SEPARATOR);
 
-        if (!isUpdateRequired()) {
+        if (source != null) {
+            AuthenticationInfo info = wagonManager.getAuthenticationInfo(source);
+            if (info != null) {
+                sourceUser = info.getUserName();
+                sourcePass = info.getPassword();
+            }
+        }
+
+        sourceDriverClass = lookupDriverFor(sourceUrl);
+
+        if (target != null) {
+            AuthenticationInfo info = wagonManager.getAuthenticationInfo(target);
+            if (info != null) {
+                targetUser = info.getUserName();
+                targetPass = info.getPassword();
+            }
+        }
+        
+        targetDriverClass = lookupDriverFor(targetUrl);
+
+    /*
+        String shouldRunProperty = System.getProperty(Liquibase.SHOULD_RUN_SYSTEM_PROPERTY);
+        if (shouldRunProperty != null && !Boolean.valueOf(shouldRunProperty)) {
+            getLog().info("Liquibase did not run because '" + Liquibase.SHOULD_RUN_SYSTEM_PROPERTY
+                    + "' system property was set to false");
             return;
         }
 
+        if (skip) {
+            getLog().warn("Liquibase skipped due to maven configuration");
+            return;
+        }
 
-        boolean shouldLocalUpdate = false;
+        processSystemProperties();
+
+        ClassLoader artifactClassLoader = getMavenArtifactClassLoader();
+        configureFieldsAndValues(getFileOpener(artifactClassLoader));
+
         try {
-            final Collection<SVNURL> svnurls = getTagUrls();
-            shouldLocalUpdate = (svnurls == null || svnurls.size() < 1);
+            LogFactory.setLoggingLevel(logging);
+        }
+        catch (IllegalArgumentException e) {
+            throw new MojoExecutionException("Failed to set logging level: " + e.getMessage(),
+                    e);
+        }
 
-            for (final SVNURL tag : svnurls) {
-                final String tagBasePath = getLocalTagPath(tag);
-                
-                final File tagPath = new File(tagBasePath, "update");
-                tagPath.mkdirs();
-                
-                final SVNURL changeLogUrl = tag.appendPath(DEFAULT_CHANGELOG_PATH + "/update", true);
-                SVNClientManager.newInstance().getUpdateClient()
-                    .doExport(changeLogUrl, tagPath, HEAD, HEAD, null, true, SVNDepth.INFINITY);
+        // Displays the settings for the Mojo depending of verbosity mode.
+        displayMojoSettings();
+
+        // Check that all the parameters that must be specified have been by the user.
+        checkRequiredParametersAreSpecified();
+
+        Database database = null;
+        try {
+            String dbPassword = emptyPassword || password == null ? "" : password;
+            database = CommandLineUtils.createDatabaseObject(artifactClassLoader,
+                    url,
+                    username,
+                    dbPassword,
+                    driver,
+                    defaultCatalogName,
+                    defaultSchemaName,
+                    databaseClass,
+                    null);
+            liquibase = createLiquibase(getFileOpener(artifactClassLoader), database);
+
+            getLog().debug("expressionVars = " + String.valueOf(expressionVars));
+
+            if (expressionVars != null) {
+                for (Map.Entry<Object, Object> var : expressionVars.entrySet()) {
+                    this.liquibase.setChangeLogParameter(var.getKey().toString(), var.getValue());
+                }
             }
+
+            getLog().debug("expressionVariables = " + String.valueOf(expressionVariables));
+            if (expressionVariables != null) {
+                for (Map.Entry var : (Set<Map.Entry>) expressionVariables.entrySet()) {
+                    if (var.getValue() != null) {
+                        this.liquibase.setChangeLogParameter(var.getKey().toString(), var.getValue());
+                    }
+                }
+            }
+
+            if (clearCheckSums) {
+                getLog().info("Clearing the Liquibase Checksums on the database");
+                liquibase.clearCheckSums();
+            }
+
+            getLog().info("Executing on Database: " + url);
+
+            if (isPromptOnNonLocalDatabase()) {
+                if (!liquibase.isSafeToRunUpdate()) {
+                    if (UIFactory.getInstance().getFacade().promptForNonLocalDatabase(liquibase.getDatabase())) {
+                        throw new LiquibaseException("User decided not to run against non-local database");
+                    }
+                }
+            }
+
+            performLiquibaseTask(liquibase);
         }
-        catch (Exception e) {
-            throw new MojoExecutionException("Exception when exporting changelogs from previous revisions", e);
+        catch (LiquibaseException e) {
+            cleanup(database);
+            throw new MojoExecutionException("Error setting up or running Liquibase: " + e.getMessage(), e);
         }
 
-        changeLogFile = new File(changeLogSavePath, "update.xml").getPath();
-        File changeLogSearchPath = changeLogSavePath;
-
-        if (shouldLocalUpdate) {
-            changeLogSavePath = new File(changeLogSavePath, "update");
-        }
-        
-        final Collection<File> changelogs = scanForChangelogs(changeLogSearchPath);
-        
-        try {
-            generateUpdateLog(new File(changeLogFile), changelogs);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException("Failed to generate changelog file " + changeLogFile, e);
-        }
-        
-        super.execute();
+        cleanup(database);
+        */
+        getLog().info(MavenUtils.LOG_SEPARATOR);
+        getLog().info("");
     }
 
     protected String getLocalTagPath(final SVNURL tag) {
         final String tagPath = tag.getPath();
         return changeLogSavePath + File.separator + tagPath.substring(tagPath.lastIndexOf("/") + 1);
-    }
-
-    protected boolean isUpdateRequired() throws MojoExecutionException {
-        try {
-            getLog().debug("Comparing " + getCurrentRevision() + " to " + getLocalRevision());
-            final String[] updates = new File(DEFAULT_CHANGELOG_PATH + File.separator + "update").list();
-            boolean hasUpdates = updates != null && updates.length > 0;
-            return getCurrentRevision() > getLocalRevision() || (hasUpdates);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException("Could not compare local and remote revisions ", e);
-        }
-    }
-
-    protected SVNURL getProjectSvnUrlFrom(final File path) throws SVNException {
-        SVNURL retval = getWCClient().doInfo(getBasedir(), HEAD).getURL();
-        String removeToken = null;
-        if (retval.getPath().indexOf("/branches") > -1) {
-            removeToken = "/branches";
-        }
-        else if (retval.getPath().indexOf("/tags") > -1) {
-            removeToken = "/tags";
-        }
-        else if (retval.getPath().indexOf("/trunk") > -1) {
-            removeToken = "/trunk";
-        }
-
-        getLog().debug("Checking path " + retval.getPath() + " for token " + removeToken);
-        while (retval.getPath().indexOf(removeToken) > -1) {
-            retval = retval.removePathTail();
-        }
-        return retval;
-    }
-
-    protected Long getCurrentRevision() throws SVNException {
-        return getWCClient().doInfo(getBasedir(), HEAD).getCommittedRevision().getNumber();
-    }
-
-    protected Long getLocalRevision() throws SVNException {
-        return getWCClient().doInfo(getBasedir(), WORKING).getRevision().getNumber();
-    }
-
-    protected Long getTagRevision(final String tag) throws SVNException {
-        return getWCClient().doInfo(getChangeLogTagUrl(), WORKING, WORKING).getRevision().getNumber();
-    }
-
-    protected Collection<SVNURL> getTagUrls() throws SVNException {
-        final Collection<SVNURL> retval = new ArrayList<SVNURL>();
-        getLog().debug("Looking up tags in " + getChangeLogTagUrl().toString());
-        clientManager().getLogClient()
-            .doList(getChangeLogTagUrl(), HEAD, HEAD, false, false, 
-                    new ISVNDirEntryHandler() {
-                        public void handleDirEntry(SVNDirEntry dirEntry) throws SVNException {
-                            if (dirEntry.getRevision() >= getLocalRevision()
-                                && dirEntry.getPath().trim().length() > 0) {
-                                getLog().debug("Adding tag '" + dirEntry.getPath() + "'");
-                                retval.add(dirEntry.getURL());
-                            }
-                        }
-                    });
-        return retval;
-    }
-
-    protected SVNWCClient getWCClient() {
-        return clientManager().getWCClient();
-    }
-
-    protected Collection<File> scanForChangelogs(final File searchPath) {
-        final Collection<File> retval = new ArrayList<File>();
-        
-        if (searchPath.getName().endsWith("update")) {
-            return Arrays.asList(searchPath.listFiles());
-        }
-        
-        if (searchPath.isDirectory()) {
-            for (final File file : searchPath.listFiles()) {
-                if (file.isDirectory()) {
-                    retval.addAll(scanForChangelogs(file));
-                }
-            }
-        }
-        
-        return retval;
-    }
-
-    protected SVNClientManager clientManager() {
-        ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("lprzybylski", "entr0py0");
-        ISVNOptions options = SVNWCUtil.createDefaultOptions(true);       
-        SVNClientManager clientManager = SVNClientManager.newInstance(options, authManager);
-        
-        return clientManager;
     }
 
     protected void generateUpdateLog(final File changeLogFile, final Collection<File> changelogs) throws FileNotFoundException, IOException {
@@ -571,7 +487,8 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
 
                 if (propertyFileWillOverride) {
                     setFieldValue(field, props.get(key).toString());
-                } else {
+                } 
+                else {
                     if (!isCurrentFieldValueSpecified(field)) {
                         getLog().debug("  properties file setting value: " + field.getName());
                         setFieldValue(field, props.get(key).toString());
@@ -668,7 +585,8 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
     private void setFieldValue(Field field, String value) throws IllegalAccessException {
         if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
             field.set(this, Boolean.valueOf(value));
-        } else {
+        } 
+        else {
             field.set(this, value);
         }
     }
