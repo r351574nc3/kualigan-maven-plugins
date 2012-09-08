@@ -41,6 +41,7 @@ import org.liquibase.maven.plugins.AbstractLiquibaseUpdateMojo;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
+import liquibase.database.core.H2Database;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.logging.LogFactory;
@@ -52,6 +53,7 @@ import org.apache.maven.wagon.authentication.AuthenticationInfo;
 import liquibase.util.xml.DefaultXmlWriter;
 
 import org.kualigan.tools.liquibase.Diff;
+import org.kualigan.tools.liquibase.DiffResult;
 
 import org.tmatesoft.svn.core.ISVNDirEntryHandler;
 import org.tmatesoft.svn.core.SVNDirEntry;
@@ -125,6 +127,12 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
     @Parameter(property = "lb.copy.source", required = true)
     private String source;
 
+    /**
+     * The server id in settings.xml to use when authenticating the source server with.
+     */
+    @Parameter(property = "lb.copy.source.schema")
+    private String sourceSchema;
+
     private String sourceUser;
 
     private String sourcePass;
@@ -146,6 +154,12 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
      */
     @Parameter(property = "lb.copy.target", required = true)
     private String target;
+
+    /**
+     * The server id in settings.xml to use when authenticating the target server with.
+     */
+    @Parameter(property = "lb.copy.target.schema")
+    private String targetSchema;
 
     private String targetUser;
 
@@ -200,7 +214,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
      */
     @Parameter(property = "liquibase.changeLogSavePath", defaultValue = "${project.basedir}/target/changelogs")
     protected File changeLogSavePath;
-
+    
     /**
      * Whether or not to perform a drop on the database before executing the change.
      */
@@ -219,6 +233,20 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
 
     protected File getBasedir() {
         return project.getBasedir();
+    }
+    
+    protected String getChangeLogFile() throws MojoExecutionException {
+        if (changeLogFile != null) {
+            return changeLogFile;
+        }
+        
+        try {
+            changeLogFile = changeLogSavePath.getCanonicalPath() + targetUser;
+            return changeLogFile;
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Exception getting the location of the change log file: " + e.getMessage(), e);
+        }
     }
 
     protected void doFieldHack() {
@@ -341,7 +369,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             
         } 
         catch (Exception e) {
-            throw new MojoExectionException(e.getMessage(), e);
+            throw new MojoExecutionException(e.getMessage(), e);
         } 
         finally {
             try {
@@ -357,7 +385,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
 
         if (isStateSaved()) {
-            log("Starting data load from schema " + source.getSchema());
+            getLog().info("Starting data load from schema " + sourceSchema);
             /*
             MigrateData migrateTask = new MigrateData();
             migrateTask.bindToOwner(this);
@@ -757,7 +785,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             results.printChangeLog(getChangeLogFile() + suffix, target);
         }
         catch (Exception e) {
-            throw new MojoExectionException(e);
+            throw new MojoExecutionException("Exception while exporting to the target: " + e.getMessage(), e);
         }
     }
 
@@ -771,7 +799,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             exportConstraints(diff, target);
         }
         catch (Exception e) {
-            throw new MojoExectionException(e);
+            throw new MojoExecutionException("Exception while exporting the source schema: " + e.getMessage(), e);
         }
     }
 
