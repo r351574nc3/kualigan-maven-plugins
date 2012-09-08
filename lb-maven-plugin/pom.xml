@@ -18,6 +18,10 @@
       <url>http://www.opensource.org/licenses/ecl2.php</url>
     </license>
   </licenses>
+  
+    <properties>
+        <kualigan.plugin.prefix>lb</kualigan.plugin.prefix>
+    </properties>
 
   <dependencies>
     <dependency>

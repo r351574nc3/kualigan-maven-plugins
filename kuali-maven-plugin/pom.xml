@@ -19,7 +19,12 @@
       <url>http://www.opensource.org/licenses/ecl2.php</url>
     </license>
   </licenses>
-  
+
+    <properties>
+        <kualigan.plugin.prefix>kuali</kualigan.plugin.prefix>
+    </properties>
+
+
   <build>
     <resources>
       <resource>
