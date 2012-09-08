@@ -51,6 +51,8 @@ import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
 import liquibase.util.xml.DefaultXmlWriter;
 
+import org.kualigan.tools.liquibase.Diff;
+
 import org.tmatesoft.svn.core.ISVNDirEntryHandler;
 import org.tmatesoft.svn.core.SVNDirEntry;
 import org.tmatesoft.svn.core.SVNDepth;
@@ -203,6 +205,16 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
      */
     @Parameter(property = "liquibase.dropFirst", defaultValue = "false")
     protected boolean dropFirst;
+    
+    /**
+     * Property to flag whether to copy data as well as structure of the database schema
+     */
+    @Parameter(property = "lb.copy.data", defaultValue = "true")
+    protected boolean stateSaved;
+    
+    protected Boolean isStateSaved() {
+        return stateSaved;
+    }
 
     protected File getBasedir() {
         return project.getBasedir();
@@ -279,58 +291,8 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
         
         targetDriverClass = lookupDriverFor(targetUrl);
-
-        final Database lbSource = createSourceDatabase();
-        final Database lbTarget = createTargetDatabase();
-    /*
-        try {
-            
-            exportSchema(lbSource, lbTarget);
-            if (isStateSaved()) {
-                exportData(lbSource, lbTarget);
-            }
-            
-            if (lbTarget instanceof H2Database) {
-                final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
-                st.execute("SHUTDOWN DEFRAG");
-            }
-            
-        } catch (Exception e) {
-            throw new MojoExectionException(e);
-        } finally {
-            try {
-                if (lbSource != null) {
-                    lbSource.close();
-                }
-                if (lbTarget != null) {
-                    lbTarget.close();
-                }
-            }
-            catch (Exception e) {
-            }
-        }
-
-        if (isStateSaved()) {
-            log("Starting data load from schema " + source.getSchema());
-            MigrateData migrateTask = new MigrateData();
-            migrateTask.bindToOwner(this);
-            migrateTask.init();
-            migrateTask.setSource(getSource());
-            migrateTask.setTarget("h2");
-            migrateTask.execute();
-            try {
-                Backup.execute("work/export/data.zip", "work/export", "", true);
-                
-                // delete the old database files
-                DeleteDbFiles.execute("split:22:work/export", "data", true);
-            }
-            catch (Exception e) {
-                throw new MojoExectionException(e);
-            }
-        }
-            */
-
-        String shouldRunProperty = System.getProperty(Liquibase.SHOULD_RUN_SYSTEM_PROPERTY);
+        
+        final String shouldRunProperty = System.getProperty(Liquibase.SHOULD_RUN_SYSTEM_PROPERTY);
         if (shouldRunProperty != null && !Boolean.valueOf(shouldRunProperty)) {
             getLog().info("Liquibase did not run because '" + Liquibase.SHOULD_RUN_SYSTEM_PROPERTY
                     + "' system property was set to false");
@@ -360,6 +322,60 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
 
         // Check that all the parameters that must be specified have been by the user.
         //checkRequiredParametersAreSpecified();
+
+
+        final Database lbSource = createSourceDatabase();
+        final Database lbTarget = createTargetDatabase();
+
+        try {    
+            exportSchema(lbSource, lbTarget);
+            if (isStateSaved()) {
+                exportData(lbSource, lbTarget);
+            }
+            
+            if (lbTarget instanceof H2Database) {
+                final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
+                st.execute("SHUTDOWN DEFRAG");
+            }
+            
+        } 
+        catch (Exception e) {
+            throw new MojoExectionException(e.getMessage(), e);
+        } 
+        finally {
+            try {
+                if (lbSource != null) {
+                    lbSource.close();
+                }
+                if (lbTarget != null) {
+                    lbTarget.close();
+                }
+            }
+            catch (Exception e) {
+            }
+        }
+
+        if (isStateSaved()) {
+            log("Starting data load from schema " + source.getSchema());
+            /*
+            MigrateData migrateTask = new MigrateData();
+            migrateTask.bindToOwner(this);
+            migrateTask.init();
+            migrateTask.setSource(getSource());
+            migrateTask.setTarget("h2");
+            migrateTask.execute();
+            try {
+                Backup.execute("work/export/data.zip", "work/export", "", true);
+                
+                // delete the old database files
+                DeleteDbFiles.execute("split:22:work/export", "data", true);
+            }
+            catch (Exception e) {
+                throw new MojoExectionException(e);
+            }
+            */
+        }
+
 
             /*
         try {
@@ -660,8 +676,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             field.set(this, value);
         }
     }
-    
-        /*
+
     protected void exportConstraints(Diff diff, Database target) {
         export(diff, target, "foreignKeys", "-cst.xml");
     }
@@ -682,7 +697,8 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         export(diff, target, "sequences", "-seq.xml");
     }
 
-    private void exportData(Database source, Database target) {
+    protected void exportData(final Database source, final Database target) {
+/*
         Database h2db = null;
         RdbmsConfig h2Config = new RdbmsConfig();
         h2Config.setDriver("org.h2.Driver");
@@ -729,9 +745,10 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             }
 
         }
+*/
     }
-
-    protected void export(Diff diff, Database target, String diffTypes, String suffix) {
+    
+    protected void export(final Diff diff, final Database target, final String diffTypes, final String suffix) {
         diff.setDiffTypes(diffTypes);
 
         try {
@@ -743,7 +760,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
     }
 
-   protected void exportSchema(Database source, Database target) {
+    protected void exportSchema(final Database source, final Database target) {
         try {
             Diff diff = new Diff(source, source.getDefaultSchemaName());
             exportTables(diff, target);
@@ -756,7 +773,7 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             throw new MojoExectionException(e);
         }
     }
-    */    
+
     protected JdbcConnection openConnection(final String url, 
                                             final String username, 
                                             final String password, 
