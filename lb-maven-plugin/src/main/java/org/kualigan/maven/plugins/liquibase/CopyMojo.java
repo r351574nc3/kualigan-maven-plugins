@@ -41,7 +41,9 @@ import org.liquibase.maven.plugins.AbstractLiquibaseUpdateMojo;
 import liquibase.Liquibase;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
+import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
+import liquibase.logging.LogFactory;
 import liquibase.serializer.ChangeLogSerializer;
 import liquibase.parser.core.xml.LiquibaseEntityResolver;
 import liquibase.parser.core.xml.XMLChangeLogSAXParser;
@@ -78,6 +80,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -217,7 +221,8 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             }
         }
     }
-    
+
+
     /*
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -274,9 +279,57 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
         
         targetDriverClass = lookupDriverFor(targetUrl);
-        
 
+        final Database lbSource = createSourceDatabase();
+        final Database lbTarget = createTargetDatabase();
     /*
+        try {
+            
+            exportSchema(lbSource, lbTarget);
+            if (isStateSaved()) {
+                exportData(lbSource, lbTarget);
+            }
+            
+            if (lbTarget instanceof H2Database) {
+                final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
+                st.execute("SHUTDOWN DEFRAG");
+            }
+            
+        } catch (Exception e) {
+            throw new MojoExectionException(e);
+        } finally {
+            try {
+                if (lbSource != null) {
+                    lbSource.close();
+                }
+                if (lbTarget != null) {
+                    lbTarget.close();
+                }
+            }
+            catch (Exception e) {
+            }
+        }
+
+        if (isStateSaved()) {
+            log("Starting data load from schema " + source.getSchema());
+            MigrateData migrateTask = new MigrateData();
+            migrateTask.bindToOwner(this);
+            migrateTask.init();
+            migrateTask.setSource(getSource());
+            migrateTask.setTarget("h2");
+            migrateTask.execute();
+            try {
+                Backup.execute("work/export/data.zip", "work/export", "", true);
+                
+                // delete the old database files
+                DeleteDbFiles.execute("split:22:work/export", "data", true);
+            }
+            catch (Exception e) {
+                throw new MojoExectionException(e);
+            }
+        }
+            */
+
         String shouldRunProperty = System.getProperty(Liquibase.SHOULD_RUN_SYSTEM_PROPERTY);
         if (shouldRunProperty != null && !Boolean.valueOf(shouldRunProperty)) {
             getLog().info("Liquibase did not run because '" + Liquibase.SHOULD_RUN_SYSTEM_PROPERTY
@@ -289,9 +342,9 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             return;
         }
 
-        processSystemProperties();
+        // processSystemProperties();
 
-        ClassLoader artifactClassLoader = getMavenArtifactClassLoader();
+        final ClassLoader artifactClassLoader = getMavenArtifactClassLoader();
         configureFieldsAndValues(getFileOpener(artifactClassLoader));
 
         try {
@@ -303,24 +356,14 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
 
         // Displays the settings for the Mojo depending of verbosity mode.
-        displayMojoSettings();
+        // displayMojoSettings();
 
         // Check that all the parameters that must be specified have been by the user.
-        checkRequiredParametersAreSpecified();
+        //checkRequiredParametersAreSpecified();
 
-        Database database = null;
+            /*
         try {
-            String dbPassword = emptyPassword || password == null ? "" : password;
-            database = CommandLineUtils.createDatabaseObject(artifactClassLoader,
-                    url,
-                    username,
-                    dbPassword,
-                    driver,
-                    defaultCatalogName,
-                    defaultSchemaName,
-                    databaseClass,
-                    null);
-            liquibase = createLiquibase(getFileOpener(artifactClassLoader), database);
+            liquibase = createLiquibase(getFileOpener(artifactClassLoader), lbSource);
 
             getLog().debug("expressionVars = " + String.valueOf(expressionVars));
 
@@ -360,11 +403,37 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             cleanup(database);
             throw new MojoExecutionException("Error setting up or running Liquibase: " + e.getMessage(), e);
         }
+            */
 
-        cleanup(database);
-        */
+        cleanup(lbSource);
+        cleanup(lbTarget);
+        
         getLog().info(MavenUtils.LOG_SEPARATOR);
         getLog().info("");
+    }
+    
+    protected Database createSourceDatabase() throws MojoExecutionException {
+        try {
+            final DatabaseFactory factory = DatabaseFactory.getInstance();
+            final Database retval = factory.findCorrectDatabaseImplementation(openConnection(sourceUrl, sourceUser, sourcePass, sourceDriverClass, ""));
+            retval.setDefaultSchemaName("");
+            return retval;
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+    }
+    
+    protected Database createTargetDatabase() throws MojoExecutionException {
+        try {   
+            final DatabaseFactory factory = DatabaseFactory.getInstance();
+            final Database retval = factory.findCorrectDatabaseImplementation(openConnection(targetUrl, targetUser, targetPass, targetDriverClass, ""));
+            retval.setDefaultSchemaName("");
+            return retval;
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
     }
 
     protected String getLocalTagPath(final SVNURL tag) {
@@ -590,5 +659,128 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         else {
             field.set(this, value);
         }
+    }
+    
+        /*
+    protected void exportConstraints(Diff diff, Database target) {
+        export(diff, target, "foreignKeys", "-cst.xml");
+    }
+
+    protected void exportIndexes(Diff diff, Database target) {
+        export(diff, target, "indexes", "-idx.xml");
+    }
+
+    protected void exportViews(Diff diff, Database target) {
+    export(diff, target, "views", "-vw.xml");
+    }
+
+    protected void exportTables(Diff diff, Database target) {
+        export(diff, target, "tables, primaryKeys, uniqueConstraints", "-tab.xml");
+    }
+
+    protected void exportSequences(Diff diff, Database target) {
+        export(diff, target, "sequences", "-seq.xml");
+    }
+
+    private void exportData(Database source, Database target) {
+        Database h2db = null;
+        RdbmsConfig h2Config = new RdbmsConfig();
+        h2Config.setDriver("org.h2.Driver");
+        h2Config.setUrl("jdbc:h2:split:22:work/export/data");
+        h2Config.setUsername("SA");
+        h2Config.setPassword("");
+        h2Config.setSchema("PUBLIC");
+        getProject().addReference("h2", h2Config);
+
+        final DatabaseFactory factory = DatabaseFactory.getInstance();
+        try {
+            h2db = factory.findCorrectDatabaseImplementation(new JdbcConnection(openConnection("h2")));
+            h2db.setDefaultSchemaName(h2Config.getSchema());
+
+            export(new Diff(source, getDefaultSchemaName()), h2db, "tables", "-dat.xml");
+
+            ResourceAccessor antFO = new AntResourceAccessor(getProject(), classpath);
+            ResourceAccessor fsFO = new FileSystemResourceAccessor();
+
+            String changeLogFile = getChangeLogFile() + "-dat.xml";
+
+            Liquibase liquibase = new Liquibase(changeLogFile, new CompositeResourceAccessor(antFO, fsFO), h2db);
+
+            log("Loading Schema");
+            liquibase.update(getContexts());
+            log("Finished Loading the Schema");
+
+        }
+        catch (Exception e) {
+            throw new MojoExectionException(e);
+        }
+        finally {
+            try {
+                if (h2db != null) {
+                    // hsqldb.getConnection().createStatement().execute("SHUTDOWN");                                                   
+                    log("Closing h2 database");
+                    h2db.close();
+                }
+            }
+            catch (Exception e) {
+                if (!(e instanceof java.sql.SQLNonTransientConnectionException)) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+    protected void export(Diff diff, Database target, String diffTypes, String suffix) {
+        diff.setDiffTypes(diffTypes);
+
+        try {
+            DiffResult results = diff.compare();
+            results.printChangeLog(getChangeLogFile() + suffix, target);
+        }
+        catch (Exception e) {
+            throw new MojoExectionException(e);
+        }
+    }
+
+   protected void exportSchema(Database source, Database target) {
+        try {
+            Diff diff = new Diff(source, source.getDefaultSchemaName());
+            exportTables(diff, target);
+            exportSequences(diff, target);
+            exportViews(diff, target);
+            exportIndexes(diff, target);
+            exportConstraints(diff, target);
+        }
+        catch (Exception e) {
+            throw new MojoExectionException(e);
+        }
+    }
+    */    
+    protected JdbcConnection openConnection(final String url, 
+                                            final String username, 
+                                            final String password, 
+                                            final String className, 
+                                            final String schema) throws MojoExecutionException {
+        Connection retval = null;
+        int retry_count = 0;
+        final int max_retry = 5;
+        while (retry_count < max_retry) {
+            try {
+                getLog().debug("Loading schema " + schema + " at url " + url);
+                Class.forName(className);
+                retval = DriverManager.getConnection(url, username, password);
+                retval.setAutoCommit(true);
+            }
+            catch (Exception e) {
+                if (!e.getMessage().contains("Database lock acquisition failure") && !(e instanceof NullPointerException)) {
+                    throw new MojoExecutionException(e.getMessage(), e);
+                }
+            }
+            finally {
+                retry_count++;
+            }
+        }
+        return new JdbcConnection(retval);
     }
 }
