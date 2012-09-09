@@ -36,7 +36,7 @@ import org.apache.maven.artifact.manager.WagonManager;
 
 import org.liquibase.maven.plugins.MavenUtils;
 import org.liquibase.maven.plugins.AbstractLiquibaseMojo;
-import org.liquibase.maven.plugins.AbstractLiquibaseUpdateMojo;
+import org.liquibase.maven.plugins.AbstractLiquibaseChangeLogMojo;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -54,20 +54,6 @@ import liquibase.util.xml.DefaultXmlWriter;
 
 import org.kualigan.tools.liquibase.Diff;
 import org.kualigan.tools.liquibase.DiffResult;
-
-import org.tmatesoft.svn.core.ISVNDirEntryHandler;
-import org.tmatesoft.svn.core.SVNDirEntry;
-import org.tmatesoft.svn.core.SVNDepth;
-import org.tmatesoft.svn.core.SVNException;
-import org.tmatesoft.svn.core.SVNURL;
-import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
-import org.tmatesoft.svn.core.io.SVNRepository;
-import org.tmatesoft.svn.core.io.SVNRepositoryFactory;
-import org.tmatesoft.svn.core.wc.ISVNOptions;
-import org.tmatesoft.svn.core.wc.SVNWCUtil;
-import org.tmatesoft.svn.core.wc.SVNClientManager;
-import org.tmatesoft.svn.core.wc.SVNWCClient;
-import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
 
 import org.w3c.dom.*;
 
@@ -94,9 +80,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import static org.tmatesoft.svn.core.wc.SVNRevision.HEAD;
-import static org.tmatesoft.svn.core.wc.SVNRevision.WORKING;
-
 /**
  * Copies a database including DDL/DML from one location to another.
  *
@@ -106,13 +89,16 @@ import static org.tmatesoft.svn.core.wc.SVNRevision.WORKING;
      name="copy-database",
      requiresProject = false
      )
-public class CopyMojo extends AbstractLiquibaseUpdateMojo {
+public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
     public static final String DEFAULT_CHANGELOG_PATH = "src/main/changelogs";
 
     /**
      * Suffix for fields that are representing a default value for a another field.
      */
     private static final String DEFAULT_FIELD_SUFFIX = "Default";
+    
+    @Parameter(property = "project", defaultValue = "${project}")
+    protected MavenProject project;
 
     /**
      * 
@@ -241,7 +227,8 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
         
         try {
-            changeLogFile = changeLogSavePath.getCanonicalPath() + targetUser;
+            changeLogFile = changeLogSavePath.getCanonicalPath() + File.separator + targetUser;
+            new File(changeLogFile).mkdirs();
             return changeLogFile;
         }
         catch (Exception e) {
@@ -288,6 +275,15 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
     }
     */
     
+    public ClassLoader getMavenArtifactClassloader() throws MojoExecutionException {
+        try {
+            return MavenUtils.getArtifactClassloader(project, true, false, getClass(), getLog(), false);
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+    }
+    
     public String lookupDriverFor(final String url) {
         for (final Database databaseImpl : DatabaseFactory.getInstance().getImplementedDatabases()) {
             final String driver = databaseImpl.getDefaultDriver(url);
@@ -332,11 +328,12 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
             getLog().warn("Liquibase skipped due to maven configuration");
             return;
         }
+        
+        getLog().info("project " + project);
 
         // processSystemProperties();
-
-        final ClassLoader artifactClassLoader = getMavenArtifactClassLoader();
-        configureFieldsAndValues(getFileOpener(artifactClassLoader));
+        final ClassLoader artifactClassLoader = getMavenArtifactClassloader();
+        // configureFieldsAndValues(getFileOpener(artifactClassLoader));
 
         try {
             LogFactory.setLoggingLevel(logging);
@@ -481,11 +478,6 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         }
     }
 
-    protected String getLocalTagPath(final SVNURL tag) {
-        final String tagPath = tag.getPath();
-        return changeLogSavePath + File.separator + tagPath.substring(tagPath.lastIndexOf("/") + 1);
-    }
-
     protected void generateUpdateLog(final File changeLogFile, final Collection<File> changelogs) throws FileNotFoundException, IOException {
         changeLogFile.getParentFile().mkdirs();
 
@@ -519,21 +511,6 @@ public class CopyMojo extends AbstractLiquibaseUpdateMojo {
         final Element retval = parentChangeLog.createElementNS(XMLChangeLogSAXParser.getDatabaseChangeLogNameSpace(), "include");
         retval.setAttribute("file", changelog.getCanonicalPath());
         return retval;
-    }
-
-    @Override
-    protected void doUpdate(Liquibase liquibase) throws LiquibaseException {
-        if (dropFirst) {
-            dropAll(liquibase);
-        }
-
-        liquibase.tag("undo");
-
-        if (changesToApply > 0) {
-            liquibase.update(changesToApply, contexts);
-        } else {
-            liquibase.update(contexts);
-        }
     }
 
     /**

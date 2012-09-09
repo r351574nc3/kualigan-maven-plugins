@@ -386,6 +386,7 @@
     <module>kfs-maven-plugin</module>
     <module>kr-archetype</module>
     <module>kuali-maven-plugin</module>
+    <module>lb-copy-archetype</module>
   </modules>
   
   <scm>

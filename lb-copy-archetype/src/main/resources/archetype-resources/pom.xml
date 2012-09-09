@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2008-2009 Leo Przybylski
+
+Licensed under the Educational Community License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.opensource.org/licenses/ecl2.php
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>${groupId}</groupId>
+  <artifactId>${artifactId}</artifactId>
+  <packaging>pom</packaging>
+  <name>Database copy</name>
+  <version>${version}</version>
+
+  <properties>
+    <lb-maven-plugin.version>1.1.5</lb-maven-plugin.version>
+    <liquibase.version>2.0.5</liquibase.version>
+    <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
+    <ojdbc6.version>11.2.0.2.0</ojdbc6.version>
+  </properties>
+  
+  <build>
+    <plugins>
+      <plugin>
+	<groupId>org.kualigan.maven.plugins</groupId>
+	<artifactId>lb-maven-plugin</artifactId>
+	<version>${lb-maven-plugin.version}</version>
+	<configuration></configuration>
+	<dependencies>
+	  <dependency>
+	    <groupId>com.oracle</groupId>
+	    <artifactId>ojdbc6</artifactId>
+	    <version>${ojdbc6.version}</version>
+	  </dependency>
+	  <dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	    <version>${mysql-connector-java.version}</version>
+	  </dependency>
+	  <dependency>
+	    <groupId>org.liquibase</groupId>
+	    <artifactId>liquibase-maven-plugin</artifactId>
+	    <version>${liquibase.version}</version>
+	  </dependency>
+	  <dependency>
+	    <groupId>org.kualigan.liquibase</groupId>
+	    <artifactId>kualigan-lb-ant</artifactId>
+	    <version>1.0.1</version>
+	  </dependency>
+	</dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
