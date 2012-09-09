@@ -23,8 +23,8 @@ import liquibase.database.Database;
  *
  * @author Leo Przybylski (przybyls@arizona.edu)
  */
-public interface MigrateData {
-    String ROLE = OverlayHelper.class.getName();
+public interface MigrateHelper {
+    String ROLE = MigrateHelper.class.getName();
     
     void setSource(final Database source);
     
@@ -34,7 +34,7 @@ public interface MigrateData {
 
     Database getTarget();
     
-    void execute(final Database source, final Database target);
+    void migrate(final Database source, final Database target);
     
     /*
     void migrate(final Database source, 

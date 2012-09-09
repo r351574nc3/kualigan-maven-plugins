@@ -61,7 +61,7 @@ import static org.apache.tools.ant.Project.MSG_DEBUG;
  * @author Leo Przybylski (przybyls@arizona.edu)
  */
 @Component(role = org.kualigan.maven.plugins.liquibase.MigrateHelper.class, hint="default")
-public class DefaultMigrateHelper {
+public class DefaultMigrateHelper implements MigrateHelper {
     public static final String ROLE_HINT = "default";
     
     private static final String[] carr = new String[] {"|", "\\", "-", "/"};
@@ -126,7 +126,7 @@ public class DefaultMigrateHelper {
         final ThreadGroup tgroup = new ThreadGroup("Migration Threads");
 
         for (final String tableName : tableData.keySet()) {
-            debug("Migrating table " + tableName + " with " + tableData.get(tableName) + " records");
+        //     debug("Migrating table " + tableName + " with " + tableData.get(tableName) + " records");
             /*
             if (tgroup.activeCount() < MAX_THREADS) {
                 new Thread(tgroup, new Runnable() {
@@ -169,13 +169,13 @@ public class DefaultMigrateHelper {
 
     protected void migrate(final String tableName, 
                            final ProgressObservable observable) {
-        final JdbcConnection sourceDb = getSource().getConnection();
-        final JdbcConnection targetDb = getTarget().getConnection();
+        final JdbcConnection sourceDb = (JdbcConnection) getSource().getConnection();
+        final JdbcConnection targetDb = (JdbcConnection) getTarget().getConnection();
 
         final Map<String, Integer> columns = getColumnMap(tableName);
 
         if (columns.size() < 1) {
-            log("Columns are empty for " + tableName);
+            // log("Columns are empty for " + tableName);
             return;
         }
 
@@ -226,21 +226,21 @@ public class DefaultMigrateHelper {
                             catch (SQLException sqle) {
                                 retry = false;
                                 if (sqle.getMessage().contains("ORA-00942")) {
-                                    log("Couldn't find " + tableName);
-                                    log("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    // log("Couldn't find " + tableName);
+                                    // log("Tried insert statement " + getStatementBuffer(tableName, columns));
                                     // sqle.printStackTrace();
                                 }
                                 else if (sqle.getMessage().contains("ORA-12519")) {
                                     retry = true;
-                                    log("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    // log("Tried insert statement " + getStatementBuffer(tableName, columns));
                                     sqle.printStackTrace();
                                 }
                                 else if (sqle.getMessage().contains("IN or OUT")) {
-                                    log("Column count was " + columns.keySet().size());
+                                    // log("Column count was " + columns.keySet().size());
                                 }
                                 else if (sqle.getMessage().contains("Error reading")) {
                                     if (retry_count > 5) {
-                                        log("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                        // log("Tried insert statement " + getStatementBuffer(tableName, columns));
                                         retry = false;
                                     }
                                     retry_count++;
@@ -300,11 +300,11 @@ public class DefaultMigrateHelper {
                     targetDb.close();
                 }
                 catch (Exception e) {
-                    log("Error closing database connection");
+                    // log("Error closing database connection");
                     e.printStackTrace();
                 }
             }
-            debug("Lost " +recordsLost + " records");
+            // debug("Lost " +recordsLost + " records");
             columns.clear();
         }
     }
@@ -357,9 +357,9 @@ public class DefaultMigrateHelper {
     }
 
     protected boolean isSequence(final DatabaseMetaData metadata, final String tableName) {
-        final RdbmsConfig source = (RdbmsConfig) getProject().getReference(getSource());
+        final JdbcConnection source = (JdbcConnection) getSource().getConnection();
         try {
-            final ResultSet rs = metadata.getColumns(null, source.getSchema(), tableName, null);
+            final ResultSet rs = source.getMetaData().getColumns(null, getSource().getDefaultSchemaName(), tableName, null);
             int columnCount = 0;
             boolean hasId = false;
             try {
@@ -390,15 +390,15 @@ public class DefaultMigrateHelper {
      * Get a list of table names available mapped to row counts
      */
     protected Map<String, Integer> getTableData(final Incrementor incrementor) {
-        JdbcConnection sourceConn = getSource().getConnection();
-        JdbcConnection targetConn = openConnection(target);
+        JdbcConnection sourceConn = (JdbcConnection) getSource().getConnection();
+        JdbcConnection targetConn = (JdbcConnection) getTarget().getConnection();
         final Map<String, Integer> retval = new HashMap<String, Integer>();
         final Collection<String> toRemove = new ArrayList<String>();
 
-        debug("Looking up table names");
+        // debug("Looking up table names");
         try {
             final DatabaseMetaData metadata = sourceConn.getMetaData();
-            final ResultSet tableResults = metadata.getTables(sourceConn.getCatalog(), source.getSchema(), null, new String[] { "TABLE" });
+            final ResultSet tableResults = metadata.getTables(sourceConn.getCatalog(), getSource().getDefaultSchemaName(), null, new String[] { "TABLE" });
             while (tableResults.next()) {
                 final String tableName = tableResults.getString("TABLE_NAME");
                 if (!isValidTable(metadata, tableName)) {
@@ -410,7 +410,7 @@ public class DefaultMigrateHelper {
                     
                 }
                 incrementor.increment(rowCount);
-                debug("Adding table " + tableName);
+                // debug("Adding table " + tableName);
                 retval.put(tableName, rowCount);
             }
             tableResults.close();
@@ -431,9 +431,9 @@ public class DefaultMigrateHelper {
 
         try {
             for (String tableName : retval.keySet()) {
-                final ResultSet tableResults = targetConn.getMetaData().getTables(targetConn.getCatalog(), target.getSchema(), null, new String[] { "TABLE" });
+                final ResultSet tableResults = targetConn.getMetaData().getTables(targetConn.getCatalog(), getTarget().getDefaultSchemaName(), null, new String[] { "TABLE" });
                 if (!tableResults.next()) {
-                    log("Removing " + tableName);
+                    // log("Removing " + tableName);
                     toRemove.add(tableName);
                 }
                 tableResults.close();
@@ -461,8 +461,8 @@ public class DefaultMigrateHelper {
     }
 
     protected Map<String, Integer> getColumnMap(final String tableName) {
-        final JdbcConnection targetDb = target.getConnection();
-        final JdbcConnection sourceDb = source.getConnection();
+        final JdbcConnection targetDb = (JdbcConnection) target.getConnection();
+        final JdbcConnection sourceDb = (JdbcConnection) source.getConnection();
         final Map<String,Integer> retval = new HashMap<String,Integer>();
         final Collection<String> toRemove = new ArrayList<String>();
         try {
@@ -506,7 +506,7 @@ public class DefaultMigrateHelper {
         return retval;
     }
 
-    protected int getTableRecordCount(final Connection conn, final String tableName) {
+    protected int getTableRecordCount(final JdbcConnection conn, final String tableName) {
         final String query = String.format(RECORD_COUNT_QUERY, tableName);
         Statement statement = null;
         try {
@@ -519,10 +519,10 @@ public class DefaultMigrateHelper {
         }
         catch (Exception e) {
             if (e.getMessage().contains("ORA-00942")) {
-                log("Couldn't find " + tableName);
-                log("Tried insert statement " + query);
+                // log("Couldn't find " + tableName);
+                // log("Tried insert statement " + query);
             }
-            log("Exception executing " + query);
+            // log("Exception executing " + query);
             throw new BuildException(e);
         }
         finally {
@@ -539,7 +539,7 @@ public class DefaultMigrateHelper {
 
     /*
     private void debug(String msg) {
-        log(msg, MSG_DEBUG);
+        // log(msg, MSG_DEBUG);
     }
 
     private Connection openConnection(String reference) {
@@ -658,10 +658,7 @@ public class DefaultMigrateHelper {
             }
             int roll = (int) (count / (total / 1000));
 
-            if (getProject().getProperty("run_from_ant") == null) {
-                out.print(String.format(template, progressBuffer, carr[roll % carr.length], percent, (int) count, (int) total));
-            }
-            else if ((count % 5000) == 0 || count == total) {
+            if ((count % 5000) == 0 || count == total) {
                 out.println(String.format("(%s)%% %s of %s records", (int) ((count / total) * 100), (int) count, (int) total));
             }
         }

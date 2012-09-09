@@ -23,7 +23,7 @@
 // The views and conclusions contained in the software and documentation are those of the
 // authors and should not be interpreted as representing official policies, either expressed
 // or implied, of Leo Przybylski.
-package com.rsmart.kuali.mojo;
+package org.kualigan.maven.plugins.liquibase;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
