@@ -107,14 +107,14 @@ public class DefaultMigrateHelper implements MigrateHelper {
         this.log = log;
     }
     
-    public void migrate(final Database source, final Database target, final Log log) {
+    public void migrate(final Database source, final Database target, final Log log) throws MojoExecutionException {
         setTarget(target);
         setSource(source);
         setLog(log);
         migrate();
     }
     
-    public void migrate() {
+    public void migrate() throws MojoExecutionException {
         getLog().info("Migrating data from " + source.getConnection().getURL() + " to " + target.getConnection().getURL());
 
         final Incrementor recordCountIncrementor = new Incrementor();
@@ -174,7 +174,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
     }
 
     protected void migrate(final String tableName, 
-                           final ProgressObservable observable) {
+                           final ProgressObservable observable) throws MojoExecutionException {
         final JdbcConnection sourceDb = (JdbcConnection) getSource().getConnection();
         final JdbcConnection targetDb = (JdbcConnection) getTarget().getConnection();
 
@@ -638,6 +638,8 @@ public class DefaultMigrateHelper implements MigrateHelper {
             this.length   = length;
             this.count    = 0;
             
+            out = System.out;
+            /*
             try {
                 final Field field = Main.class.getDeclaredField("out");
                 field.setAccessible(true);
@@ -646,6 +648,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
             catch (Exception e) {
                 e.printStackTrace();
             }
+            */
         }
 
         public synchronized void update(Observable o, Object arg) {
