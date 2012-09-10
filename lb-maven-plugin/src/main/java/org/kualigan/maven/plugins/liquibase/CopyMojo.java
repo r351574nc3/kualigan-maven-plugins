@@ -49,6 +49,10 @@ import liquibase.logging.LogFactory;
 import liquibase.serializer.ChangeLogSerializer;
 import liquibase.parser.core.xml.LiquibaseEntityResolver;
 import liquibase.parser.core.xml.XMLChangeLogSAXParser;
+import liquibase.resource.CompositeResourceAccessor;
+import liquibase.resource.FileSystemResourceAccessor;
+import liquibase.resource.ResourceAccessor;
+
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
 import liquibase.util.xml.DefaultXmlWriter;
@@ -235,8 +239,9 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         }
         
         try {
-            changeLogFile = changeLogSavePath.getCanonicalPath() + File.separator + targetUser;
+            changeLogFile = changeLogSavePath.getCanonicalPath();
             new File(changeLogFile).mkdirs();
+            changeLogFile += File.separator + targetUser;
             return changeLogFile;
         }
         catch (Exception e) {
@@ -366,18 +371,21 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         //checkRequiredParametersAreSpecified();
 
 
-        final Database lbSource = createSourceDatabase();
-        final Database lbTarget = createTargetDatabase();
+        final Database lbSource  = createSourceDatabase();
+        final Database lbTarget  = createTargetDatabase();
 
         try {    
             exportSchema(lbSource, lbTarget);
+            updateSchema(lbTarget);
             
             if (isStateSaved()) {
                 getLog().info("Starting data load from schema " + sourceSchema);
                 migrator.migrate(lbSource, lbTarget, getLog());
                 // exportData(lbSource, lbTarget);
             }
-            
+
+            updateConstraints(lbTarget, artifactClassLoader);
+
             if (lbTarget instanceof H2Database) {
                 final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
                 st.execute("SHUTDOWN DEFRAG");
@@ -425,7 +433,6 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
 
             /*
         try {
-            liquibase = createLiquibase(getFileOpener(artifactClassLoader), lbSource);
 
             getLog().debug("expressionVars = " + String.valueOf(expressionVars));
 
@@ -474,8 +481,65 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         getLog().info("");
     }
     
-    
-    
+    protected void updateSchema(final Database target) throws MojoExecutionException {
+        final ClassLoader artifactClassLoader = getMavenArtifactClassloader();
+        updateTables   (target, artifactClassLoader);
+        updateSequences(target, artifactClassLoader);
+        updateViews    (target, artifactClassLoader);
+        updateIndexes  (target, artifactClassLoader);
+    }
+
+    protected void updateTables(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
+        try {
+            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-tab.xml", getFileOpener(artifactClassLoader), target);
+            liquibase.update(null);
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+
+    }
+
+    protected void updateSequences(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
+        try {
+            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-seq.xml", getFileOpener(artifactClassLoader), target);
+            liquibase.update(null);
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+    }
+
+    protected void updateViews(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
+        try {
+            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-vw.xml", getFileOpener(artifactClassLoader), target);
+            liquibase.update(null);
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+    }
+
+    protected void updateIndexes(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
+        try {
+            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-idx.xml", getFileOpener(artifactClassLoader), target);
+            liquibase.update(null);
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+    }
+
+    protected void updateConstraints(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
+        try {
+            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-cst.xml", getFileOpener(artifactClassLoader), target);
+            liquibase.update(null);
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
+    }
+
     protected Database createSourceDatabase() throws MojoExecutionException {
         try {
             final DatabaseFactory factory = DatabaseFactory.getInstance();
@@ -786,5 +850,12 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
             }
         }
         return new JdbcConnection(retval);
+    }
+    
+    @Override
+    protected ResourceAccessor getFileOpener(ClassLoader cl) {
+        ResourceAccessor mFO = new MavenResourceAccessor(cl);
+        ResourceAccessor fsFO = new FileSystemResourceAccessor(project.getBasedir().getAbsolutePath());
+        return new CompositeResourceAccessor(mFO, fsFO);
     }
 }
