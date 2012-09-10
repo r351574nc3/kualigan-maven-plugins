@@ -115,12 +115,12 @@ public class DefaultMigrateHelper implements MigrateHelper {
     }
     
     public void migrate() {
-        getLog.info("Migrating data from " + source.getUrl() + " to " + target.getUrl());
+        getLog().info("Migrating data from " + source.getConnection()+getUrl() + " to " + target.getConnection().getUrl());
 
         final Incrementor recordCountIncrementor = new Incrementor();
         final Map<String, Integer> tableData = getTableData(recordCountIncrementor);
 
-        getLog.info("Copying " + tableData.size() + " tables");
+        getLog().info("Copying " + tableData.size() + " tables");
 
         float recordVisitor = 0;
         final ProgressObserver progressObserver = new ProgressObserver(recordCountIncrementor.getValue(),

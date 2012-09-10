@@ -17,6 +17,7 @@
 package org.kualigan.maven.plugins.liquibase;
 
 import liquibase.database.Database;
+import org.apache.maven.plugin.logging.Log;
 
 /**
  * Interface for exposing methods to handle migration
@@ -34,7 +35,7 @@ public interface MigrateHelper {
 
     Database getTarget();
     
-    void migrate(final Database source, final Database target);
+    void migrate(final Database source, final Database target, final Log);
     
     /*
     void migrate(final Database source, 
