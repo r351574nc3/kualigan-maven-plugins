@@ -35,7 +35,7 @@ public interface MigrateHelper {
 
     Database getTarget();
     
-    void migrate(final Database source, final Database target, final Log);
+    void migrate(final Database source, final Database target, final Log log);
     
     /*
     void migrate(final Database source, 
