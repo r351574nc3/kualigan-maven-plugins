@@ -38,6 +38,7 @@ import org.apache.maven.artifact.manager.WagonManager;
 import org.liquibase.maven.plugins.MavenUtils;
 import org.liquibase.maven.plugins.AbstractLiquibaseMojo;
 import org.liquibase.maven.plugins.AbstractLiquibaseChangeLogMojo;
+import org.liquibase.maven.plugins.MavenResourceAccessor;
 
 import liquibase.Liquibase;
 import liquibase.database.Database;
@@ -853,9 +854,9 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
     }
     
     @Override
-    protected ResourceAccessor getFileOpener(ClassLoader cl) {
-        ResourceAccessor mFO = new MavenResourceAccessor(cl);
-        ResourceAccessor fsFO = new FileSystemResourceAccessor(project.getBasedir().getAbsolutePath());
+    protected ResourceAccessor getFileOpener(final ClassLoader cl) {
+        final ResourceAccessor mFO = new MavenResourceAccessor(cl);
+        final ResourceAccessor fsFO = new FileSystemResourceAccessor(project.getBasedir().getAbsolutePath());
         return new CompositeResourceAccessor(mFO, fsFO);
     }
 }
