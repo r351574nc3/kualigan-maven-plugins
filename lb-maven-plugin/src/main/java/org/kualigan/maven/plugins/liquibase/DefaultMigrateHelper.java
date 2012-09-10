@@ -115,7 +115,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
     }
     
     public void migrate() {
-        getLog().info("Migrating data from " + source.getConnection()+getUrl() + " to " + target.getConnection().getUrl());
+        getLog().info("Migrating data from " + source.getConnection().getURL() + " to " + target.getConnection().getURL());
 
         final Incrementor recordCountIncrementor = new Incrementor();
         final Map<String, Integer> tableData = getTableData(recordCountIncrementor);
