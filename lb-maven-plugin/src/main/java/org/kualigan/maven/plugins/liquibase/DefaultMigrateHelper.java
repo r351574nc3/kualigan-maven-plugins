@@ -43,11 +43,8 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.DirectoryScanner;
-import org.apache.tools.ant.Main;
-import org.apache.tools.ant.Task;
-import org.apache.tools.ant.types.FileSet;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.logging.Log;
 
 import org.codehaus.plexus.component.annotations.Component;
 import org.codehaus.plexus.component.annotations.Requirement;
@@ -77,7 +74,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
     private static final String HSQLDB_PUBLIC      = "PUBLIC";
     private static final int    MAX_THREADS        = 3;
 
-    
+    private Log log;
     private Database source;
     private Database target;
     private int threadCount;
@@ -102,19 +99,28 @@ public class DefaultMigrateHelper implements MigrateHelper {
         return this.target;
     }
     
-    public void migrate(final Database source, final Database target) {
+    public Log getLog() {
+        return log;
+    }
+    
+    public void setLog(final Log log) {
+        this.log = log;
+    }
+    
+    public void migrate(final Database source, final Database target, final Log log) {
         setTarget(target);
         setSource(source);
+        setLog(log);
         migrate();
     }
     
     public void migrate() {
-        // log("Migrating data from " + source.getUrl() + " to " + target.getUrl());
+        getLog.info("Migrating data from " + source.getUrl() + " to " + target.getUrl());
 
         final Incrementor recordCountIncrementor = new Incrementor();
         final Map<String, Integer> tableData = getTableData(recordCountIncrementor);
 
-        // log("Copying " + tableData.size() + " tables");
+        getLog.info("Copying " + tableData.size() + " tables");
 
         float recordVisitor = 0;
         final ProgressObserver progressObserver = new ProgressObserver(recordCountIncrementor.getValue(),
@@ -162,7 +168,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
             targetDb.close();
         }
         catch (Exception e) {
-            throw new BuildException(e);
+            throw new MojoExecutionException(e.getMessage(), e);
         }
         */
     }
@@ -175,7 +181,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
         final Map<String, Integer> columns = getColumnMap(tableName);
 
         if (columns.size() < 1) {
-            // log("Columns are empty for " + tableName);
+            getLog.info("Columns are empty for " + tableName);
             return;
         }
 
@@ -226,21 +232,21 @@ public class DefaultMigrateHelper implements MigrateHelper {
                             catch (SQLException sqle) {
                                 retry = false;
                                 if (sqle.getMessage().contains("ORA-00942")) {
-                                    // log("Couldn't find " + tableName);
-                                    // log("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    getLog.info("Couldn't find " + tableName);
+                                    getLog.info("Tried insert statement " + getStatementBuffer(tableName, columns));
                                     // sqle.printStackTrace();
                                 }
                                 else if (sqle.getMessage().contains("ORA-12519")) {
                                     retry = true;
-                                    // log("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    getLog.info("Tried insert statement " + getStatementBuffer(tableName, columns));
                                     sqle.printStackTrace();
                                 }
                                 else if (sqle.getMessage().contains("IN or OUT")) {
-                                    // log("Column count was " + columns.keySet().size());
+                                    getLog.info("Column count was " + columns.keySet().size());
                                 }
                                 else if (sqle.getMessage().contains("Error reading")) {
                                     if (retry_count > 5) {
-                                        // log("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                        getLog.info("Tried insert statement " + getStatementBuffer(tableName, columns));
                                         retry = false;
                                     }
                                     retry_count++;
@@ -271,7 +277,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
             }
         }
         catch (Exception e) {
-            throw new BuildException(e);
+            throw new MojoExecutionException(e.getMessage(), e);
         }
         finally {
             if (sourceDb != null) {
@@ -300,7 +306,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                     targetDb.close();
                 }
                 catch (Exception e) {
-                    // log("Error closing database connection");
+                    getLog.info("Error closing database connection");
                     e.printStackTrace();
                 }
             }
@@ -330,7 +336,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
             return conn.prepareStatement(statement);
         }
         catch (Exception e) {
-            throw new BuildException(e);
+            throw new MojoExecutionException(e.getMessage(), e);
         }
     }
 
@@ -416,7 +422,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
             tableResults.close();
         }
         catch (Exception e) {
-            throw new BuildException(e);
+            throw new MojoExecutionException(e.getMessage(), e);
         }
         finally {
             if (sourceConn != null) {
@@ -433,14 +439,14 @@ public class DefaultMigrateHelper implements MigrateHelper {
             for (String tableName : retval.keySet()) {
                 final ResultSet tableResults = targetConn.getMetaData().getTables(targetConn.getCatalog(), getTarget().getDefaultSchemaName(), null, new String[] { "TABLE" });
                 if (!tableResults.next()) {
-                    // log("Removing " + tableName);
+                    getLog.info("Removing " + tableName);
                     toRemove.add(tableName);
                 }
                 tableResults.close();
             }
         }
         catch (Exception e) {
-            throw new BuildException(e);
+            throw new MojoExecutionException(e.getMessage(), e);
         }
         finally {
             if (targetConn != null) {
@@ -478,7 +484,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
             state.close();
         }
         catch (Exception e) {
-            throw new BuildException(e);
+            throw new MojoExecutionException(e.getMessage(), e);
         }
 
         for (final String column : retval.keySet()) {
@@ -495,7 +501,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                 state.close();
             }
             catch (Exception e) {
-                throw new BuildException(e);
+                throw new MojoExecutionException(e.getMessage(), e);
             }
         }
 
@@ -519,11 +525,11 @@ public class DefaultMigrateHelper implements MigrateHelper {
         }
         catch (Exception e) {
             if (e.getMessage().contains("ORA-00942")) {
-                // log("Couldn't find " + tableName);
-                // log("Tried insert statement " + query);
+                getLog.info("Couldn't find " + tableName);
+                getLog.info("Tried insert statement " + query);
             }
-            // log("Exception executing " + query);
-            throw new BuildException(e);
+            getLog.info("Exception executing " + query);
+            throw new MojoExecutionException(e.getMessage(), e);
         }
         finally {
             try {
@@ -539,7 +545,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
 
     /*
     private void debug(String msg) {
-        // log(msg, MSG_DEBUG);
+        getLog.info(msg, MSG_DEBUG);
     }
 
     private Connection openConnection(String reference) {
@@ -569,7 +575,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                 
             }
             catch (Exception e) {
-                // throw new BuildException(e);
+                // throw new MojoExecutionException(e.getMessage(), e);
             }
         }
         
