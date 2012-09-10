@@ -108,6 +108,13 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
     protected WagonManager wagonManager;
 
     /**
+     * 
+     * The Maven Wagon manager to use when obtaining server authentication details.
+     */
+    @Component(role=org.kualigan.maven.plugins.liquibase.MigrateHelper.class)
+    protected MigrateHelper migrator;
+
+    /**
      * The server id in settings.xml to use when authenticating the source server with.
      */
     @Parameter(property = "lb.copy.source", required = true)
@@ -306,6 +313,10 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         }
 
         sourceDriverClass = lookupDriverFor(sourceUrl);
+        
+        if (sourceSchema == null) {
+            sourceSchema = sourceUser;
+        }
 
         if (target != null) {
             AuthenticationInfo info = wagonManager.getAuthenticationInfo(target);
@@ -313,6 +324,10 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
                 targetUser = info.getUserName();
                 targetPass = info.getPassword();
             }
+        }
+        
+        if (targetSchema == null) {
+            targetSchema = targetUser;
         }
         
         targetDriverClass = lookupDriverFor(targetUrl);
@@ -355,8 +370,11 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
 
         try {    
             exportSchema(lbSource, lbTarget);
+            
             if (isStateSaved()) {
-                exportData(lbSource, lbTarget);
+                getLog().info("Starting data load from schema " + sourceSchema);
+                migrator.migrate(lbSource, lbTarget);
+                // exportData(lbSource, lbTarget);
             }
             
             if (lbTarget instanceof H2Database) {
@@ -381,9 +399,10 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
             }
         }
 
+            /*
         if (isStateSaved()) {
             getLog().info("Starting data load from schema " + sourceSchema);
-            /*
+            migrater.migrate(lbSource, lbTarget);
             MigrateData migrateTask = new MigrateData();
             migrateTask.bindToOwner(this);
             migrateTask.init();
@@ -399,8 +418,8 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
             catch (Exception e) {
                 throw new MojoExectionException(e);
             }
-            */
         }
+            */
 
 
             /*
@@ -454,11 +473,13 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         getLog().info("");
     }
     
+    
+    
     protected Database createSourceDatabase() throws MojoExecutionException {
         try {
             final DatabaseFactory factory = DatabaseFactory.getInstance();
             final Database retval = factory.findCorrectDatabaseImplementation(openConnection(sourceUrl, sourceUser, sourcePass, sourceDriverClass, ""));
-            retval.setDefaultSchemaName("");
+            retval.setDefaultSchemaName(sourceSchema);
             return retval;
         }
         catch (Exception e) {
@@ -470,47 +491,12 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         try {   
             final DatabaseFactory factory = DatabaseFactory.getInstance();
             final Database retval = factory.findCorrectDatabaseImplementation(openConnection(targetUrl, targetUser, targetPass, targetDriverClass, ""));
-            retval.setDefaultSchemaName("");
+            retval.setDefaultSchemaName(targetSchema);
             return retval;
         }
         catch (Exception e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
-    }
-
-    protected void generateUpdateLog(final File changeLogFile, final Collection<File> changelogs) throws FileNotFoundException, IOException {
-        changeLogFile.getParentFile().mkdirs();
-
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    	DocumentBuilder documentBuilder;
-		try {
-			documentBuilder = factory.newDocumentBuilder();
-		}
-		catch(ParserConfigurationException e) {
-			throw new RuntimeException(e);
-		}
-		documentBuilder.setEntityResolver(new LiquibaseEntityResolver());
-
-		Document doc = documentBuilder.newDocument();
-		Element changeLogElement = doc.createElementNS(XMLChangeLogSAXParser.getDatabaseChangeLogNameSpace(), "databaseChangeLog");
-
-		changeLogElement.setAttribute("xmlns", XMLChangeLogSAXParser.getDatabaseChangeLogNameSpace());
-		changeLogElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		changeLogElement.setAttribute("xsi:schemaLocation", "http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-"+ XMLChangeLogSAXParser.getSchemaVersion()+ ".xsd");
-
-		doc.appendChild(changeLogElement);
-
-        for (final File changelog : changelogs) {
-            doc.getDocumentElement().appendChild(includeNode(doc, changelog));
-        }
-
-        new DefaultXmlWriter().write(doc, new FileOutputStream(changeLogFile));
-    }
-
-    protected Element includeNode(final Document parentChangeLog, final File changelog) throws IOException {
-        final Element retval = parentChangeLog.createElementNS(XMLChangeLogSAXParser.getDatabaseChangeLogNameSpace(), "include");
-        retval.setAttribute("file", changelog.getCanonicalPath());
-        return retval;
     }
 
     /**
@@ -683,36 +669,8 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         }
     }
 
-    protected void exportConstraints(Diff diff, Database target) throws MojoExecutionException {
-        export(diff, target, "foreignKeys", "-cst.xml");
-    }
-
-    protected void exportIndexes(Diff diff, Database target) throws MojoExecutionException {
-        export(diff, target, "indexes", "-idx.xml");
-    }
-
-    protected void exportViews(Diff diff, Database target) throws MojoExecutionException {
-    export(diff, target, "views", "-vw.xml");
-    }
-
-    protected void exportTables(Diff diff, Database target) throws MojoExecutionException  {
-        export(diff, target, "tables, primaryKeys, uniqueConstraints", "-tab.xml");
-    }
-
-    protected void exportSequences(Diff diff, Database target) throws MojoExecutionException {
-        export(diff, target, "sequences", "-seq.xml");
-    }
-
-    protected void exportData(final Database source, final Database target) {
 /*
-        Database h2db = null;
-        RdbmsConfig h2Config = new RdbmsConfig();
-        h2Config.setDriver("org.h2.Driver");
-        h2Config.setUrl("jdbc:h2:split:22:work/export/data");
-        h2Config.setUsername("SA");
-        h2Config.setPassword("");
-        h2Config.setSchema("PUBLIC");
-        getProject().addReference("h2", h2Config);
+    protected void exportData(final Database source, final Database target) {
 
         final DatabaseFactory factory = DatabaseFactory.getInstance();
         try {
@@ -734,7 +692,9 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
 
         }
         catch (Exception e) {
-            throw new MojoExectionException(e);
+        }
+        catch (Exception e) {
+            throw new BuildException(e);
         }
         finally {
             try {
@@ -751,7 +711,27 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
             }
 
         }
-*/
+    }            
+    */
+    
+    protected void exportConstraints(Diff diff, Database target) throws MojoExecutionException {
+        export(diff, target, "foreignKeys", "-cst.xml");
+    }
+
+    protected void exportIndexes(Diff diff, Database target) throws MojoExecutionException {
+        export(diff, target, "indexes", "-idx.xml");
+    }
+
+    protected void exportViews(Diff diff, Database target) throws MojoExecutionException {
+    export(diff, target, "views", "-vw.xml");
+    }
+
+    protected void exportTables(Diff diff, Database target) throws MojoExecutionException  {
+        export(diff, target, "tables, primaryKeys, uniqueConstraints", "-tab.xml");
+    }
+
+    protected void exportSequences(Diff diff, Database target) throws MojoExecutionException {
+        export(diff, target, "sequences", "-seq.xml");
     }
     
     protected void export(final Diff diff, final Database target, final String diffTypes, final String suffix) throws MojoExecutionException {
