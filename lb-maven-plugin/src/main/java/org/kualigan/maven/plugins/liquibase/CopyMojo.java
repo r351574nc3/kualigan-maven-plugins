@@ -377,6 +377,7 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
 
         try {    
             exportSchema(lbSource, lbTarget);
+            /*
             updateSchema(lbTarget);
             
             if (isStateSaved()) {
@@ -386,7 +387,7 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
             }
 
             updateConstraints(lbTarget, artifactClassLoader);
-
+*/
             if (lbTarget instanceof H2Database) {
                 final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
                 st.execute("SHUTDOWN DEFRAG");
