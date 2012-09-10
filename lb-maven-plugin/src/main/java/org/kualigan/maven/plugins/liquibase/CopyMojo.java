@@ -374,7 +374,7 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
             
             if (isStateSaved()) {
                 getLog().info("Starting data load from schema " + sourceSchema);
-                migrator.migrate(lbSource, lbTarget);
+                migrator.migrate(lbSource, lbTarget, getLog());
                 // exportData(lbSource, lbTarget);
             }
             

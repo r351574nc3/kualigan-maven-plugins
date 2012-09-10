@@ -329,7 +329,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
 
     protected PreparedStatement prepareStatement(final JdbcConnection conn, 
                                                  final String tableName, 
-                                                 final Map<String, Integer> columns) {
+                                                 final Map<String, Integer> columns) throws MojoExecutionException {
         final String statement = getStatementBuffer(tableName, columns);
         
         try {
@@ -395,7 +395,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
     /**
      * Get a list of table names available mapped to row counts
      */
-    protected Map<String, Integer> getTableData(final Incrementor incrementor) {
+    protected Map<String, Integer> getTableData(final Incrementor incrementor) throws MojoExecutionException {
         JdbcConnection sourceConn = (JdbcConnection) getSource().getConnection();
         JdbcConnection targetConn = (JdbcConnection) getTarget().getConnection();
         final Map<String, Integer> retval = new HashMap<String, Integer>();
@@ -466,7 +466,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
         return retval;
     }
 
-    protected Map<String, Integer> getColumnMap(final String tableName) {
+    protected Map<String, Integer> getColumnMap(final String tableName) throws MojoExecutionException {
         final JdbcConnection targetDb = (JdbcConnection) target.getConnection();
         final JdbcConnection sourceDb = (JdbcConnection) source.getConnection();
         final Map<String,Integer> retval = new HashMap<String,Integer>();
@@ -512,7 +512,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
         return retval;
     }
 
-    protected int getTableRecordCount(final JdbcConnection conn, final String tableName) {
+    protected int getTableRecordCount(final JdbcConnection conn, final String tableName) throws MojoExecutionException {
         final String query = String.format(RECORD_COUNT_QUERY, tableName);
         Statement statement = null;
         try {

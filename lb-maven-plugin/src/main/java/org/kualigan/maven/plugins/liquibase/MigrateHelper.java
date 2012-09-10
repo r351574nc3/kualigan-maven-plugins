@@ -37,7 +37,7 @@ public interface MigrateHelper {
 
     Database getTarget();
     
-    void migrate(final Database source, final Database target, final Log log);
+    void migrate(final Database source, final Database target, final Log log) throws MojoExecutionException;
     
     /*
     void migrate(final Database source, 
