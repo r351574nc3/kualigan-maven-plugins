@@ -181,7 +181,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
         final Map<String, Integer> columns = getColumnMap(tableName);
 
         if (columns.size() < 1) {
-            getLog.info("Columns are empty for " + tableName);
+            getLog().info("Columns are empty for " + tableName);
             return;
         }
 
@@ -232,21 +232,21 @@ public class DefaultMigrateHelper implements MigrateHelper {
                             catch (SQLException sqle) {
                                 retry = false;
                                 if (sqle.getMessage().contains("ORA-00942")) {
-                                    getLog.info("Couldn't find " + tableName);
-                                    getLog.info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    getLog().info("Couldn't find " + tableName);
+                                    getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
                                     // sqle.printStackTrace();
                                 }
                                 else if (sqle.getMessage().contains("ORA-12519")) {
                                     retry = true;
-                                    getLog.info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
                                     sqle.printStackTrace();
                                 }
                                 else if (sqle.getMessage().contains("IN or OUT")) {
-                                    getLog.info("Column count was " + columns.keySet().size());
+                                    getLog().info("Column count was " + columns.keySet().size());
                                 }
                                 else if (sqle.getMessage().contains("Error reading")) {
                                     if (retry_count > 5) {
-                                        getLog.info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
                                         retry = false;
                                     }
                                     retry_count++;
@@ -306,7 +306,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                     targetDb.close();
                 }
                 catch (Exception e) {
-                    getLog.info("Error closing database connection");
+                    getLog().info("Error closing database connection");
                     e.printStackTrace();
                 }
             }
@@ -439,7 +439,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
             for (String tableName : retval.keySet()) {
                 final ResultSet tableResults = targetConn.getMetaData().getTables(targetConn.getCatalog(), getTarget().getDefaultSchemaName(), null, new String[] { "TABLE" });
                 if (!tableResults.next()) {
-                    getLog.info("Removing " + tableName);
+                    getLog().info("Removing " + tableName);
                     toRemove.add(tableName);
                 }
                 tableResults.close();
@@ -525,10 +525,10 @@ public class DefaultMigrateHelper implements MigrateHelper {
         }
         catch (Exception e) {
             if (e.getMessage().contains("ORA-00942")) {
-                getLog.info("Couldn't find " + tableName);
-                getLog.info("Tried insert statement " + query);
+                getLog().info("Couldn't find " + tableName);
+                getLog().info("Tried insert statement " + query);
             }
-            getLog.info("Exception executing " + query);
+            getLog().info("Exception executing " + query);
             throw new MojoExecutionException(e.getMessage(), e);
         }
         finally {
