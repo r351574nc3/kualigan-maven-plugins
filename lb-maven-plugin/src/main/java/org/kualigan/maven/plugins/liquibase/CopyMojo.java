@@ -391,7 +391,7 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
             generateArchetype(getMavenHome(), new Properties() {{
                         setProperty("archetypeGroupId",      "org.kualigan.maven.archetypes");
                         setProperty("archetypeArtifactId",   "lb-copy-archetype");
-                        setProperty("archetypeVersion",      "1.1.6");
+                        setProperty("archetypeVersion",      "1.1.7-SNAPSHOT");
                         setProperty("groupId",               "org.kualigan.liquibase");
                         setProperty("artifactId",            "copy");
                         setProperty("version",               "1.0.0-SNAPSHOT");
