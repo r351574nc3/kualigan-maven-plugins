@@ -400,12 +400,16 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
             invokeCopy(new File(System.getProperty("user.dir") + File.separator + "copy"), new Properties() {{
                         setProperty("lb.copy.source",        source);
                         setProperty("lb.copy.source.url",    sourceUrl);
-                        setProperty("lb.copy.source.driver", sourceDriverClass);
-                        setProperty("lb.copy.source.scheme", sourceSchema);
+                        if (sourceDriverClass != null) {
+                            setProperty("lb.copy.source.driver", sourceDriverClass);
+                        }
+                        setProperty("lb.copy.source.schema", sourceSchema);
                         setProperty("lb.copy.target",        target);
                         setProperty("lb.copy.target.url",    targetUrl);
-                        setProperty("lb.copy.target.driver", targetDriverClass);
-                        setProperty("lb.copy.target.scheme", targetSchema);
+                        if (targetDriverClass != null) {
+                            setProperty("lb.copy.target.driver", targetDriverClass);
+                        }
+                        setProperty("lb.copy.target.schema", targetSchema);
                     }});
 
         }
