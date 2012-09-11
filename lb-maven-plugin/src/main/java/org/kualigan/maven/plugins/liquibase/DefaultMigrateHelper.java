@@ -78,6 +78,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
     private Database source;
     private Database target;
     private int threadCount;
+    private Boolean interactiveMode;
 
     public DefaultMigrateHelper() { 
         int threadCount = 1;
@@ -107,10 +108,11 @@ public class DefaultMigrateHelper implements MigrateHelper {
         this.log = log;
     }
     
-    public void migrate(final Database source, final Database target, final Log log) throws MojoExecutionException {
+    public void migrate(final Database source, final Database target, final Log log, final Boolean interactiveMode) throws MojoExecutionException {
         setTarget(target);
         setSource(source);
         setLog(log);
+        this.interactiveMode = interactiveMode;
         migrate();
     }
     
@@ -233,26 +235,28 @@ public class DefaultMigrateHelper implements MigrateHelper {
                                 retry = false;
                                 if (sqle.getMessage().contains("ORA-00942")) {
                                     getLog().info("Couldn't find " + tableName);
-                                    getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
                                     // sqle.printStackTrace();
                                 }
                                 else if (sqle.getMessage().contains("ORA-12519")) {
                                     retry = true;
-                                    getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
-                                    sqle.printStackTrace();
+                                    getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
+                                    // sqle.printStackTrace();
                                 }
                                 else if (sqle.getMessage().contains("IN or OUT")) {
-                                    getLog().info("Column count was " + columns.keySet().size());
+                                    getLog().info("Column count was " + columns.keySet().size(), sqle);
                                 }
                                 else if (sqle.getMessage().contains("Error reading")) {
                                     if (retry_count > 5) {
-                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
                                         retry = false;
                                     }
                                     retry_count++;
                                 }
                                 else {
-                                    sqle.printStackTrace();
+                                    getLog().warn("Error executing: " + getStatementBuffer(tableName, columns), sqle);
+                                    
+                                    // sqle.printStackTrace();
                                 }
                             }
                         }
@@ -288,7 +292,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                         st.close();
                     }
                     fromStatement.close();
-                    sourceDb.close();
+                    //sourceDb.close();
                 }
                 catch (Exception e) {
                 }
@@ -303,7 +307,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                         st.close();
                     }
                     toStatement.close();
-                    targetDb.close();
+                    // targetDb.close();
                 }
                 catch (Exception e) {
                     getLog().info("Error closing database connection");
@@ -401,7 +405,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
         final Map<String, Integer> retval = new HashMap<String, Integer>();
         final Collection<String> toRemove = new ArrayList<String>();
 
-        // debug("Looking up table names");
+        getLog().debug("Looking up table names in schema " + getSource().getDefaultSchemaName());
         try {
             final DatabaseMetaData metadata = sourceConn.getMetaData();
             final ResultSet tableResults = metadata.getTables(sourceConn.getCatalog(), getSource().getDefaultSchemaName(), null, new String[] { "TABLE" });
@@ -424,16 +428,6 @@ public class DefaultMigrateHelper implements MigrateHelper {
         catch (Exception e) {
             throw new MojoExecutionException(e.getMessage(), e);
         }
-        finally {
-            if (sourceConn != null) {
-                try {
-                    sourceConn.close();
-                    sourceConn = null;
-                }
-                catch (Exception e) {
-                }
-            }
-        }
 
         try {
             for (String tableName : retval.keySet()) {
@@ -447,16 +441,6 @@ public class DefaultMigrateHelper implements MigrateHelper {
         }
         catch (Exception e) {
             throw new MojoExecutionException(e.getMessage(), e);
-        }
-        finally {
-            if (targetConn != null) {
-                try {
-                    targetConn.close();
-                    targetConn = null;
-                }
-                catch (Exception e) {
-                }
-            }
         }
 
         for (String tableName : toRemove) {
@@ -667,9 +651,12 @@ public class DefaultMigrateHelper implements MigrateHelper {
             }
             int roll = (int) (count / (total / 1000));
 
-            if ((count % 5000) == 0 || count == total) {
-                out.println(String.format("(%s)%% %s of %s records", (int) ((count / total) * 100), (int) count, (int) total));
+            if (interactiveMode) {
+                out.print(String.format(template, progressBuffer, carr[roll % carr.length], percent, (int) count, (int) total));
             }
+            else if ((count % 5000) == 0 || count == total) {
+                out.println(String.format("(%s)%% %s of %s records", (int) ((count / total) * 100), (int) count, (int) total));
+            }            
         }
     }
 }    

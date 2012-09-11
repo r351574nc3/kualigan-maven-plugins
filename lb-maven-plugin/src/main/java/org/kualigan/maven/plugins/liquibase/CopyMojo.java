@@ -107,6 +107,13 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
     protected MavenProject project;
 
     /**
+     * User settings use to check the interactiveMode.
+     *
+     */
+    @Parameter(property = "interactiveMode", defaultValue = "${settings.interactiveMode}")
+    protected Boolean interactiveMode;
+    
+    /**
      * 
      * The Maven Wagon manager to use when obtaining server authentication details.
      */
@@ -377,17 +384,16 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
 
         try {    
             exportSchema(lbSource, lbTarget);
-            /*
             updateSchema(lbTarget);
             
             if (isStateSaved()) {
                 getLog().info("Starting data load from schema " + sourceSchema);
-                migrator.migrate(lbSource, lbTarget, getLog());
+                migrator.migrate(lbSource, lbTarget, getLog(), interactiveMode);
                 // exportData(lbSource, lbTarget);
             }
 
-            updateConstraints(lbTarget, artifactClassLoader);
-*/
+            // updateConstraints(lbTarget, artifactClassLoader);
+
             if (lbTarget instanceof H2Database) {
                 final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
                 st.execute("SHUTDOWN DEFRAG");
