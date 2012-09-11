@@ -735,8 +735,13 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
                 migrator.migrate(lbSource, lbTarget, getLog(), interactiveMode);
                 // exportData(lbSource, lbTarget);
             }
-
-            updateConstraints(lbTarget, artifactClassLoader);
+            
+            try {
+                updateConstraints(lbTarget, artifactClassLoader);
+            }
+            catch (Exception e) {
+                // Squash  errors for constraints
+            }
 
             if (lbTarget instanceof H2Database) {
                 final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
