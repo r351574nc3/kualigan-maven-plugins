@@ -463,6 +463,7 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
      */
     public void generateArchetype(final File mavenHome, final Properties archetypeProperties) throws MojoExecutionException {
         final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
+        invoker.setWorkingDirectory(new File(System.getProperty("user.dir") + File.separator + "copy"));
         
         final String additionalArguments = "";
 
