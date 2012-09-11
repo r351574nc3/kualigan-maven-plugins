@@ -211,11 +211,13 @@ public class DefaultMigrateHelper implements MigrateHelper {
                                     handleLob(toStatement, value, i);
                                 }
                                 catch (Exception e) {
-                                    System.err.println(String.format("Error processing %s.%s %s", tableName, columnName, columns.get(columnName)));
+                                    getLog().warn(String.format("Error processing %s.%s %s", tableName, columnName, columns.get(columnName)));
                                     if (Clob.class.isAssignableFrom(value.getClass())) {
-                                        System.err.println("Got exception trying to insert CLOB with length" + ((Clob) value).length());
+                                        getLog().warn("Got exception trying to insert CLOB with length" + ((Clob) value).length());
                                     }
-                                    e.printStackTrace();
+                                    if (getLog().isDebugEnabled()) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                             else {
@@ -235,28 +237,49 @@ public class DefaultMigrateHelper implements MigrateHelper {
                                 retry = false;
                                 if (sqle.getMessage().contains("ORA-00942")) {
                                     getLog().info("Couldn't find " + tableName);
-                                    getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
-                                    // sqle.printStackTrace();
+                                    if (getLog().isDebugEnabled()) {
+                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
+                                    }
+                                    else {
+                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    }
                                 }
                                 else if (sqle.getMessage().contains("ORA-12519")) {
                                     retry = true;
-                                    getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
-                                    // sqle.printStackTrace();
+                                    if (getLog().isDebugEnabled()) {
+                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
+                                    }
+                                    else {
+                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                    }
                                 }
                                 else if (sqle.getMessage().contains("IN or OUT")) {
-                                    getLog().info("Column count was " + columns.keySet().size(), sqle);
+                                    if (getLog().isDebugEnabled()) {
+                                        getLog().info("Column count was " + columns.keySet().size(), sqle);
+                                    }
+                                    else {
+                                        getLog().info("Column count was " + columns.keySet().size());
+                                    }
                                 }
                                 else if (sqle.getMessage().contains("Error reading")) {
                                     if (retry_count > 5) {
-                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
+                                        if (getLog().isDebugEnabled()) {
+                                            getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
+                                        }
+                                        else {
+                                            getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                        }
                                         retry = false;
                                     }
                                     retry_count++;
                                 }
                                 else {
-                                    getLog().warn("Error executing: " + getStatementBuffer(tableName, columns), sqle);
-                                    
-                                    // sqle.printStackTrace();
+                                    if (getLog().isDebugEnabled()) {
+                                        getLog().warn("Error executing: " + getStatementBuffer(tableName, columns), sqle);
+                                    }
+                                    else {
+                                        getLog().warn("Error executing: " + getStatementBuffer(tableName, columns));
+                                    }
                                 }
                             }
                         }
