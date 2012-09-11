@@ -176,7 +176,7 @@ public class DefaultOverlayHelper implements OverlayHelper {
         }
     }
  
-     /**
+    /**
      * 
      */
     private void setupRequest(final InvocationRequest req,
