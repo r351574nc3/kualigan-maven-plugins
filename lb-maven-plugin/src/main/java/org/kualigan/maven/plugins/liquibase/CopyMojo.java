@@ -403,13 +403,17 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
                         if (sourceDriverClass != null) {
                             setProperty("lb.copy.source.driver", sourceDriverClass);
                         }
-                        setProperty("lb.copy.source.schema", sourceSchema);
+                        if (sourceSchema != null) {
+                            setProperty("lb.copy.source.schema", sourceSchema);
+                        }
                         setProperty("lb.copy.target",        target);
                         setProperty("lb.copy.target.url",    targetUrl);
                         if (targetDriverClass != null) {
                             setProperty("lb.copy.target.driver", targetDriverClass);
                         }
-                        setProperty("lb.copy.target.schema", targetSchema);
+                        if (targetSchema != null) {
+                            setProperty("lb.copy.target.schema", targetSchema);
+                        }
                     }});
 
         }
