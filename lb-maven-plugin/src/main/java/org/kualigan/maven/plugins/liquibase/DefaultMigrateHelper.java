@@ -117,12 +117,12 @@ public class DefaultMigrateHelper implements MigrateHelper {
     }
     
     public void migrate() throws MojoExecutionException {
-        getLog().info("Migrating data from " + source.getConnection().getURL() + " to " + target.getConnection().getURL());
+        getLog().debug("Migrating data from " + source.getConnection().getURL() + " to " + target.getConnection().getURL());
 
         final Incrementor recordCountIncrementor = new Incrementor();
         final Map<String, Integer> tableData = getTableData(recordCountIncrementor);
 
-        getLog().info("Copying " + tableData.size() + " tables");
+        getLog().debug("Copying " + tableData.size() + " tables");
 
         float recordVisitor = 0;
         final ProgressObserver progressObserver = new ProgressObserver(recordCountIncrementor.getValue(),
@@ -183,7 +183,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
         final Map<String, Integer> columns = getColumnMap(tableName);
 
         if (columns.size() < 1) {
-            getLog().info("Columns are empty for " + tableName);
+            getLog().debug("Columns are empty for " + tableName);
             return;
         }
 
@@ -211,11 +211,11 @@ public class DefaultMigrateHelper implements MigrateHelper {
                                     handleLob(toStatement, value, i);
                                 }
                                 catch (Exception e) {
-                                    getLog().warn(String.format("Error processing %s.%s %s", tableName, columnName, columns.get(columnName)));
-                                    if (Clob.class.isAssignableFrom(value.getClass())) {
-                                        getLog().warn("Got exception trying to insert CLOB with length" + ((Clob) value).length());
-                                    }
                                     if (getLog().isDebugEnabled()) {
+					getLog().warn(String.format("Error processing %s.%s %s", tableName, columnName, columns.get(columnName)));
+					if (Clob.class.isAssignableFrom(value.getClass())) {
+					    getLog().warn("Got exception trying to insert CLOB with length" + ((Clob) value).length());
+					}
                                         e.printStackTrace();
                                     }
                                 }
@@ -236,38 +236,26 @@ public class DefaultMigrateHelper implements MigrateHelper {
                             catch (SQLException sqle) {
                                 retry = false;
                                 if (sqle.getMessage().contains("ORA-00942")) {
-                                    getLog().info("Couldn't find " + tableName);
+                                    getLog().debug("Couldn't find " + tableName);
                                     if (getLog().isDebugEnabled()) {
-                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
-                                    }
-                                    else {
-                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                        getLog().debug("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
                                     }
                                 }
                                 else if (sqle.getMessage().contains("ORA-12519")) {
                                     retry = true;
                                     if (getLog().isDebugEnabled()) {
-                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
-                                    }
-                                    else {
-                                        getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                        getLog().debug("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
                                     }
                                 }
                                 else if (sqle.getMessage().contains("IN or OUT")) {
                                     if (getLog().isDebugEnabled()) {
-                                        getLog().info("Column count was " + columns.keySet().size(), sqle);
-                                    }
-                                    else {
-                                        getLog().info("Column count was " + columns.keySet().size());
+                                        getLog().debug("Column count was " + columns.keySet().size(), sqle);
                                     }
                                 }
                                 else if (sqle.getMessage().contains("Error reading")) {
                                     if (retry_count > 5) {
                                         if (getLog().isDebugEnabled()) {
-                                            getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
-                                        }
-                                        else {
-                                            getLog().info("Tried insert statement " + getStatementBuffer(tableName, columns));
+                                            getLog().debug("Tried insert statement " + getStatementBuffer(tableName, columns), sqle);
                                         }
                                         retry = false;
                                     }
@@ -276,10 +264,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                                 else {
                                     if (getLog().isDebugEnabled()) {
                                         getLog().warn("Error executing: " + getStatementBuffer(tableName, columns), sqle);
-                                    }
-                                    else {
-                                        getLog().warn("Error executing: " + getStatementBuffer(tableName, columns));
-                                    }
+				    }
                                 }
                             }
                         }
@@ -333,7 +318,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                     // targetDb.close();
                 }
                 catch (Exception e) {
-                    getLog().info("Error closing database connection");
+                    getLog().debug("Error closing database connection");
                     e.printStackTrace();
                 }
             }
@@ -456,7 +441,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
             for (String tableName : retval.keySet()) {
                 final ResultSet tableResults = targetConn.getMetaData().getTables(targetConn.getCatalog(), getTarget().getDefaultSchemaName(), null, new String[] { "TABLE" });
                 if (!tableResults.next()) {
-                    getLog().info("Removing " + tableName);
+                    getLog().debug("Removing " + tableName);
                     toRemove.add(tableName);
                 }
                 tableResults.close();
@@ -532,10 +517,10 @@ public class DefaultMigrateHelper implements MigrateHelper {
         }
         catch (Exception e) {
             if (e.getMessage().contains("ORA-00942")) {
-                getLog().info("Couldn't find " + tableName);
-                getLog().info("Tried insert statement " + query);
+                getLog().debug("Couldn't find " + tableName);
+                getLog().debug("Tried insert statement " + query);
             }
-            getLog().info("Exception executing " + query);
+            getLog().debug("Exception executing " + query);
             throw new MojoExecutionException(e.getMessage(), e);
         }
         finally {
@@ -552,7 +537,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
 
     /*
     private void debug(String msg) {
-        getLog.info(msg, MSG_DEBUG);
+        getLog.debug(msg, MSG_DEBUG);
     }
 
     private Connection openConnection(String reference) {
