@@ -433,7 +433,7 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         final String additionalArguments = "";
 
         final InvocationRequest req = new DefaultInvocationRequest()
-                .setInteractive(false)
+                .setInteractive(interactiveMode)
                 .setProperties(copyProperties);
         
         setupRequest(req, additionalArguments);
