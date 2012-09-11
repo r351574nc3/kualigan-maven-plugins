@@ -397,7 +397,7 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
                         setProperty("version",               "1.0.0-SNAPSHOT");
                     }});
             
-            invokeCopy(new File(System.getProperty("user.dir") + File.separator + "copy"), new Properties() {{
+            invokeCopy(getMavenHome(), new Properties() {{
                         setProperty("lb.copy.source",        source);
                         setProperty("lb.copy.source.url",    sourceUrl);
                         if (sourceDriverClass != null) {
