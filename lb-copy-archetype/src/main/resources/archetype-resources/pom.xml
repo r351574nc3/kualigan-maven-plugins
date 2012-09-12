@@ -23,7 +23,7 @@ limitations under the License.
   <version>${version}</version>
 
   <properties>
-    <lb-maven-plugin.version>1.1.7-SNAPSHOT</lb-maven-plugin.version>
+    <lb-maven-plugin.version>1.1.7</lb-maven-plugin.version>
     <liquibase.version>2.0.5</liquibase.version>
     <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
     <ojdbc6.version>11.2.0.2.0</ojdbc6.version>

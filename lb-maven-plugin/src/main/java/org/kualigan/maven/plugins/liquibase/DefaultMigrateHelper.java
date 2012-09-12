@@ -212,11 +212,11 @@ public class DefaultMigrateHelper implements MigrateHelper {
                                 }
                                 catch (Exception e) {
                                     if (getLog().isDebugEnabled()) {
-					getLog().warn(String.format("Error processing %s.%s %s", tableName, columnName, columns.get(columnName)));
+					// getLog().warn(String.format("Error processing %s.%s %s", tableName, columnName, columns.get(columnName)));
 					if (Clob.class.isAssignableFrom(value.getClass())) {
-					    getLog().warn("Got exception trying to insert CLOB with length" + ((Clob) value).length());
+					    // getLog().warn("Got exception trying to insert CLOB with length" + ((Clob) value).length());
 					}
-                                        e.printStackTrace();
+                                        // e.printStackTrace();
                                     }
                                 }
                             }
@@ -263,7 +263,7 @@ public class DefaultMigrateHelper implements MigrateHelper {
                                 }
                                 else {
                                     if (getLog().isDebugEnabled()) {
-                                        getLog().warn("Error executing: " + getStatementBuffer(tableName, columns), sqle);
+                                        // getLog().warn("Error executing: " + getStatementBuffer(tableName, columns), sqle);
 				    }
                                 }
                             }
