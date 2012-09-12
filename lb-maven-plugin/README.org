@@ -1,0 +1,35 @@
+* lb-maven-plugin
+
+The Kualigan Liquibase Plugin is intended to improve on the existing liquibase plugin by integrating elements of maven like SCM as well as giving Ruby-on-Rails-ish migrate functionality. There is also a goal for copying databases directly instead export/import
+
+* Usage
+
+** Copying a database
+
+This is an example of copying an oracle database to a mysql database
+
+#+BEGIN_EXAMPLE
+mvn lb:copy-database -Dlb.copy.source=oracle -Dlb.copy.source.url=jdbc:oracle:thin:@localhost:1521:XE -Dlb.copy.target=mysql -Dlb.copy.target.url=jdbc:mysql://localhost:3306/KFSCONS  
+#+END_EXAMPLE
+
+** Exporting a database
+
+** Importing a database
+
+** Using ROR-ish migrate
+
+#+BEGIN_EXAMPLE
+mvn lb:migrate
+#+END_EXAMPLE
+
+** Testing Changelogs
+
+#+BEGIN_EXAMPLE
+mvn lb:test
+#+END_EXAMPLE
+
+** Rollback the Run Change
+
+#+BEGIN_EXAMPLE
+mvn lb:rollback
+#+END_EXAMPLE
