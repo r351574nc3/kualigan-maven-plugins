@@ -44,11 +44,11 @@
     </dependency>
     <dependency>
     	<groupId>org.kuali.rice</groupId>
-		<artifactId>rice-ldap</artifactId>
+	<artifactId>rice-ldap</artifactId>
     </dependency>
     <dependency>
         <groupId>org.kuali.rice</groupId>
-		<artifactId>rice-impl</artifactId>
+	<artifactId>rice-impl</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.ldap</groupId>
@@ -68,17 +68,17 @@
     </dependency>
     <dependency>
         <groupId>org.kuali.commons</groupId>
-	    <artifactId>commons-beanutils</artifactId>
-	</dependency>
+	<artifactId>commons-beanutils</artifactId>
+    </dependency>
 
-	<dependency>
-	    <groupId>commons-collections</groupId>
-	    <artifactId>commons-collections</artifactId>
-	</dependency>
-	<dependency>
-		<groupId>commons-lang</groupId>
-		<artifactId>commons-lang</artifactId>
-	</dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk16</artifactId>

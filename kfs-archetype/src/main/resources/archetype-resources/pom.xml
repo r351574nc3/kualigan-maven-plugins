@@ -20,12 +20,12 @@ limitations under the License.
     <artifactId>${kfsPrototypeArtifactId}</artifactId>
     <version>${kfsPrototypeVersion}</version>
   </parent>
-  <groupId>${groupId}</groupId>
-  <artifactId>${artifactId}</artifactId>
+  <groupId>\${groupId}</groupId>
+  <artifactId>\${artifactId}</artifactId>
   <packaging>pom</packaging>
   <name>Kuali Financial System</name>
   <inceptionYear>2012</inceptionYear>
-  <version>${version}</version>
+  <version>\${version}</version>
   <url>https://github.com/r351574nc3/kfs-overlay-reference/</url>
 
   <licenses>
@@ -85,8 +85,6 @@ limitations under the License.
     <jrebel.phase>none</jrebel.phase>
     <rebel.home>${user.home}/jrebel/</rebel.home>
     <rebel.root>${basedir}/../</rebel.root>
-    <kfs.maven.groupId>org.kualigan.kfs</kfs.maven.groupId>
-    <kfs.maven.version>4.1.1-7</kfs.maven.version>
     <kfs.external.unpack.phase>none</kfs.external.unpack.phase>
     <kfs.web.unpack.phase>none</kfs.web.unpack.phase>
     
@@ -632,8 +630,8 @@ limitations under the License.
           <configuration>
             <overlays>
               <overlay>
-                <groupId>org.kuali.kfs</groupId>
-                <artifactId>kfs</artifactId>
+                <groupId>${kfsPrototypeGroupId}</groupId>
+                <artifactId>${kfsPrototypeArtifactId}</artifactId>
                 <excludes>
                   <exclude>WEB-INF/classes/ApplicationResources.properties</exclude>
                   <exclude>WEB-INF/classes/configuration.properties</exclude>
