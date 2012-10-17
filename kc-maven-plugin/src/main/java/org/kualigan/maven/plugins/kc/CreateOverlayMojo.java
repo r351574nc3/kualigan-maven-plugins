@@ -95,13 +95,13 @@ public class CreateOverlayMojo extends AbstractMojo {
     @Parameter(property="version", defaultValue="1.0-SNAPSHOT")
     private String version;
     
-    @Parameter(property = "kc.prototype.groupId", defaultValue = "org.kuali.kc")
+    @Parameter(property = "kc.prototype.groupId", defaultValue = "org.kuali.kra")
     protected String prototypeGroupId;
     
-    @Parameter(property = "kc.prototype.artifactId", defaultValue = "kc")
+    @Parameter(property = "kc.prototype.artifactId", defaultValue = "kc_project")
     protected String prototypeArtifactId;
     
-    @Parameter(property = "kc.prototype.version", defaultValue = "5.0")
+    @Parameter(property = "kc.prototype.version", defaultValue = "5.0.1")
     protected String prototypeVersion;
     
     @Parameter(property = "archetypeGroupId", defaultValue = "org.kualigan.maven.archetypes")
@@ -110,7 +110,7 @@ public class CreateOverlayMojo extends AbstractMojo {
     @Parameter(property = "archetypeArtifactId", defaultValue = "kc-archetype")
     protected String archetypeArtifactId;
     
-    @Parameter(property = "archetypeVersion", defaultValue = "1.1.2")
+    @Parameter(property = "archetypeVersion", defaultValue = "1.1.8")
     protected String archetypeVersion;
     
     /**
