@@ -15,16 +15,23 @@
  */
 package org.kualigan.maven.plugins.api;
 
+import java.io.IOException;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.Executor;
+import org.apache.commons.exec.PumpStreamHandler;
 
 import org.apache.maven.archetype.Archetype;
 import org.apache.maven.artifact.repository.ArtifactRepository;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.ArtifactRepositoryPolicy;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
+
 
 import org.apache.maven.shared.invoker.DefaultInvocationRequest;
 import org.apache.maven.shared.invoker.DefaultInvoker;
@@ -180,7 +187,29 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
 
         getCaller().getLog().info(msg.toString());
     }
-    
+
+   
+    protected int executeCommandLine(final String ... args) throws ExecuteException, IOException {
+	final Executor exec = new DefaultExecutor();
+	final Map enviro = new HashMap();
+	try {
+	    final Properties systemEnvVars = CommandLineUtils.getSystemEnvVars();
+	    enviro.putAll(systemEnvVars);
+	} catch (IOException x) {
+	    getCaller().getLog().error("Could not assign default system enviroment variables.", x);
+	}
+
+	final File workingDirectory = new File(System.getProperty("java.io.tmpdir"));
+	final org.apache.commons.exec.CommandLine commandLine = new org.apache.commons.exec.CommandLine(args[0]);
+	for (int i = 1; i < args.length; i++) {
+	    commandLine.addArgument(args[i]);
+	}
+
+	exec.setStreamHandler(new PumpStreamHandler(System.out, System.err, System.in));
+	exec.setWorkingDirectory(workingDirectory);
+	return exec.execute(commandLine, enviro);
+    }
+
     /**
      * Handles repacking of the war as a jar file with classes, etc... Basically makes a jar of everything
      * in the war file's WEB-INF/classes path.
@@ -484,37 +513,45 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
                                 final String artifactId,
                                 final String version,
                                 final String repositoryId) throws MojoExecutionException {
+	extractBuildXml();
+	
+	filterTempPom(groupId, artifactId, artifact.getName().endsWith("jar") ? "jar" : "war", version);
+
         final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
         
         final String additionalArguments = "";
 
+	getCaller().getLog().debug("Setting up properties for installing the artifact");
         final InvocationRequest req = new DefaultInvocationRequest()
                 .setInteractive(false)
                 .setProperties(new Properties() {{
-                        setProperty("groupId", groupId);
-                        setProperty("artifactId", artifactId);
-                        setProperty("version", version);
-                        setProperty("packaging", artifact.getName().endsWith("jar") ? "jar" : "war");
-                        setProperty("pomFile", getTempPomPath());
-                        if (repositoryId != null) {
-                            setProperty("repositoryId", repositoryId);
-                        }
-                        if (sources != null) {
-                            try {
-                                setProperty("sources", sources.getCanonicalPath());
-                            }
-                            catch (Exception e) {
-                                throw new MojoExecutionException("Cannot get path for the sources file ", e);
-                            }                            
-                        }
-                        try {
-                            setProperty("file", artifact.getCanonicalPath());
-                        }
-                        catch (Exception e) {
-                            throw new MojoExecutionException("Cannot get path for the war file ", e);
-                        }
-                        setProperty("updateReleaseInfo", "true");
-                    }});
+		    setProperty("pomFile", getTempPomPath());
+		    if (repositoryId != null) {
+			setProperty("repositoryId", repositoryId);
+		    }
+		    if (sources != null) {
+			try {
+			    setProperty("sources", sources.getCanonicalPath());
+			}
+			catch (Exception e) {
+			    throw new MojoExecutionException("Cannot get path for the sources file ", e);
+			}                            
+		    }
+		    try {
+			setProperty("file", artifact.getCanonicalPath());
+		    }
+		    catch (Exception e) {
+			throw new MojoExecutionException("Cannot get path for the war file ", e);
+		    }
+		    setProperty("updateReleaseInfo", "true");
+		}});
+
+	getCaller().getLog().debug("Properties used for installArtifact are:");
+	try {
+	    req.getProperties().list(System.out);
+	}
+	catch (Exception e) {
+	}
 
         try {
             setupRequest(req, additionalArguments);
@@ -554,6 +591,31 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
     }
 
     /**
+     * Executes the {@code install-file} goal with the new pom against the artifact file.
+     * 
+     * @param artifact {@link File} instance to install
+     */
+    public void filterTempPom(final String groupId,
+			      final String artifactId,
+			      final String packaging,
+			      final String version) throws MojoExecutionException {
+        getCaller().getLog().info("Extracting the Temp POM");
+	
+	try {
+	    executeCommandLine("ant",
+			       "-Dsource=" + System.getProperty("java.io.tmpdir") + File.separator + "pom.xml",
+			       "-Dtarget=" + System.getProperty("java.io.tmpdir") + File.separator + "prototype-pom.xml",
+			       "-DgroupId=" +  groupId,
+			       "-DartifactId=" + artifactId,
+			       "-Dpackaging=" + packaging,
+			       "-Dversion=" + version);
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException("Error trying to filter the pom with ant ", e);
+	}
+    }
+
+    /**
      * Temporary POM location
      * 
      * @return String value the path of the temporary POM
@@ -563,11 +625,53 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
     }
     
     /**
-     * Puts a POM file in the system temp directory for prototype-pom.xml. prototype-pom.xml is extracted
+     * Puts ant build file in the system temp directory. build.xml is extracted
+     * from the plugin.
+     */
+    public void extractBuildXml() throws MojoExecutionException {
+        getCaller().getLog().info("Extracting the build.xml");
+        
+        final InputStream pom_is = getClass().getClassLoader().getResourceAsStream("prototype-resources/build.xml");
+        
+        byte[] fileBytes = null;
+        try {
+            final DataInputStream dis = new DataInputStream(pom_is);
+            fileBytes = new byte[dis.available()];
+            dis.readFully(fileBytes);
+            dis.close();
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Wasn't able to read in the prototype pom", e);
+        }
+        finally {
+            try {
+                pom_is.close();
+            }
+            catch (Exception e) {
+                // Ignore exceptions
+            }
+        }
+        
+        try {
+            final FileOutputStream fos = new FileOutputStream(System.getProperty("java.io.tmpdir") + File.separator + "build.xml");
+            try {
+                fos.write(fileBytes);
+            }
+            finally {
+                fos.close();
+            }
+        }
+        catch (Exception e) {
+            throw new MojoExecutionException("Could not write temporary pom file", e);
+        }
+    }
+
+    /**
+     * Puts temporary pom in the system temp directory. prototype-pom.xml is extracted
      * from the plugin.
      */
     public void extractTempPom() throws MojoExecutionException {
-        getCaller().getLog().info("Extracting the Temp POM");
+        getCaller().getLog().info("Extracting the Temp Pom");
         
         final InputStream pom_is = getClass().getClassLoader().getResourceAsStream("prototype-resources/pom.xml");
         
@@ -591,7 +695,7 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
         }
         
         try {
-            final FileOutputStream fos = new FileOutputStream(getTempPomPath());
+            final FileOutputStream fos = new FileOutputStream(System.getProperty("java.io.tmpdir") + File.separator + "pom.xml");
             try {
                 fos.write(fileBytes);
             }
