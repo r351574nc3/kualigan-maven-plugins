@@ -517,7 +517,7 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
                 }
                 if (sources != null) {
                     try {
-                        setProperty("sources", zipSourcesIfRequired(sources));
+                        setProperty("sources", zipSourcesIfRequired(sources).getCanonicalPath());
                     }
                     catch (Exception e) {
                         throw new MojoExecutionException("Cannot get path for the sources file ", e);
