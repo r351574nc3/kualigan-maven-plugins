@@ -15,11 +15,7 @@
  */
 package org.kualigan.maven.plugins.api;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +30,7 @@ import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.exec.Executor;
 import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.io.IOUtils;
 import org.apache.maven.archetype.Archetype;
 import org.apache.maven.artifact.repository.ArtifactRepositoryFactory;
 import org.apache.maven.artifact.repository.layout.ArtifactRepositoryLayout;
@@ -45,6 +42,9 @@ import org.apache.maven.shared.invoker.InvocationRequest;
 import org.apache.maven.shared.invoker.InvocationResult;
 import org.apache.maven.shared.invoker.Invoker;
 import org.apache.maven.shared.invoker.MavenInvocationException;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.apache.velocity.context.Context;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.UnArchiver;
@@ -499,7 +499,7 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
                                 final String artifactId,
                                 final String version,
                                 final String repositoryId) throws MojoExecutionException {
-        extractBuildXml();
+//        extractBuildXml();
     
         filterTempPom(groupId, artifactId, artifact.getName().endsWith("jar") ? "jar" : "war", version);
 
@@ -511,26 +511,24 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
         final InvocationRequest req = new DefaultInvocationRequest()
             .setInteractive(false)
             .setProperties(new Properties() {{
-                setProperty("pomFile", getTempPomPath());
-                if (repositoryId != null) {
-                    setProperty("repositoryId", repositoryId);
-                }
-                if (sources != null) {
-                    try {
-                        setProperty("sources", zipSourcesIfRequired(sources).getCanonicalPath());
-                    }
-                    catch (Exception e) {
-                        throw new MojoExecutionException("Cannot get path for the sources file ", e);
-                    }                            
-                }
-                try {
-                    setProperty("file", artifact.getCanonicalPath());
-                }
-                catch (Exception e) {
-                    throw new MojoExecutionException("Cannot get path for the war file ", e);
-                }
-                setProperty("updateReleaseInfo", "true");
-            }});
+							setProperty("pomFile", getTempPomPath());
+							if (repositoryId != null) {
+								setProperty("repositoryId", repositoryId);
+							}
+							if (sources != null) {
+								try {
+									setProperty("sources", zipSourcesIfRequired(sources).getCanonicalPath());
+								} catch (Exception e) {
+									throw new MojoExecutionException("Cannot get path for the sources file ", e);
+								}
+							}
+							try {
+								setProperty("file", artifact.getCanonicalPath());
+							} catch (Exception e) {
+								throw new MojoExecutionException("Cannot get path for the war file ", e);
+							}
+							setProperty("updateReleaseInfo", "true");
+						}});
 
         getCaller().getLog().debug("Properties used for installArtifact are:");
         try {
@@ -579,27 +577,34 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
     /**
      * Executes the {@code install-file} goal with the new pom against the artifact file.
      * 
-     * @param artifact {@link File} instance to install
      */
-    public void filterTempPom(final String groupId,
-                              final String artifactId,
-                              final String packaging,
-                              final String version) throws MojoExecutionException {
-        getCaller().getLog().info("Extracting the Temp POM");
-    
-        try {
-            executeCommandLine("ant",
-                               "-Dsource=" + System.getProperty("java.io.tmpdir") + File.separator + "pom.xml",
-                               "-Dtarget=" + System.getProperty("java.io.tmpdir") + File.separator + "prototype-pom.xml",
-                               "-DgroupId=" +  groupId,
-                               "-DartifactId=" + artifactId,
-                               "-Dpackaging=" + packaging,
-                               "-Dversion=" + version);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException("Error trying to filter the pom with ant ", e);
-        }
-    }
+		public void filterTempPom(final String groupId,
+															final String artifactId,
+															final String packaging,
+															final String version) throws MojoExecutionException {
+			getCaller().getLog().info("Filtering the Temp POM");
+
+			Writer writer = null;
+			Reader reader = null;
+			try {
+				Context context = new VelocityContext();
+				context.put("groupId", groupId);
+				context.put("artifactId", artifactId);
+				context.put("packaging", packaging);
+				context.put("version", version);
+
+				writer = new FileWriter(System.getProperty("java.io.tmpdir") + File.separator + "pom.xml");
+				reader = new FileReader(new File(System.getProperty("java.io.tmpdir") + File.separator + "prototype-pom.xml"));
+
+				Velocity.init();
+				Velocity.evaluate(context, writer, "pom-prototype", reader);
+			} catch (Exception e) {
+				throw new MojoExecutionException("Error trying to filter the pom ", e);
+			} finally {
+				IOUtils.closeQuietly(reader);
+				IOUtils.closeQuietly(writer);
+			}
+		}
 
     /**
      * Temporary POM location
@@ -607,7 +612,7 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
      * @return String value the path of the temporary POM
      */
     protected String getTempPomPath() {
-        return System.getProperty("java.io.tmpdir") + File.separator + "prototype-pom.xml";
+        return System.getProperty("java.io.tmpdir") + File.separator + "pom.xml";
     }
     
     /**
