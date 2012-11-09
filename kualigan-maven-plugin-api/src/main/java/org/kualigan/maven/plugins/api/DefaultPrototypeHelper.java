@@ -500,6 +500,7 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
                                 final String version,
                                 final String repositoryId) throws MojoExecutionException {
     
+        extractTempPom();
         filterTempPom(groupId, artifactId, artifact.getName().endsWith("jar") ? "jar" : "war", version);
 
         final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
@@ -645,7 +646,7 @@ public class DefaultPrototypeHelper implements PrototypeHelper {
         }
         
         try {
-            final FileOutputStream fos = new FileOutputStream(System.getProperty("java.io.tmpdir") + File.separator + "pom.xml");
+            final FileOutputStream fos = new FileOutputStream(System.getProperty("java.io.tmpdir") + File.separator + "prototype-pom.xml");
             try {
                 fos.write(fileBytes);
             }
