@@ -219,14 +219,14 @@ public class LiquibaseTestMojo extends AbstractLiquibaseChangeLogMojo {
     protected String changeLogFile;
 
     /**
-     * @parameter default-value="${project.basedir}/target/changelogs"
+     * @parameter default-value="${project.basedir}/src/main/scripts/changelogs"
      */
     protected File changeLogSavePath;
 
     /**
      * Location of an update.xml
      */
-    @Parameter(property = "lb.updatePath", defaultValue="${project.basedir}/src/main/changelogs")
+    @Parameter(property = "lb.updatePath", defaultValue="${project.basedir}/src/main/scripts/changelogs")
     protected File updatePath;
     
     /**
@@ -237,6 +237,9 @@ public class LiquibaseTestMojo extends AbstractLiquibaseChangeLogMojo {
     
     /**
      * The Maven project that plugin is running under.
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
      */
     @Parameter(property = "project", required = true)
     protected MavenProject project;

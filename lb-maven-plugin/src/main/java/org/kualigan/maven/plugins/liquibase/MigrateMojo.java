@@ -28,6 +28,9 @@ package org.kualigan.maven.plugins.liquibase;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.artifact.manager.WagonManager;
 
@@ -67,6 +70,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -89,7 +93,11 @@ import static org.tmatesoft.svn.core.wc.SVNRevision.WORKING;
  * @goal migrate
  */
 public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
-    public static final String DEFAULT_CHANGELOG_PATH = "src/main/changelogs";
+    public static final String DEFAULT_CHANGELOG_PATH = "src/main/scripts/changelogs";
+    public static final String DEFAULT_UPDATE_FILE    = "target/changelogs/update.xml";
+    public static final String DEFAULT_UPDATE_PATH    = "target/changelogs/update";
+    public static final String DEFAULT_LBPROP_PATH    = "target/test-classes/liquibase/";
+    public static final String TEST_ROLLBACK_TAG      = "test";
 
     /**
      * Suffix for fields that are representing a default value for a another field.
@@ -247,14 +255,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     protected String svnServer;
     
     /**
-     * Specifies the change log file to use for Liquibase. No longer needed with updatePath.
-     * @parameter expression="${liquibase.changeLogFile}"
-     * @deprecated
-     */
-    protected String changeLogFile;
-
-    /**
-     * @parameter default-value="${project.basedir}/target/changelogs"
+     * @parameter default-value="${project.basedir}/src/main/scripts/changelogs"
      */
     protected File changeLogSavePath;
 
@@ -269,6 +270,16 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
      * @parameter expression="${lb.updatePath}" default-value="${project.basedir}/src/main/changelogs"
      */
     protected File updatePath;
+
+    /**
+     * The Maven project that plugin is running under.
+     * @parameter expression="${project}"
+     * @required
+     * @readonly
+     */
+    @Parameter(property = "project", required = true)
+    protected MavenProject project;
+
     
     /**
      * Whether or not to perform a drop on the database before executing the change.
@@ -301,6 +312,25 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
         }
     }
 
+    protected File[] getLiquibasePropertiesFiles() throws MojoExecutionException {
+        try {
+            final File[] retval = new File(getBasedir(), DEFAULT_LBPROP_PATH).listFiles(new FilenameFilter() {
+                    public boolean accept(final File dir, final String name) {
+                        return name.endsWith(".properties");
+                    }
+                });
+            if (retval == null) {
+                throw new NullPointerException();
+            }            
+            return retval;
+        }
+        catch (Exception e) {
+            getLog().warn("Unable to get liquibase properties files ");
+            return new File[0];
+            // throw new MojoExecutionException("Unable to get liquibase properties files ", e);
+        }
+    }
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         doFieldHack();
@@ -315,9 +345,22 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
         }
 
         ClassLoader artifactClassLoader = getMavenArtifactClassLoader();
-        configureFieldsAndValues(getFileOpener(artifactClassLoader));
+        final File[] propertyFiles = getLiquibasePropertiesFiles();
         
-        doFieldHack();
+        // execute change logs on each database
+        for (final File props : propertyFiles) {
+            try {
+                propertyFile = props.getCanonicalPath();
+                doFieldHack();
+                
+                configureFieldsAndValues(getFileOpener(artifactClassLoader));
+                
+                doFieldHack();
+            }
+            catch (Exception e) {
+                throw new MojoExecutionException(e.getMessage(), e);
+            }
+        }
 
         if (svnServer != null) {
             final AuthenticationInfo info = wagonManager.getAuthenticationInfo(svnServer);
