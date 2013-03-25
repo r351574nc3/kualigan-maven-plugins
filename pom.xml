@@ -187,6 +187,13 @@
             </plugin>          
         </plugins>
     </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-maven-plugin</artifactId>
+        <version>${plugin.nexus.version}</version>
+      </plugin>
+    </plugins>
     <extensions>
       <extension>
         <groupId>org.apache.maven.scm</groupId>
