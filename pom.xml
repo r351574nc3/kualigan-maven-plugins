@@ -69,6 +69,11 @@
     <pluginManagement>
         <plugins>
           <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-maven-plugin</artifactId>
+            <version>${plugin.nexus.version}</version>
+          </plugin>
+          <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-plugin-plugin</artifactId>
             <version>${maven-plugin-plugin.version}</version>
@@ -228,6 +233,7 @@
     <dollar>$</dollar>
     <openbracket>{</openbracket>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <plugin.nexus.version>2.1</plugin.nexus.version>
     <kualigan.plugin.prefix>kuali</kualigan.plugin.prefix>
   </properties>
 
