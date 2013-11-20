@@ -78,8 +78,7 @@ limitations under the License.
     <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
 
     <jetty.phase>none</jetty.phase>
-    <kc.maven.groupId>org.kualigan.kc</kc.maven.groupId>
-    <kc.maven.version>4.1.1-7</kc.maven.version>
+    <kc.maven.version>5.1.1</kc.maven.version>
     <kc.external.unpack.phase>none</kc.external.unpack.phase>
     <kc.web.unpack.phase>none</kc.web.unpack.phase>
     
@@ -99,12 +98,14 @@ limitations under the License.
         <artifactId>${kcPrototypeArtifactId}</artifactId>
         <version>${kcPrototypeVersion}</version>
         <type>war</type>
+        <scope>provided<scope>
       </dependency>
       
       <dependency>
         <groupId>${kcPrototypeGroupId}</groupId>
         <artifactId>${kcPrototypeArtifactId}</artifactId>
         <version>${kcPrototypeVersion}</version>
+        <classifier>classes</classifier>
         <type>jar</type>
       </dependency>
     </dependencies>
