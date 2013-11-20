@@ -238,10 +238,12 @@
     <maven-plugin-plugin.version>3.1</maven-plugin-plugin.version>
     <mavenVersion>3.0.3</mavenVersion>
       <!-- used for escape -->
+<!--
     <begin>${${$}}{</begin>
     <end>$}</end>
     <dollar>$</dollar>
     <openbracket>{</openbracket>
+-->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <plugin.nexus.version>2.1</plugin.nexus.version>
     <kualigan.plugin.prefix>kuali</kualigan.plugin.prefix>
