@@ -98,7 +98,7 @@ limitations under the License.
         <artifactId>${kcPrototypeArtifactId}</artifactId>
         <version>${kcPrototypeVersion}</version>
         <type>war</type>
-        <scope>provided<scope>
+        <scope>provided</scope>
       </dependency>
       
       <dependency>
