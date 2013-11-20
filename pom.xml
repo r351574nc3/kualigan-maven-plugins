@@ -3,7 +3,10 @@
     <parent>
         <groupId>org.kuali.pom</groupId>
         <artifactId>kuali-maven</artifactId>
+        <version>3.3.33</version>
+<!--
         <version>1.4.6</version>
+-->
     </parent>
     
     <groupId>org.kualigan.maven.plugins</groupId>
