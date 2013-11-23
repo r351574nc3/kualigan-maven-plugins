@@ -227,6 +227,8 @@
         <aether-api.version>1.13.1</aether-api.version>
         <build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
         <buildnumber-maven-plugin.version>1.2</buildnumber-maven-plugin.version>
+        <codemodel.version>2.6</codemodel.version>
+        <commons-cli.version>1.2</commons-cli.version>
         <ecl.license.url>http://maven.kuali.org/external/org/opensource/ecl/2.0/ecl-2.0.txt</ecl.license.url>
         <gpg.phase>install</gpg.phase>
         <github.global.server>github</github.global.server>
@@ -238,6 +240,7 @@
         <svnkit.version>1.7.5-v1</svnkit.version>
 
         <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
+        <maven-invoker.version>2.1.1</maven-invoker.version>
         <plugin.compiler.version>2.5.1</plugin.compiler.version>
         <maven-plugin-plugin.version>3.1</maven-plugin-plugin.version>
         <mavenVersion>3.0.3</mavenVersion>
@@ -248,6 +251,7 @@
             <dollar>$</dollar>
             <openbracket>{</openbracket>
             -->
+        <plexus-interactivity-api.version>1.0-alpha-6</plexus-interactivity-api.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <plugin.nexus.version>2.1</plugin.nexus.version>
         <kualigan.plugin.prefix>kuali</kualigan.plugin.prefix>
@@ -303,7 +307,28 @@
             <dependency>
                 <groupId>com.sun.codemodel</groupId>
                 <artifactId>codemodel</artifactId>
-                <version>2.1</version>
+                <version>${codemodel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-interactivity-api</artifactId>
+                <version>${plexus-interactivity-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.maven.shared</groupId>
+                <artifactId>maven-invoker</artifactId>
+                <version>${maven-invoker.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-cli</groupId>
+                <artifactId>commons-cli</artifactId>
+                <version>${commons-cli.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>commons-lang</groupId>
+                        <artifactId>commons-lang</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.liquibase</groupId>
