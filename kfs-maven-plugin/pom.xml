@@ -78,7 +78,7 @@
       <artifactId>sezpoz</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
+      <groupId>org.apache.maven.archetypes</groupId>
       <artifactId>maven-archetype-plugin</artifactId>
     </dependency>
     <dependency>
