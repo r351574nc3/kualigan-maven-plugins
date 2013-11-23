@@ -63,6 +63,10 @@
       <artifactId>maven-plugin-api</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.liquibase</groupId>
       <artifactId>liquibase-maven-plugin</artifactId>
     </dependency>

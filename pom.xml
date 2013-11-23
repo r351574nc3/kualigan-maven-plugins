@@ -94,10 +94,6 @@
                             <goals>
                                 <goal>helpmojo</goal>
                             </goals>
-                            <phase>process-classes</phase>
-                            <configuration>
-                                <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                            </configuration>
                         </execution>
                     </executions>
                 </plugin>
