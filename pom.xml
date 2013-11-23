@@ -86,12 +86,14 @@
                             <goals>
                                 <goal>descriptor</goal>
                             </goals>
+                            <phase>process-classes</phase>
                         </execution>
                         <execution>
                             <id>generated-helpmojo</id>
                             <goals>
                                 <goal>helpmojo</goal>
                             </goals>
+                            <phase>process-classes</phase>
                             <configuration>
                                 <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                             </configuration>
