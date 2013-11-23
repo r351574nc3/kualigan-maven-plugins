@@ -242,8 +242,9 @@
         <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
         <maven-invoker.version>2.1.1</maven-invoker.version>
         <plugin.compiler.version>2.5.1</plugin.compiler.version>
-        <maven-plugin-plugin.version>3.1</maven-plugin-plugin.version>
-        <mavenVersion>3.0.3</mavenVersion>
+        <maven-plugin-api.version>3.1.1</maven-plugin-api.version>
+        <maven-plugin-plugin.version>3.2</maven-plugin-plugin.version>
+        <mavenVersion>3.1.1</mavenVersion>
         <!-- used for escape -->
         <!--
             <begin>${${$}}{</begin>
@@ -297,13 +298,11 @@
                 <artifactId>plexus-archiver</artifactId>
                 <version>${plexus-archiver.version}</version>
             </dependency>
-            <!--
             <dependency>
                 <groupId>org.apache.maven.plugin-testing</groupId>
                 <artifactId>maven-plugin-testing-harness</artifactId>
-                <version>2.0</version>
+                <version>2.1</version>
             </dependency>
-            -->
             <dependency>
                 <groupId>com.sun.codemodel</groupId>
                 <artifactId>codemodel</artifactId>
