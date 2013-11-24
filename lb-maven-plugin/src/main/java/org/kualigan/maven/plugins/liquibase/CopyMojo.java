@@ -663,10 +663,15 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         getLog().info(MavenUtils.LOG_SEPARATOR);
 
         if (source != null) {
-            AuthenticationInfo info = wagonManager.getAuthenticationInfo(source);
-            if (info != null) {
-                sourceUser = info.getUserName();
-                sourcePass = info.getPassword();
+            try {
+                final AuthenticationInfo info = wagonManager.getAuthenticationInfo(source);
+                if (info != null) {
+                    sourceUser = info.getUserName();
+                    sourcePass = info.getPassword();
+                }
+            }
+            catch (Exception e) {
+                // error getting authentication 
             }
         }
 
@@ -677,10 +682,15 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
         }
 
         if (target != null) {
-            AuthenticationInfo info = wagonManager.getAuthenticationInfo(target);
-            if (info != null) {
-                targetUser = info.getUserName();
-                targetPass = info.getPassword();
+            try {
+                final AuthenticationInfo info = wagonManager.getAuthenticationInfo(target);
+                if (info != null) {
+                    targetUser = info.getUserName();
+                    targetPass = info.getPassword();
+                }
+            }
+            catch (Exception e) {
+                // Error getting authentication info 
             }
         }
         
