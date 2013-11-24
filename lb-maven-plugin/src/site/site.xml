@@ -8,8 +8,8 @@
     </bannerLeft>
 
     <skin>
-      <artifactId>maven-kuali-skin</artifactId>
-      <groupId>org.kuali.maven.skins</groupId>
+      <artifactId>kualigan-maven-skin</artifactId>
+      <groupId>org.kualigan.maven.skins</groupId>
       <version>${version}</version>
     </skin>
 
