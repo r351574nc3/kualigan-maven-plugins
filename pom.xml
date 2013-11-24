@@ -233,9 +233,7 @@
                     <version>${maven-plugin-plugin.version}</version>
                     <configuration>
                         <goalPrefix>${kualigan.plugin.prefix}</goalPrefix>
-                        <!--                           
                         <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                        -->
                     </configuration>
                     <executions>
                         <execution>
@@ -250,7 +248,6 @@
                             <goals>
                                 <goal>helpmojo</goal>
                             </goals>
-                            <phase>process-classes</phase>
                         </execution>
                     </executions>
                 </plugin>
