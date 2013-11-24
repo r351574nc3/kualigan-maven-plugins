@@ -223,29 +223,6 @@
                     <artifactId>site-maven-plugin</artifactId>
                 </plugin>
                 <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-plugin-plugin</artifactId>
-                    <version>${maven-plugin-plugin.version}</version>
-                    <configuration>
-                        <goalPrefix>redis-server</goalPrefix>
-                        <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                    </configuration>
-                    <executions>
-                        <execution>
-                            <id>mojo-descriptor</id>
-                            <goals>
-                                <goal>descriptor</goal>
-                            </goals>
-                        </execution>
-                        <execution>
-                            <id>help-goal</id>
-                            <goals>
-                                <goal>helpmojo</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
-                <plugin>
                     <groupId>org.sonatype.plugins</groupId>
                     <artifactId>nexus-maven-plugin</artifactId>
                     <version>${plugin.nexus.version}</version>
@@ -256,7 +233,9 @@
                     <version>${maven-plugin-plugin.version}</version>
                     <configuration>
                         <goalPrefix>${kualigan.plugin.prefix}</goalPrefix>
+                        <!--                           
                         <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+                        -->
                     </configuration>
                     <executions>
                         <execution>
@@ -271,6 +250,7 @@
                             <goals>
                                 <goal>helpmojo</goal>
                             </goals>
+                            <phase>process-classes</phase>
                         </execution>
                     </executions>
                 </plugin>
@@ -285,24 +265,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>${maven-plugin-plugin.version}</version>
-                <configuration>
-                    <goalPrefix>redis-server</goalPrefix>
-                    <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>mojo-descriptor</id>
-                        <goals>
-                            <goal>descriptor</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>help-goal</id>
-                        <goals>
-                            <goal>helpmojo</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
         <extensions>
