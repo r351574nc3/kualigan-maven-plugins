@@ -14,194 +14,205 @@ limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>${kcPrototypeGroupId}</groupId>
-    <artifactId>${kcPrototypeArtifactId}</artifactId>
-    <version>${kcPrototypeVersion}</version>
-  </parent>
-  <groupId>${groupId}</groupId>
-  <artifactId>${artifactId}</artifactId>
-  <packaging>pom</packaging>
-  <name>Kuali Coeus Research Administration</name>
-  <inceptionYear>2012</inceptionYear>
-  <version>${version}</version>
-  <url>http://www.kuali.org/kc</url>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>${groupId}</groupId>
+    <artifactId>${artifactId}</artifactId>
+    <packaging>pom</packaging>
+    <name>Kuali Coeus Research Administration</name>
+    <inceptionYear>2012</inceptionYear>
+    <version>${version}</version>
+    <url>http://www.kuali.org/kc</url>
 
-  <licenses>
-    <license>
-      <name>Educational Community License 2.0</name>
-      <url>http://www.opensource.org/licenses/ecl2.txt</url>
-      <distribution>manual</distribution>
-    </license>
-  </licenses>
-  
-  <developers>
-    <developer>
-      <id>leo</id>
-      <name>Leo Przybylski</name>
-      <email>leo@rsmart.com</email>
-      <url>http://kualigan.blogspot.com</url>
-      <organization>rsmart</organization>
-      <organizationUrl>http://www.rsmart.com</organizationUrl>
-      <roles>
-        <role>developer</role>
-      </roles>
-      <timezone>-7</timezone>
-      <properties>
-        <picUrl>http://www.gravatar.com/avatar/6be04114e185b6fa626a0ee530db34e4.png</picUrl>
-      </properties>
-    </developer>
-  </developers>
-  
-  <ciManagement>
-    <url>http://ci.kualigan.org</url>
-  </ciManagement>
-
-  <!-- Properties later populated into configuration.properties -->
-  <properties>
-    <bouncycastle.version>1.46</bouncycastle.version>
-    <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
-    <cxf.version>2.2.9</cxf.version>
-    <jetty.version>8.1.5.v20120716</jetty.version>
-    <jsp-api.version>2.1</jsp-api.version>
-    <jsp.version>2.1</jsp.version>
-    <jstl.version>1.2</jstl.version>
-    <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
-    <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
-    <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
-    <mysql-connector-java.version>5.1.16</mysql-connector-java.version>
-    <ojdbc6.version>11.2.0.2</ojdbc6.version>
-    <servlet.version>2.5</servlet.version>
-    <slf4j.version>1.6.4</slf4j.version>
-    <spring.ldap.version>1.3.1.RELEASE</spring.ldap.version>
-    <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
-
-    <jetty.phase>none</jetty.phase>
-    <kc.maven.version>5.1.1</kc.maven.version>
-    <kc.external.unpack.phase>none</kc.external.unpack.phase>
-    <kc.web.unpack.phase>none</kc.web.unpack.phase>
+    <licenses>
+        <license>
+            <name>Educational Community License 2.0</name>
+            <url>http://www.opensource.org/licenses/ecl2.txt</url>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
     
-    <!-- kc Properties -->
-    <build.environment>dev</build.environment>
-    <default.context.path>${project.parent.artifactId}</default.context.path>
-  </properties>
-  
-  <dependencyManagement>
-    <dependencies>
-    <!--
-        These are the prototype dependencies. It is used by the overlay to refer back
-        to the classes in the prototype.
-      -->
-      <dependency>
-        <groupId>${kcPrototypeGroupId}</groupId>
-        <artifactId>${kcPrototypeArtifactId}</artifactId>
-        <version>${kcPrototypeVersion}</version>
-        <type>war</type>
-        <scope>provided</scope>
-      </dependency>
-      
-      <dependency>
-        <groupId>${kcPrototypeGroupId}</groupId>
-        <artifactId>${kcPrototypeArtifactId}</artifactId>
-        <version>${kcPrototypeVersion}</version>
-        <classifier>classes</classifier>
-        <type>jar</type>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
-  
-  <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-clean-plugin</artifactId>
-            <version>${maven-clean-plugin.version}</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.tomcat.maven</groupId>
-          <artifactId>tomcat7-maven-plugin</artifactId>
-          <version>${tomcat7-maven-plugin.version}</version>
-            <dependencies>
-                <dependency>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                    <version>${log4j.version}</version>
-                </dependency>
-                <dependency>
-                    <groupId>${driver.groupId}</groupId>
-                    <artifactId>${driver.artifactId}</artifactId>
-                    <version>${driver.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
-        </plugin>
-        <plugin>
-          <groupId>org.mortbay.jetty</groupId>
-          <artifactId>jetty-maven-plugin</artifactId>
-          <version>${jetty.version}</version>
-            <dependencies>
-                <dependency>
-                    <groupId>${driver.groupId}</groupId>
-                    <artifactId>${driver.artifactId}</artifactId>
-                    <version>${driver.version}</version>
-                    <scope>runtime</scope>
-                </dependency>
-            </dependencies>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-war-plugin</artifactId>
-          <version>${maven-war-plugin.version}</version>
-          <configuration>
-            <overlays>
-              <overlay>
+    <developers>
+        <developer>
+            <id>leo</id>
+            <name>Leo Przybylski</name>
+            <email>leo@rsmart.com</email>
+            <url>http://kualigan.blogspot.com</url>
+            <organization>rsmart</organization>
+            <organizationUrl>http://www.rsmart.com</organizationUrl>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>-7</timezone>
+            <properties>
+                <picUrl>http://www.gravatar.com/avatar/6be04114e185b6fa626a0ee530db34e4.png</picUrl>
+            </properties>
+        </developer>
+    </developers>
+    
+    <ciManagement>
+        <url>http://ci.kualigan.org</url>
+    </ciManagement>
+
+    <!-- Properties later populated into configuration.properties -->
+    <properties>
+        <bouncycastle.version>1.46</bouncycastle.version>
+        <commons-beanutils.version>1.8.3-kuali</commons-beanutils.version>
+        <cxf.version>2.2.9</cxf.version>
+        <javamelody.version>1.48.0</javamelody.version>
+        <jetty.version>8.1.5.v20120716</jetty.version>
+        <jsp-api.version>2.1</jsp-api.version>
+        <jsp.version>2.1</jsp.version>
+        <jstl.version>1.2</jstl.version>
+        <kuali.nexus.sonatype.phase>none</kuali.nexus.sonatype.phase>
+        <log4j.version>1.2.17</log4j.version>
+        <maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+        <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
+        <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+        <maven-war-plugin.version>2.4</maven-war-plugin.version>
+        <mysql-connector-java.version>5.1.16</mysql-connector-java.version>
+        <ojdbc6.version>11.2.0.2</ojdbc6.version>
+        <servlet.version>2.5</servlet.version>
+        <slf4j.version>1.6.4</slf4j.version>
+        <spring.ldap.version>1.3.1.RELEASE</spring.ldap.version>
+        <tomcat7-maven-plugin.version>2.0-beta-1</tomcat7-maven-plugin.version>
+
+        <jetty.phase>none</jetty.phase>
+        <kc.maven.version>5.1.1</kc.maven.version>
+        <kc.external.unpack.phase>none</kc.external.unpack.phase>
+        <kc.web.unpack.phase>none</kc.web.unpack.phase>
+        
+        <!-- kc Properties -->
+        <build.environment>dev</build.environment>
+        <default.context.path>${project.parent.artifactId}</default.context.path>
+    </properties>
+    
+    <dependencyManagement>
+        <dependencies>
+            <!--
+                These are the prototype dependencies. It is used by the overlay to refer back
+                to the classes in the prototype.
+              -->
+            <dependency>
                 <groupId>${kcPrototypeGroupId}</groupId>
                 <artifactId>${kcPrototypeArtifactId}</artifactId>
-                <excludes>
-                  <exclude>WEB-INF/classes/ApplicationResources.properties</exclude>
-                  <exclude>WEB-INF/tags/portal/</exclude>
-                  <exclude>WEB-INF/web.xml</exclude>
-                  <exclude>**/web.xml</exclude>
-                  <exclude>**/lib/**</exclude>
-                </excludes>
-              </overlay>
-            </overlays>
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-
-  <profiles>
-    <profile>
-      <id>apacheds</id>
-      <properties>
-        <ldap.spring.source.files>,com/rsmart/kuali/rice/kim/ldap/config/KIMLdapServerSpringBeans.xml,com/rsmart/kuali/rice/kim/ldap/config/KIMLdapSpringBeans.xml</ldap.spring.source.files>
-        <apacheds.version>1.5.7</apacheds.version>
-      </properties>
-      <dependencyManagement>
-        <dependencies>
-          <dependency>
-            <groupId>org.apache.directory.server</groupId>
-            <artifactId>apacheds-all</artifactId>
-            <version>${apachedsVersion}</version>
-          </dependency>
+                <version>${kcPrototypeVersion}</version>
+                <type>war</type>
+                <scope>provided</scope>
+            </dependency>
+            
+            <dependency>
+                <groupId>${kcPrototypeGroupId}</groupId>
+                <artifactId>${kcPrototypeArtifactId}</artifactId>
+                <version>${kcPrototypeVersion}</version>
+                <classifier>classes</classifier>
+                <type>jar</type>
+            </dependency>
+            
+            <dependency>
+                <groupId>net.bull.javamelody</groupId>
+                <artifactId>javamelody-core</artifactId>
+                <version>${javamelody.version}</version>
+            </dependency>
+            
         </dependencies>
-      </dependencyManagement>
-    </profile>
+    </dependencyManagement>
+    
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <version>${maven-antrun-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-clean-plugin</artifactId>
+                    <version>${maven-clean-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>${tomcat7-maven-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>log4j</groupId>
+                            <artifactId>log4j</artifactId>
+                            <version>${log4j.version}</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>${driver.groupId}</groupId>
+                            <artifactId>${driver.artifactId}</artifactId>
+                            <version>${driver.version}</version>
+                            <scope>runtime</scope>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>${jetty.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>${driver.groupId}</groupId>
+                            <artifactId>${driver.artifactId}</artifactId>
+                            <version>${driver.version}</version>
+                            <scope>runtime</scope>
+                        </dependency>
+                    </dependencies>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${maven-war-plugin.version}</version>
+                    <configuration>
+                        <overlays>
+                            <overlay>
+                                <groupId>${kcPrototypeGroupId}</groupId>
+                                <artifactId>${kcPrototypeArtifactId}</artifactId>
+                                <excludes>
+                                    <exclude>WEB-INF/classes/ApplicationResources.properties</exclude>
+                                    <exclude>WEB-INF/tags/portal/</exclude>
+                                    <exclude>WEB-INF/web.xml</exclude>
+                                    <exclude>**/web.xml</exclude>
+                                    <exclude>**/lib/**</exclude>
+                                </excludes>
+                            </overlay>
+                        </overlays>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
-    <profile>
-      <id>clustered</id>
-      <properties>
-        <distributable.tag><![CDATA[<distributable />]]></distributable.tag>
-      </properties>
-    </profile>
-    <profile>
-      <id>cas</id>
-      <properties>
-        <authentication.filter.definition>
+    <profiles>
+        <profile>
+            <id>apacheds</id>
+            <properties>
+                <ldap.spring.source.files>,com/rsmart/kuali/rice/kim/ldap/config/KIMLdapServerSpringBeans.xml,com/rsmart/kuali/rice/kim/ldap/config/KIMLdapSpringBeans.xml</ldap.spring.source.files>
+                <apacheds.version>1.5.7</apacheds.version>
+            </properties>
+            <dependencyManagement>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.directory.server</groupId>
+                        <artifactId>apacheds-all</artifactId>
+                        <version>${apachedsVersion}</version>
+                    </dependency>
+                </dependencies>
+            </dependencyManagement>
+        </profile>
+
+        <profile>
+            <id>clustered</id>
+            <properties>
+                <distributable.tag><![CDATA[<distributable />]]></distributable.tag>
+            </properties>
+        </profile>
+        <profile>
+            <id>cas</id>
+            <properties>
+                <authentication.filter.definition>
         <![CDATA[
             <filter-name>CAS Authentication Filter</filter-name>
                 <filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
@@ -231,10 +242,10 @@ limitations under the License.
                 <filter-class>org.jasig.cas.client.util.HttpServletRequestWrapperFilter</filter-class>
             </filter>
         ]]>
-        </authentication.filter.definition>
-    
-        <authentication.filter.mappings>
-        <![CDATA[
+                </authentication.filter.definition>
+                
+                <authentication.filter.mappings>
+                    <![CDATA[
             <filter-mapping>
                 <filter-name>CAS Authentication Filter</filter-name>
                 <servlet-name>action</servlet-name>
@@ -271,48 +282,48 @@ limitations under the License.
                 <filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
                 <servlet-name>batchFileUpload</servlet-name>
             </filter-mapping>
-        ]]>
-        </authentication.filter.mappings>
-      </properties>
-    </profile>
-   <profile>
-     <id>mysql</id>
-     <activation>
-        <activeByDefault>true</activeByDefault>
-     </activation>
-     <properties>
-         <driver.groupId>mysql</driver.groupId>
-         <driver.artifactId>mysql-connector-java</driver.artifactId>
-         <driver.version>${mysql-connector-java.version}</driver.version>
-     </properties>
-   </profile>
-   <profile>
-     <id>oracle</id>
-     <properties>
-         <driver.groupId>com.oracle</driver.groupId>
-         <driver.artifactId>ojdbc6</driver.artifactId>
-         <driver.version>${ojdbc6.version}</driver.version>
-     </properties>
-   </profile>
-   <profile>
-    <id>jetty</id>
-    <properties>
-        <jetty.phase>verify</jetty.phase>
-    </properties>
-   </profile>
-  </profiles>
+            ]]>
+                </authentication.filter.mappings>
+            </properties>
+        </profile>
+        <profile>
+            <id>mysql</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <driver.groupId>mysql</driver.groupId>
+                <driver.artifactId>mysql-connector-java</driver.artifactId>
+                <driver.version>${mysql-connector-java.version}</driver.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>oracle</id>
+            <properties>
+                <driver.groupId>com.oracle</driver.groupId>
+                <driver.artifactId>ojdbc6</driver.artifactId>
+                <driver.version>${ojdbc6.version}</driver.version>
+            </properties>
+        </profile>
+        <profile>
+            <id>jetty</id>
+            <properties>
+                <jetty.phase>verify</jetty.phase>
+            </properties>
+        </profile>
+    </profiles>
 
-  <repositories>
-    <repository>
-      <id>github</id>
-      <name>Kualigan at GitHub</name>
-      <url>http://kualigan.github.com/repository</url>
-    </repository>   
-  </repositories>
-  <modules>
-    <module>config</module>
-    <module>core</module>
-    <module>it</module>
-    <module>web</module>
-  </modules>
+    <repositories>
+        <repository>
+            <id>github</id>
+            <name>Kualigan at GitHub</name>
+            <url>http://kualigan.github.com/repository</url>
+        </repository>   
+    </repositories>
+    <modules>
+        <module>config</module>
+        <module>core</module>
+        <module>it</module>
+        <module>web</module>
+    </modules>
 </project>
