@@ -33,6 +33,7 @@
         <dependency>
             <groupId>${kcPrototypeGroupId}</groupId>
             <artifactId>${kcPrototypeArtifactId}</artifactId>
+            <classifier>classes</classifier>
         </dependency>
     </dependencies>
     
