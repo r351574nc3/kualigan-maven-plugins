@@ -165,6 +165,7 @@ limitations under the License.
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
                     <version>${maven-war-plugin.version}</version>
+                    <!--
                     <configuration>
                         <overlays>
                             <overlay>
@@ -180,6 +181,7 @@ limitations under the License.
                             </overlay>
                         </overlays>
                     </configuration>
+                    -->
                 </plugin>
             </plugins>
         </pluginManagement>
