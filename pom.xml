@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
     
     <name>Kualigan Maven Plugins</name>
-    <version>2.0.0</version>
+    <version>2.0.1-SNAPSHOT</version>
     <description>A collection of maven plugins</description>
     <url>https://github.com/r351574nc3/kualigan-maven-plugins/</url>
     <licenses>
