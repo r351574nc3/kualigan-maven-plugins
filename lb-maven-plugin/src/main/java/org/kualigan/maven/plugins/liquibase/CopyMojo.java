@@ -1,4 +1,4 @@
-// Copyright 2011 Leo Przybylski. All rights reserved.
+// Copyright 2014 Leo Przybylski. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification, are
 // permitted provided that the following conditions are met:
@@ -10,7 +10,7 @@
 //       of conditions and the following disclaimer in the documentation and/or other materials
 //       provided with the distribution.
 //
-// THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDER> ''AS IS'' AND ANY EXPRESS OR IMPLIED
+// THIS SOFTWARE IS PROVIDED BY Leo Przybylski ''AS IS'' AND ANY EXPRESS OR IMPLIED
 // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 // FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> OR
 // CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
@@ -59,9 +59,31 @@ import org.codehaus.plexus.util.IOUtil;
 import org.codehaus.plexus.util.StringUtils;
 import org.codehaus.plexus.util.cli.CommandLineUtils;
 
+import liquibase.CatalogAndSchema;
 import liquibase.Liquibase;
+import liquibase.resource.CompositeResourceAccessor;
+import liquibase.resource.FileSystemResourceAccessor;
+import liquibase.resource.ResourceAccessor;
+import liquibase.integration.ant.AntResourceAccessor;
+import liquibase.integration.ant.BaseLiquibaseTask;
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
+import liquibase.database.core.H2Database;
+import liquibase.database.jvm.JdbcConnection;
+import liquibase.structure.DatabaseObject;
+import liquibase.snapshot.DatabaseSnapshot;
+import liquibase.snapshot.SnapshotControl;
+import liquibase.snapshot.SnapshotGeneratorFactory;
+import org.apache.tools.ant.BuildException;
+
+import org.h2.tools.Backup;
+import org.h2.tools.DeleteDbFiles;
+
+import liquibase.ext.kualigan.diff.DiffGenerator;
+import liquibase.diff.DiffGeneratorFactory;
+import liquibase.diff.DiffResult;
+import liquibase.diff.compare.CompareControl;
+
 import liquibase.database.core.H2Database;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
@@ -69,16 +91,10 @@ import liquibase.logging.LogFactory;
 import liquibase.serializer.ChangeLogSerializer;
 import liquibase.parser.core.xml.LiquibaseEntityResolver;
 import liquibase.parser.core.xml.XMLChangeLogSAXParser;
-import liquibase.resource.CompositeResourceAccessor;
-import liquibase.resource.FileSystemResourceAccessor;
-import liquibase.resource.ResourceAccessor;
 
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
 import liquibase.util.xml.DefaultXmlWriter;
-
-import org.kualigan.tools.liquibase.Diff;
-import org.kualigan.tools.liquibase.DiffResult;
 
 import org.w3c.dom.*;
 
@@ -111,10 +127,10 @@ import java.util.StringTokenizer;
  *
  * @author Leo Przybylski
  */
- @Mojo(
-     name="copy-database",
-     requiresProject = false
-     )
+@Mojo(
+      name="copy-database",
+      requiresProject = false
+      )
 public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
     public static final String DEFAULT_CHANGELOG_PATH = "src/main/changelogs";
 
@@ -297,7 +313,7 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
     protected boolean stateSaved;
     
     protected Boolean isStateSaved() {
-        return stateSaved;
+	return stateSaved;
     }
 
     /**
@@ -308,118 +324,118 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
     protected File mavenHome;
 
     protected File getBasedir() {
-        return project.getBasedir();
+	return project.getBasedir();
     }
     
     protected String getChangeLogFile() throws MojoExecutionException {
-        if (changeLogFile != null) {
-            return changeLogFile;
-        }
+	if (changeLogFile != null) {
+	    return changeLogFile;
+	}
         
-        try {
-            changeLogFile = changeLogSavePath.getCanonicalPath();
-            new File(changeLogFile).mkdirs();
-            changeLogFile += File.separator + targetUser;
-            return changeLogFile;
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException("Exception getting the location of the change log file: " + e.getMessage(), e);
-        }
+	try {
+	    changeLogFile = changeLogSavePath.getCanonicalPath();
+	    new File(changeLogFile).mkdirs();
+	    changeLogFile += File.separator + targetUser;
+	    return changeLogFile;
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException("Exception getting the location of the change log file: " + e.getMessage(), e);
+	}
     }
 
     protected void doFieldHack() {
-        for (final Field field : getClass().getDeclaredFields()) {
-            try {
-                final Field parentField = getDeclaredField(getClass().getSuperclass(), field.getName());
-                if (parentField != null) {
-                    getLog().debug("Setting " + field.getName() + " in " + parentField.getDeclaringClass().getName() + " to " + field.get(this));
-                    parentField.set(this, field.get(this));
-                }
-            }
-            catch (Exception e) {
-            }
-        }
+	for (final Field field : getClass().getDeclaredFields()) {
+	    try {
+		final Field parentField = getDeclaredField(getClass().getSuperclass(), field.getName());
+		if (parentField != null) {
+		    getLog().debug("Setting " + field.getName() + " in " + parentField.getDeclaringClass().getName() + " to " + field.get(this));
+		    parentField.set(this, field.get(this));
+		}
+	    }
+	    catch (Exception e) {
+	    }
+	}
     }
 
 
     /*
-    @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
-        doFieldHack();
+      @Override
+      public void execute() throws MojoExecutionException, MojoFailureException {
+      doFieldHack();
 
-        try {
-            Method meth = AbstractLiquibaseMojo.class.getDeclaredMethod("processSystemProperties");
-            meth.setAccessible(true);
-            meth.invoke(this);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+      try {
+      Method meth = AbstractLiquibaseMojo.class.getDeclaredMethod("processSystemProperties");
+      meth.setAccessible(true);
+      meth.invoke(this);
+      }
+      catch (Exception e) {
+      e.printStackTrace();
+      }
 
-        ClassLoader artifactClassLoader = getMavenArtifactClassLoader();
-        configureFieldsAndValues(getFileOpener(artifactClassLoader));
+      ClassLoader artifactClassLoader = getMavenArtifactClassLoader();
+      configureFieldsAndValues(getFileOpener(artifactClassLoader));
         
-        doFieldHack();
+      doFieldHack();
 
         
-        super.execute();
-    }
+      super.execute();
+      }
     */
     
     public ClassLoader getMavenArtifactClassloader() throws MojoExecutionException {
-        try {
-            return MavenUtils.getArtifactClassloader(project, true, false, getClass(), getLog(), false);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+	try {
+	    return MavenUtils.getArtifactClassloader(project, true, false, getClass(), getLog(), false);
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	}
     }
     
     public String lookupDriverFor(final String url) {
-        for (final Database databaseImpl : DatabaseFactory.getInstance().getImplementedDatabases()) {
-            final String driver = databaseImpl.getDefaultDriver(url);
-            if (driver != null) {
-                return driver;
-            }
-        }
-        return null;
+	for (final Database databaseImpl : DatabaseFactory.getInstance().getImplementedDatabases()) {
+	    final String driver = databaseImpl.getDefaultDriver(url);
+	    if (driver != null) {
+		return driver;
+	    }
+	}
+	return null;
     }
     
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (project == null || project.getArtifactId().equalsIgnoreCase("standalone-pom")) {
-            getLog().info("Using standalone-pom. No project. I have to create one.");
-            generateArchetype(getMavenHome(), new Properties() {{
-                        setProperty("archetypeGroupId",      "org.kualigan.maven.archetypes");
-                        setProperty("archetypeArtifactId",   "lb-copy-archetype");
-                        setProperty("archetypeVersion",      "1.1.7");
-                        setProperty("groupId",               "org.kualigan.liquibase");
-                        setProperty("artifactId",            "copy");
-                        setProperty("version",               "1.0.0-SNAPSHOT");
-                    }});
+	if (project == null || project.getArtifactId().equalsIgnoreCase("standalone-pom")) {
+	    getLog().info("Using standalone-pom. No project. I have to create one.");
+	    generateArchetype(getMavenHome(), new Properties() {{
+		setProperty("archetypeGroupId",      "org.kualigan.maven.archetypes");
+		setProperty("archetypeArtifactId",   "lb-copy-archetype");
+		setProperty("archetypeVersion",      "1.1.7");
+		setProperty("groupId",               "org.kualigan.liquibase");
+		setProperty("artifactId",            "copy");
+		setProperty("version",               "1.0.0-SNAPSHOT");
+	    }});
             
-            invokeCopy(getMavenHome(), new Properties() {{
-                        setProperty("lb.copy.source",        source);
-                        setProperty("lb.copy.source.url",    sourceUrl);
-                        if (sourceDriverClass != null) {
-                            setProperty("lb.copy.source.driver", sourceDriverClass);
-                        }
-                        if (sourceSchema != null) {
-                            setProperty("lb.copy.source.schema", sourceSchema);
-                        }
-                        setProperty("lb.copy.target",        target);
-                        setProperty("lb.copy.target.url",    targetUrl);
-                        if (targetDriverClass != null) {
-                            setProperty("lb.copy.target.driver", targetDriverClass);
-                        }
-                        if (targetSchema != null) {
-                            setProperty("lb.copy.target.schema", targetSchema);
-                        }
-                    }});
+	    invokeCopy(getMavenHome(), new Properties() {{
+		setProperty("lb.copy.source",        source);
+		setProperty("lb.copy.source.url",    sourceUrl);
+		if (sourceDriverClass != null) {
+		    setProperty("lb.copy.source.driver", sourceDriverClass);
+		}
+		if (sourceSchema != null) {
+		    setProperty("lb.copy.source.schema", sourceSchema);
+		}
+		setProperty("lb.copy.target",        target);
+		setProperty("lb.copy.target.url",    targetUrl);
+		if (targetDriverClass != null) {
+		    setProperty("lb.copy.target.driver", targetDriverClass);
+		}
+		if (targetSchema != null) {
+		    setProperty("lb.copy.target.schema", targetSchema);
+		}
+	    }});
 
-        }
-        else {
-            doCopy();
-        }
+	}
+	else {
+	    doCopy();
+	}
     }
 
     /**
@@ -427,35 +443,35 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
      * 
      */
     public void invokeCopy(final File mavenHome, final Properties copyProperties) throws MojoExecutionException {
-        final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
-        invoker.setWorkingDirectory(new File(System.getProperty("user.dir") + File.separator + "copy"));
+	final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
+	invoker.setWorkingDirectory(new File(System.getProperty("user.dir") + File.separator + "copy"));
         
-        final String additionalArguments = "";
+	final String additionalArguments = "";
 
-        final InvocationRequest req = new DefaultInvocationRequest()
-                .setInteractive(true)
-                .setProperties(copyProperties);
+	final InvocationRequest req = new DefaultInvocationRequest()
+	    .setInteractive(true)
+	    .setProperties(copyProperties);
         
-        setupRequest(req, additionalArguments);
+	setupRequest(req, additionalArguments);
 
-        req.setGoals(new ArrayList<String>() {{ add("lb:copy-database"); }});
+	req.setGoals(new ArrayList<String>() {{ add("lb:copy-database"); }});
 
-        try {
-            final InvocationResult invocationResult = invoker.execute(req);
+	try {
+	    final InvocationResult invocationResult = invoker.execute(req);
 
-            if ( invocationResult.getExecutionException() != null ) {
-                throw new MojoExecutionException("Error executing Maven.",
-                                                 invocationResult.getExecutionException());
-            }
+	    if ( invocationResult.getExecutionException() != null ) {
+		throw new MojoExecutionException("Error executing Maven.",
+						 invocationResult.getExecutionException());
+	    }
                 
-            if (invocationResult.getExitCode() != 0) {
-                throw new MojoExecutionException(
-                    "Maven execution failed, exit code: \'" + invocationResult.getExitCode() + "\'");
-            }
-        }
-        catch (MavenInvocationException e) {
-            throw new MojoExecutionException( "Failed to invoke Maven build.", e );
-        }
+	    if (invocationResult.getExitCode() != 0) {
+		throw new MojoExecutionException(
+						 "Maven execution failed, exit code: \'" + invocationResult.getExitCode() + "\'");
+	    }
+	}
+	catch (MavenInvocationException e) {
+	    throw new MojoExecutionException( "Failed to invoke Maven build.", e );
+	}
     }
 
     /**
@@ -463,397 +479,394 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
      * 
      */
     public void generateArchetype(final File mavenHome, final Properties archetypeProperties) throws MojoExecutionException {
-        final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
+	final Invoker invoker = new DefaultInvoker().setMavenHome(mavenHome);
         
-        final String additionalArguments = "";
+	final String additionalArguments = "";
 
-        final InvocationRequest req = new DefaultInvocationRequest()
-                .setInteractive(false)
-                .setProperties(archetypeProperties);
+	final InvocationRequest req = new DefaultInvocationRequest()
+	    .setInteractive(false)
+	    .setProperties(archetypeProperties);
                     
-        setupRequest(req, additionalArguments);
+	setupRequest(req, additionalArguments);
 
-        req.setGoals(new ArrayList<String>() {{ add("archetype:generate"); }});
+	req.setGoals(new ArrayList<String>() {{ add("archetype:generate"); }});
 
-        try {
-            final InvocationResult invocationResult = invoker.execute(req);
+	try {
+	    final InvocationResult invocationResult = invoker.execute(req);
 
-            if ( invocationResult.getExecutionException() != null ) {
-                throw new MojoExecutionException("Error executing Maven.",
-                                                 invocationResult.getExecutionException());
-            }
+	    if ( invocationResult.getExecutionException() != null ) {
+		throw new MojoExecutionException("Error executing Maven.",
+						 invocationResult.getExecutionException());
+	    }
                 
-            if (invocationResult.getExitCode() != 0) {
-                throw new MojoExecutionException(
-                    "Maven execution failed, exit code: \'" + invocationResult.getExitCode() + "\'");
-            }
-        }
-        catch (MavenInvocationException e) {
-            throw new MojoExecutionException( "Failed to invoke Maven build.", e );
-        }
+	    if (invocationResult.getExitCode() != 0) {
+		throw new MojoExecutionException(
+						 "Maven execution failed, exit code: \'" + invocationResult.getExitCode() + "\'");
+	    }
+	}
+	catch (MavenInvocationException e) {
+	    throw new MojoExecutionException( "Failed to invoke Maven build.", e );
+	}
     }
 
     /**
      * 
      */
     protected void setupRequest(final InvocationRequest req,
-                              final String additionalArguments) throws MojoExecutionException {
-        try {
-            final String[] args = CommandLineUtils.translateCommandline(additionalArguments);
-            CommandLine cli = new PosixParser().parse(OPTIONS, args);
+				final String additionalArguments) throws MojoExecutionException {
+	try {
+	    final String[] args = CommandLineUtils.translateCommandline(additionalArguments);
+	    CommandLine cli = new PosixParser().parse(OPTIONS, args);
 
-            if (cli.hasOption( SET_SYSTEM_PROPERTY)) {
-                String[] properties = cli.getOptionValues(SET_SYSTEM_PROPERTY);
-                Properties props = new Properties();
-                for ( int i = 0; i < properties.length; i++ )
-                {
-                    String property = properties[i];
-                    String name, value;
-                    int sep = property.indexOf( "=" );
-                    if ( sep <= 0 )
-                    {
-                        name = property.trim();
-                        value = "true";
-                    }
-                    else
-                    {
-                        name = property.substring( 0, sep ).trim();
-                        value = property.substring( sep + 1 ).trim();
-                    }
-                    props.setProperty( name, value );
-                }
+	    if (cli.hasOption( SET_SYSTEM_PROPERTY)) {
+		String[] properties = cli.getOptionValues(SET_SYSTEM_PROPERTY);
+		Properties props = new Properties();
+		for ( int i = 0; i < properties.length; i++ )
+		    {
+			String property = properties[i];
+			String name, value;
+			int sep = property.indexOf( "=" );
+			if ( sep <= 0 )
+			    {
+				name = property.trim();
+				value = "true";
+			    }
+			else
+			    {
+				name = property.substring( 0, sep ).trim();
+				value = property.substring( sep + 1 ).trim();
+			    }
+			props.setProperty( name, value );
+		    }
 
-                req.setProperties( props );
-            }
+		req.setProperties( props );
+	    }
 
-            if ( cli.hasOption( OFFLINE ) )
-            {
-                req.setOffline( true );
-            }
+	    if ( cli.hasOption( OFFLINE ) )
+		{
+		    req.setOffline( true );
+		}
 
-            if ( cli.hasOption( QUIET ) )
-            {
-                // TODO: setQuiet() currently not supported by InvocationRequest
-                req.setDebug( false );
-            }
-            else if ( cli.hasOption( DEBUG ) )
-            {
-                req.setDebug( true );
-            }
-            else if ( cli.hasOption( ERRORS ) )
-            {
-                req.setShowErrors( true );
-            }
+	    if ( cli.hasOption( QUIET ) )
+		{
+		    // TODO: setQuiet() currently not supported by InvocationRequest
+		    req.setDebug( false );
+		}
+	    else if ( cli.hasOption( DEBUG ) )
+		{
+		    req.setDebug( true );
+		}
+	    else if ( cli.hasOption( ERRORS ) )
+		{
+		    req.setShowErrors( true );
+		}
 
-            if ( cli.hasOption( REACTOR ) )
-            {
-                req.setRecursive( true );
-            }
-            else if ( cli.hasOption( NON_RECURSIVE ) )
-            {
-                req.setRecursive( false );
-            }
+	    if ( cli.hasOption( REACTOR ) )
+		{
+		    req.setRecursive( true );
+		}
+	    else if ( cli.hasOption( NON_RECURSIVE ) )
+		{
+		    req.setRecursive( false );
+		}
 
-            if ( cli.hasOption( UPDATE_SNAPSHOTS ) )
-            {
-                req.setUpdateSnapshots( true );
-            }
+	    if ( cli.hasOption( UPDATE_SNAPSHOTS ) )
+		{
+		    req.setUpdateSnapshots( true );
+		}
 
-            if ( cli.hasOption( ACTIVATE_PROFILES ) )
-            {
-                String[] profiles = cli.getOptionValues( ACTIVATE_PROFILES );
-                List<String> activatedProfiles = new ArrayList<String>();
-                List<String> deactivatedProfiles = new ArrayList<String>();
+	    if (cli.hasOption( ACTIVATE_PROFILES )) {
+		    final String[] profiles = cli.getOptionValues( ACTIVATE_PROFILES );
+		    final List<String> activatedProfiles = new ArrayList<String>();
+		    final List<String> deactivatedProfiles = new ArrayList<String>();
 
-                if ( profiles != null )
-                {
-                    for ( int i = 0; i < profiles.length; ++i )
-                    {
-                        StringTokenizer profileTokens = new StringTokenizer( profiles[i], "," );
+		    if ( profiles != null )
+			{
+			    for ( int i = 0; i < profiles.length; ++i )
+				{
+				    StringTokenizer profileTokens = new StringTokenizer( profiles[i], "," );
 
-                        while ( profileTokens.hasMoreTokens() )
-                        {
-                            String profileAction = profileTokens.nextToken().trim();
+				    while ( profileTokens.hasMoreTokens() )
+					{
+					    String profileAction = profileTokens.nextToken().trim();
 
-                            if ( profileAction.startsWith( "-" ) || profileAction.startsWith( "!" ) )
-                            {
-                                deactivatedProfiles.add( profileAction.substring( 1 ) );
-                            }
-                            else if ( profileAction.startsWith( "+" ) )
-                            {
-                                activatedProfiles.add( profileAction.substring( 1 ) );
-                            }
-                            else
-                            {
-                                activatedProfiles.add( profileAction );
-                            }
-                        }
-                    }
-                }
+					    if ( profileAction.startsWith( "-" ) || profileAction.startsWith( "!" ) )
+						{
+						    deactivatedProfiles.add( profileAction.substring( 1 ) );
+						}
+					    else if ( profileAction.startsWith( "+" ) )
+						{
+						    activatedProfiles.add( profileAction.substring( 1 ) );
+						}
+					    else
+						{
+						    activatedProfiles.add( profileAction );
+						}
+					}
+				}
+			}
 
-                if ( !deactivatedProfiles.isEmpty() )
-                {
-                    getLog().warn( "Explicit profile deactivation is not yet supported. "
-                                          + "The following profiles will NOT be deactivated: " + StringUtils.join(
-                        deactivatedProfiles.iterator(), ", " ) );
-                }
+		    if ( !deactivatedProfiles.isEmpty() )
+			{
+			    getLog().warn( "Explicit profile deactivation is not yet supported. "
+					   + "The following profiles will NOT be deactivated: " + StringUtils.join(
+														   deactivatedProfiles.iterator(), ", " ) );
+			}
 
-                if ( !activatedProfiles.isEmpty() )
-                {
-                    req.setProfiles( activatedProfiles );
-                }
-            }
+		    if ( !activatedProfiles.isEmpty() )
+			{
+			    req.setProfiles( activatedProfiles );
+			}
+		}
 
-            if ( cli.hasOption( FORCE_PLUGIN_UPDATES ) || cli.hasOption( FORCE_PLUGIN_UPDATES2 ) )
-            {
-                getLog().warn( "Forcing plugin updates is not supported currently." );
-            }
-            else if ( cli.hasOption( SUPPRESS_PLUGIN_UPDATES ) )
-            {
-                req.setNonPluginUpdates( true );
-            }
+	    if ( cli.hasOption( FORCE_PLUGIN_UPDATES ) || cli.hasOption( FORCE_PLUGIN_UPDATES2 ) )
+		{
+		    getLog().warn( "Forcing plugin updates is not supported currently." );
+		}
+	    else if ( cli.hasOption( SUPPRESS_PLUGIN_UPDATES ) )
+		{
+		    req.setNonPluginUpdates( true );
+		}
 
-            if ( cli.hasOption( SUPPRESS_PLUGIN_REGISTRY ) )
-            {
-                getLog().warn( "Explicit suppression of the plugin registry is not supported currently." );
-            }
+	    if ( cli.hasOption( SUPPRESS_PLUGIN_REGISTRY ) )
+		{
+		    getLog().warn( "Explicit suppression of the plugin registry is not supported currently." );
+		}
 
-            if ( cli.hasOption( CHECKSUM_FAILURE_POLICY ) )
-            {
-                req.setGlobalChecksumPolicy( InvocationRequest.CHECKSUM_POLICY_FAIL );
-            }
-            else if ( cli.hasOption( CHECKSUM_WARNING_POLICY ) )
-            {
-                req.setGlobalChecksumPolicy( InvocationRequest.CHECKSUM_POLICY_WARN );
-            }
+	    if ( cli.hasOption( CHECKSUM_FAILURE_POLICY ) )
+		{
+		    req.setGlobalChecksumPolicy( InvocationRequest.CHECKSUM_POLICY_FAIL );
+		}
+	    else if ( cli.hasOption( CHECKSUM_WARNING_POLICY ) )
+		{
+		    req.setGlobalChecksumPolicy( InvocationRequest.CHECKSUM_POLICY_WARN );
+		}
 
-            if ( cli.hasOption( ALTERNATE_USER_SETTINGS ) )
-            {
-                req.setUserSettingsFile( new File( cli.getOptionValue( ALTERNATE_USER_SETTINGS ) ) );
-            }
+	    if ( cli.hasOption( ALTERNATE_USER_SETTINGS ) )
+		{
+		    req.setUserSettingsFile( new File( cli.getOptionValue( ALTERNATE_USER_SETTINGS ) ) );
+		}
 
-            if ( cli.hasOption( FAIL_AT_END ) )
-            {
-                req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_AT_END );
-            }
-            else if ( cli.hasOption( FAIL_FAST ) )
-            {
-                req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_FAST );
-            }
-            if ( cli.hasOption( FAIL_NEVER ) )
-            {
-                req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_NEVER );
-            }
-            if ( cli.hasOption( ALTERNATE_POM_FILE ) )
-            {
-                if ( req.getPomFileName() != null ) {
-                    getLog().info("pomFileName is already set, ignoring the -f argument" );
-                }
-                else {
-                    req.setPomFileName(cli.getOptionValue(ALTERNATE_POM_FILE));
-                }
-            }
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException("Failed to re-parse additional arguments for Maven invocation.", e );
-        }
+	    if ( cli.hasOption( FAIL_AT_END ) )
+		{
+		    req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_AT_END );
+		}
+	    else if ( cli.hasOption( FAIL_FAST ) )
+		{
+		    req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_FAST );
+		}
+	    if ( cli.hasOption( FAIL_NEVER ) )
+		{
+		    req.setFailureBehavior( InvocationRequest.REACTOR_FAIL_NEVER );
+		}
+	    if ( cli.hasOption( ALTERNATE_POM_FILE ) )
+		{
+		    if ( req.getPomFileName() != null ) {
+			getLog().info("pomFileName is already set, ignoring the -f argument" );
+		    }
+		    else {
+			req.setPomFileName(cli.getOptionValue(ALTERNATE_POM_FILE));
+		    }
+		}
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException("Failed to re-parse additional arguments for Maven invocation.", e );
+	}
     }
 
     protected void doCopy() throws MojoExecutionException, MojoFailureException {
-        getLog().info(MavenUtils.LOG_SEPARATOR);
+	getLog().info(MavenUtils.LOG_SEPARATOR);
 
-        if (source != null) {
-            AuthenticationInfo info = wagonManager.getAuthenticationInfo(source);
-            if (info != null) {
-                sourceUser = info.getUserName();
-                sourcePass = info.getPassword();
-            }
-        }
+	if (source != null) {
+	    try {
+		final AuthenticationInfo info = wagonManager.getAuthenticationInfo(source);
+		if (info != null) {
+		    sourceUser = info.getUserName();
+		    sourcePass = info.getPassword();
+		}
+	    }
+	    catch (Exception e) {
+		e.printStackTrace();
+	    }
+	}
 
-        sourceDriverClass = lookupDriverFor(sourceUrl);
+	sourceDriverClass = lookupDriverFor(sourceUrl);
         
-        if (sourceSchema == null) {
-            sourceSchema = sourceUser;
-        }
+	if (sourceSchema == null) {
+	    sourceSchema = sourceUser;
+	}
 
-        if (target != null) {
-            AuthenticationInfo info = wagonManager.getAuthenticationInfo(target);
-            if (info != null) {
-                targetUser = info.getUserName();
-                targetPass = info.getPassword();
-            }
-        }
+	if (target != null) {
+	    try {
+		final AuthenticationInfo info = wagonManager.getAuthenticationInfo(target);
+		if (info != null) {
+		    targetUser = info.getUserName();
+		    targetPass = info.getPassword();
+		}
+	    }
+	    catch (Exception e) {
+		e.printStackTrace();
+	    }
+	}
         
-        if (targetSchema == null) {
-            targetSchema = targetUser;
-        }
+	if (targetSchema == null) {
+	    targetSchema = targetUser;
+	}
         
-        targetDriverClass = lookupDriverFor(targetUrl);
+	targetDriverClass = lookupDriverFor(targetUrl);
         
-        final String shouldRunProperty = System.getProperty(Liquibase.SHOULD_RUN_SYSTEM_PROPERTY);
-        if (shouldRunProperty != null && !Boolean.valueOf(shouldRunProperty)) {
-            getLog().info("Liquibase did not run because '" + Liquibase.SHOULD_RUN_SYSTEM_PROPERTY
-                    + "' system property was set to false");
-            return;
-        }
+	getLog().info("project " + project);
 
-        if (skip) {
-            getLog().warn("Liquibase skipped due to maven configuration");
-            return;
-        }
-        
-        getLog().info("project " + project);
+	// processSystemProperties();
+	final ClassLoader artifactClassLoader = getMavenArtifactClassloader();
+	// configureFieldsAndValues(getFileOpener(artifactClassLoader));
 
-        // processSystemProperties();
-        final ClassLoader artifactClassLoader = getMavenArtifactClassloader();
-        // configureFieldsAndValues(getFileOpener(artifactClassLoader));
+	try {
+	    LogFactory.setLoggingLevel(logging);
+	}
+	catch (IllegalArgumentException e) {
+	    throw new MojoExecutionException("Failed to set logging level: " + e.getMessage(),
+					     e);
+	}
 
-        try {
-            LogFactory.setLoggingLevel(logging);
-        }
-        catch (IllegalArgumentException e) {
-            throw new MojoExecutionException("Failed to set logging level: " + e.getMessage(),
-                    e);
-        }
+	// Displays the settings for the Mojo depending of verbosity mode.
+	// displayMojoSettings();
 
-        // Displays the settings for the Mojo depending of verbosity mode.
-        // displayMojoSettings();
-
-        // Check that all the parameters that must be specified have been by the user.
-        //checkRequiredParametersAreSpecified();
+	// Check that all the parameters that must be specified have been by the user.
+	//checkRequiredParametersAreSpecified();
 
 
-        final Database lbSource  = createSourceDatabase();
-        final Database lbTarget  = createTargetDatabase();
+	final Database lbSource  = createSourceDatabase();
+	final Database lbTarget  = createTargetDatabase();
 
-        try {    
-            exportSchema(lbSource, lbTarget);
-            updateSchema(lbTarget);
+	try {    
+	    exportSchema(lbSource, lbTarget);
+	    updateSchema(lbTarget);
             
-            if (isStateSaved()) {
-                getLog().info("Starting data load from schema " + sourceSchema);
-                migrator.migrate(lbSource, lbTarget, getLog(), interactiveMode);
-                // exportData(lbSource, lbTarget);
-            }
+	    if (isStateSaved()) {
+		getLog().info("Starting data load from schema " + sourceSchema);
+		migrator.migrate(lbSource, lbTarget, getLog(), interactiveMode);
+		// exportData(lbSource, lbTarget);
+	    }
             
-            try {
-                updateConstraints(lbTarget, artifactClassLoader);
-            }
-            catch (Exception e) {
-                // Squash  errors for constraints
-            }
+	    try {
+		updateConstraints(lbTarget, artifactClassLoader);
+	    }
+	    catch (Exception e) {
+		// Squash  errors for constraints
+	    }
 
-            if (lbTarget instanceof H2Database) {
-                final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
-                st.execute("SHUTDOWN DEFRAG");
-            }
+	    if (lbTarget instanceof H2Database) {
+		final Statement st = ((JdbcConnection) lbTarget.getConnection()).createStatement();
+		st.execute("SHUTDOWN DEFRAG");
+	    }
             
-        } 
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        } 
-        finally {
-            try {
-                if (lbSource != null) {
-                    lbSource.close();
-                }
-                if (lbTarget != null) {
-                    lbTarget.close();
-                }
-            }
-            catch (Exception e) {
-            }
-        }
+	} 
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	} 
+	finally {
+	    try {
+		if (lbSource != null) {
+		    lbSource.close();
+		}
+		if (lbTarget != null) {
+		    lbTarget.close();
+		}
+	    }
+	    catch (Exception e) {
+	    }
+	}
 
 
-        cleanup(lbSource);
-        cleanup(lbTarget);
+	cleanup(lbSource);
+	cleanup(lbTarget);
         
-        getLog().info(MavenUtils.LOG_SEPARATOR);
-        getLog().info("");
+	getLog().info(MavenUtils.LOG_SEPARATOR);
+	getLog().info("");
     }
     
     protected void updateSchema(final Database target) throws MojoExecutionException {
-        final ClassLoader artifactClassLoader = getMavenArtifactClassloader();
-        updateTables   (target, artifactClassLoader);
-        updateSequences(target, artifactClassLoader);
-        updateViews    (target, artifactClassLoader);
-        updateIndexes  (target, artifactClassLoader);
+	final ClassLoader artifactClassLoader = getMavenArtifactClassloader();
+	updateTables   (target, artifactClassLoader);
+	updateSequences(target, artifactClassLoader);
+	updateViews    (target, artifactClassLoader);
+	updateIndexes  (target, artifactClassLoader);
     }
 
     protected void updateTables(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
-        try {
-            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-tab.xml", getFileOpener(artifactClassLoader), target);
-            liquibase.update(null);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+	try {
+	    final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-tab.xml", getFileOpener(artifactClassLoader), target);
+	    liquibase.update("");
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	}
 
     }
 
     protected void updateSequences(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
-        try {
-            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-seq.xml", getFileOpener(artifactClassLoader), target);
-            liquibase.update(null);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+	try {
+	    final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-seq.xml", getFileOpener(artifactClassLoader), target);
+	    liquibase.update("");
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	}
     }
 
     protected void updateViews(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
-        try {
-            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-vw.xml", getFileOpener(artifactClassLoader), target);
-            liquibase.update(null);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+	try {
+	    final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-vw.xml", getFileOpener(artifactClassLoader), target);
+	    liquibase.update("");
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	}
     }
 
     protected void updateIndexes(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
-        try {
-            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-idx.xml", getFileOpener(artifactClassLoader), target);
-            liquibase.update(null);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+	try {
+	    final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-idx.xml", getFileOpener(artifactClassLoader), target);
+	    liquibase.update("");
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	}
     }
 
     protected void updateConstraints(final Database target, final ClassLoader artifactClassLoader) throws MojoExecutionException {
-        try {
-            final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-cst.xml", getFileOpener(artifactClassLoader), target);
-            liquibase.update(null);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+	try {
+	    final Liquibase liquibase = new Liquibase(getChangeLogFile() + "-cst.xml", getFileOpener(artifactClassLoader), target);
+	    liquibase.update("");
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	}
     }
 
     protected Database createSourceDatabase() throws MojoExecutionException {
-        try {
-            final DatabaseFactory factory = DatabaseFactory.getInstance();
-            final Database retval = factory.findCorrectDatabaseImplementation(openConnection(sourceUrl, sourceUser, sourcePass, sourceDriverClass, ""));
-            retval.setDefaultSchemaName(sourceSchema);
-            return retval;
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+	try {
+	    final DatabaseFactory factory = DatabaseFactory.getInstance();
+	    final Database retval = factory.findCorrectDatabaseImplementation(openConnection(sourceUrl, sourceUser, sourcePass, sourceDriverClass, ""));
+	    retval.setDefaultSchemaName(sourceSchema);
+	    return retval;
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	}
     }
     
     protected Database createTargetDatabase() throws MojoExecutionException {
-        try {   
-            final DatabaseFactory factory = DatabaseFactory.getInstance();
-            final Database retval = factory.findCorrectDatabaseImplementation(openConnection(targetUrl, targetUser, targetPass, targetDriverClass, ""));
-            retval.setDefaultSchemaName(targetSchema);
-            return retval;
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException(e.getMessage(), e);
-        }
+	try {   
+	    final DatabaseFactory factory = DatabaseFactory.getInstance();
+	    final Database retval = factory.findCorrectDatabaseImplementation(openConnection(targetUrl, targetUser, targetPass, targetDriverClass, ""));
+	    retval.setDefaultSchemaName(targetSchema);
+	    return retval;
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException(e.getMessage(), e);
+	}
     }
 
     /**
@@ -863,32 +876,32 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
      * @throws LiquibaseException
      */
     protected void dropAll(final Liquibase liquibase) throws LiquibaseException {
-        boolean retry = true;
-        while (retry) {
-            try {
-                liquibase.dropAll();
-                retry = false;
-            }
-            catch (LiquibaseException e2) {
-                getLog().info(e2.getMessage());
-                if (e2.getMessage().indexOf("ORA-02443") < 0 && e2.getCause() != null && retry) {
-                    retry = (e2.getCause().getMessage().indexOf("ORA-02443") > -1);
-                }
+	boolean retry = true;
+	while (retry) {
+	    try {
+		liquibase.dropAll();
+		retry = false;
+	    }
+	    catch (LiquibaseException e2) {
+		getLog().info(e2.getMessage());
+		if (e2.getMessage().indexOf("ORA-02443") < 0 && e2.getCause() != null && retry) {
+		    retry = (e2.getCause().getMessage().indexOf("ORA-02443") > -1);
+		}
                 
-                if (!retry) {
-                    throw e2;
-                }
-                else {
-                    getLog().info("Got ORA-2443. Retrying...");
-                }
-            }
-        }        
+		if (!retry) {
+		    throw e2;
+		}
+		else {
+		    getLog().info("Got ORA-2443. Retrying...");
+		}
+	    }
+	}        
     }
     
     @Override
     protected void printSettings(String indent) {
-        super.printSettings(indent);
-        getLog().info(indent + "drop first? " + dropFirst);
+	super.printSettings(indent);
+	getLog().info(indent + "drop first? " + dropFirst);
 
     }
 
@@ -902,39 +915,39 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
      *          the file.
      */
     protected void parsePropertiesFile(InputStream propertiesInputStream)
-            throws MojoExecutionException {
-        if (propertiesInputStream == null) {
-            throw new MojoExecutionException("Properties file InputStream is null.");
-        }
-        Properties props = new Properties();
-        try {
-            props.load(propertiesInputStream);
-        }
-        catch (IOException e) {
-            throw new MojoExecutionException("Could not load the properties Liquibase file", e);
-        }
+	throws MojoExecutionException {
+	if (propertiesInputStream == null) {
+	    throw new MojoExecutionException("Properties file InputStream is null.");
+	}
+	Properties props = new Properties();
+	try {
+	    props.load(propertiesInputStream);
+	}
+	catch (IOException e) {
+	    throw new MojoExecutionException("Could not load the properties Liquibase file", e);
+	}
 
-        for (Iterator it = props.keySet().iterator(); it.hasNext();) {
-            String key = null;
-            try {
-                key = (String) it.next();
-                Field field = getDeclaredField(this.getClass(), key);
+	for (Iterator it = props.keySet().iterator(); it.hasNext();) {
+	    String key = null;
+	    try {
+		key = (String) it.next();
+		Field field = getDeclaredField(this.getClass(), key);
 
-                if (propertyFileWillOverride) {
-                    setFieldValue(field, props.get(key).toString());
-                } 
-                else {
-                    if (!isCurrentFieldValueSpecified(field)) {
-                        getLog().debug("  properties file setting value: " + field.getName());
-                        setFieldValue(field, props.get(key).toString());
-                    }
-                }
-            }
-            catch (Exception e) {
-                getLog().info("  '" + key + "' in properties file is not being used by this "
-                        + "task.");
-            }
-        }
+		if (propertyFileWillOverride) {
+		    setFieldValue(field, props.get(key).toString());
+		} 
+		else {
+		    if (!isCurrentFieldValueSpecified(field)) {
+			getLog().debug("  properties file setting value: " + field.getName());
+			setFieldValue(field, props.get(key).toString());
+		    }
+		}
+	    }
+	    catch (Exception e) {
+		getLog().info("  '" + key + "' in properties file is not being used by this "
+			      + "task.");
+	    }
+	}
     }
 
     /**
@@ -946,33 +959,33 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
      * @return <code>true</code> if the user has specified a value.
      */
     private boolean isCurrentFieldValueSpecified(Field f) throws IllegalAccessException {
-        Object currentValue = f.get(this);
-        if (currentValue == null) {
-            return false;
-        }
+	Object currentValue = f.get(this);
+	if (currentValue == null) {
+	    return false;
+	}
 
-        Object defaultValue = getDefaultValue(f);
-        if (defaultValue == null) {
-            return currentValue != null;
-        } else {
-            // There is a default value, check to see if the user has selected something other
-            // than the default
-            return !defaultValue.equals(f.get(this));
-        }
+	Object defaultValue = getDefaultValue(f);
+	if (defaultValue == null) {
+	    return currentValue != null;
+	} else {
+	    // There is a default value, check to see if the user has selected something other
+	    // than the default
+	    return !defaultValue.equals(f.get(this));
+	}
     }
 
     private Object getDefaultValue(Field field) throws IllegalAccessException {
-        List<Field> allFields = new ArrayList<Field>();
-        allFields.addAll(Arrays.asList(getClass().getDeclaredFields()));
-        allFields.addAll(Arrays.asList(AbstractLiquibaseMojo.class.getDeclaredFields()));
+	List<Field> allFields = new ArrayList<Field>();
+	allFields.addAll(Arrays.asList(getClass().getDeclaredFields()));
+	allFields.addAll(Arrays.asList(AbstractLiquibaseMojo.class.getDeclaredFields()));
 
-        for (Field f : allFields) {
-            if (f.getName().equals(field.getName() + DEFAULT_FIELD_SUFFIX)) {
-                f.setAccessible(true);
-                return f.get(this);
-            }
-        }
-        return null;
+	for (Field f : allFields) {
+	    if (f.getName().equals(field.getName() + DEFAULT_FIELD_SUFFIX)) {
+		f.setAccessible(true);
+		return f.get(this);
+	    }
+	}
+	return null;
     }
 
     
@@ -986,177 +999,182 @@ public class CopyMojo extends AbstractLiquibaseChangeLogMojo {
      * super classes.
      */
     protected Field getDeclaredField(Class clazz, String fieldName)
-        throws NoSuchFieldException {
-        getLog().debug("Checking " + clazz.getName() + " for '" + fieldName + "'");
-        try {
-            Field f = clazz.getDeclaredField(fieldName);
+	throws NoSuchFieldException {
+	getLog().debug("Checking " + clazz.getName() + " for '" + fieldName + "'");
+	try {
+	    Field f = clazz.getDeclaredField(fieldName);
             
-            if (f != null) {
-                return f;
-            }
-        }
-        catch (Exception e) {
-        }
+	    if (f != null) {
+		return f;
+	    }
+	}
+	catch (Exception e) {
+	}
         
-        while (clazz.getSuperclass() != null) {        
-            clazz = clazz.getSuperclass();
-            getLog().debug("Checking " + clazz.getName() + " for '" + fieldName + "'");
-            try {
-                Field f = clazz.getDeclaredField(fieldName);
+	while (clazz.getSuperclass() != null) {        
+	    clazz = clazz.getSuperclass();
+	    getLog().debug("Checking " + clazz.getName() + " for '" + fieldName + "'");
+	    try {
+		Field f = clazz.getDeclaredField(fieldName);
                 
-                if (f != null) {
-                    return f;
-                }
-            }
-            catch (Exception e) {
-            }
-        }
+		if (f != null) {
+		    return f;
+		}
+	    }
+	    catch (Exception e) {
+	    }
+	}
 
-        throw new NoSuchFieldException("The field '" + fieldName + "' could not be "
-                                       + "found in the class of any of its parent "
-                                       + "classes.");
+	throw new NoSuchFieldException("The field '" + fieldName + "' could not be "
+				       + "found in the class of any of its parent "
+				       + "classes.");
     }
 
     private void setFieldValue(Field field, String value) throws IllegalAccessException {
-        if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
-            field.set(this, Boolean.valueOf(value));
-        } 
-        else {
-            field.set(this, value);
-        }
+	if (field.getType().equals(Boolean.class) || field.getType().equals(boolean.class)) {
+	    field.set(this, Boolean.valueOf(value));
+	} 
+	else {
+	    field.set(this, value);
+	}
     }
 
-/*
-    protected void exportData(final Database source, final Database target) {
+    /*
+      protected void exportData(final Database source, final Database target) {
 
-        final DatabaseFactory factory = DatabaseFactory.getInstance();
-        try {
-            h2db = factory.findCorrectDatabaseImplementation(new JdbcConnection(openConnection("h2")));
-            h2db.setDefaultSchemaName(h2Config.getSchema());
+      final DatabaseFactory factory = DatabaseFactory.getInstance();
+      try {
+      h2db = factory.findCorrectDatabaseImplementation(new JdbcConnection(openConnection("h2")));
+      h2db.setDefaultSchemaName(h2Config.getSchema());
 
-            export(new Diff(source, getDefaultSchemaName()), h2db, "tables", "-dat.xml");
+      export(new Diff(source, getDefaultSchemaName()), h2db, "tables", "-dat.xml");
 
-            ResourceAccessor antFO = new AntResourceAccessor(getProject(), classpath);
-            ResourceAccessor fsFO = new FileSystemResourceAccessor();
+      ResourceAccessor antFO = new AntResourceAccessor(getProject(), classpath);
+      ResourceAccessor fsFO = new FileSystemResourceAccessor();
 
-            String changeLogFile = getChangeLogFile() + "-dat.xml";
+      String changeLogFile = getChangeLogFile() + "-dat.xml";
 
-            Liquibase liquibase = new Liquibase(changeLogFile, new CompositeResourceAccessor(antFO, fsFO), h2db);
+      Liquibase liquibase = new Liquibase(changeLogFile, new CompositeResourceAccessor(antFO, fsFO), h2db);
 
-            log("Loading Schema");
-            liquibase.update(getContexts());
-            log("Finished Loading the Schema");
+      log("Loading Schema");
+      liquibase.update(getContexts());
+      log("Finished Loading the Schema");
 
-        }
-        catch (Exception e) {
-        }
-        catch (Exception e) {
-            throw new BuildException(e);
-        }
-        finally {
-            try {
-                if (h2db != null) {
-                    // hsqldb.getConnection().createStatement().execute("SHUTDOWN");                                                   
-                    log("Closing h2 database");
-                    h2db.close();
-                }
-            }
-            catch (Exception e) {
-                if (!(e instanceof java.sql.SQLNonTransientConnectionException)) {
-                    e.printStackTrace();
-                }
-            }
+      }
+      catch (Exception e) {
+      }
+      catch (Exception e) {
+      throw new BuildException(e);
+      }
+      finally {
+      try {
+      if (h2db != null) {
+      // hsqldb.getConnection().createStatement().execute("SHUTDOWN");                                                   
+      log("Closing h2 database");
+      h2db.close();
+      }
+      }
+      catch (Exception e) {
+      if (!(e instanceof java.sql.SQLNonTransientConnectionException)) {
+      e.printStackTrace();
+      }
+      }
 
-        }
-    }            
+      }
+      }            
     */
     
-    protected void exportConstraints(Diff diff, Database target) throws MojoExecutionException {
-        export(diff, target, "foreignKeys", "-cst.xml");
+    protected void exportConstraints(final Database source, Database target) throws MojoExecutionException {
+	export(source, target, "foreignKeys", "-cst.xml");
     }
 
-    protected void exportIndexes(Diff diff, Database target) throws MojoExecutionException {
-        export(diff, target, "indexes", "-idx.xml");
+    protected void exportIndexes(final Database source, Database target) throws MojoExecutionException {
+	export(source, target, "indexes", "-idx.xml");
     }
 
-    protected void exportViews(Diff diff, Database target) throws MojoExecutionException {
-    export(diff, target, "views", "-vw.xml");
+    protected void exportViews(final Database source, Database target) throws MojoExecutionException {
+	export(source, target, "views", "-vw.xml");
     }
 
-    protected void exportTables(Diff diff, Database target) throws MojoExecutionException  {
-        export(diff, target, "tables, primaryKeys, uniqueConstraints", "-tab.xml");
+    protected void exportTables(final Database source, Database target) throws MojoExecutionException  {
+	export(source, target, "tables, primaryKeys, uniqueConstraints", "-tab.xml");
     }
 
-    protected void exportSequences(Diff diff, Database target) throws MojoExecutionException {
-        export(diff, target, "sequences", "-seq.xml");
+    protected void exportSequences(final Database source, Database target) throws MojoExecutionException {
+	export(source, target, "sequences", "-seq.xml");
     }
     
-    protected void export(final Diff diff, final Database target, final String diffTypes, final String suffix) throws MojoExecutionException {
-        diff.setDiffTypes(diffTypes);
-
-        try {
-            DiffResult results = diff.compare();
-            results.printChangeLog(getChangeLogFile() + suffix, target);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException("Exception while exporting to the target: " + e.getMessage(), e);
-        }
+    protected void export(final Database source, final Database target, final String sourceTypes, final String suffix) throws MojoExecutionException {
+	try {
+	    final CatalogAndSchema catalogAndSchema = source.getDefaultSchema();
+	    final SnapshotControl snapshotControl = new SnapshotControl(source, sourceTypes);
+	    final CompareControl compareControl   = new CompareControl(new CompareControl.SchemaComparison[]{new CompareControl.SchemaComparison(catalogAndSchema, catalogAndSchema)}, sourceTypes);
+	    //        compareControl.addStatusListener(new OutDiffStatusListener());
+	    
+	    final DatabaseSnapshot referenceSnapshot = SnapshotGeneratorFactory.getInstance().createSnapshot(compareControl.getSchemas(CompareControl.DatabaseRole.REFERENCE), source, snapshotControl);
+	    final DatabaseSnapshot comparisonSnapshot = SnapshotGeneratorFactory.getInstance().createSnapshot(compareControl.getSchemas(CompareControl.DatabaseRole.REFERENCE), target, snapshotControl);
+	    // diff.setDiffTypes(snapshotTypes);
+	    
+	    final DiffResult results = DiffGeneratorFactory.getInstance().compare(referenceSnapshot, comparisonSnapshot, compareControl);
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException("Exception while exporting to the target: " + e.getMessage(), e);
+	}
     }
-
+    
     protected void exportSchema(final Database source, final Database target) throws MojoExecutionException {
-        try {
-            Diff diff = new Diff(source, source.getDefaultSchemaName());
-            exportTables(diff, target);
-            exportSequences(diff, target);
-            exportViews(diff, target);
-            exportIndexes(diff, target);
-            exportConstraints(diff, target);
-        }
-        catch (Exception e) {
-            throw new MojoExecutionException("Exception while exporting the source schema: " + e.getMessage(), e);
-        }
+	try {
+	    exportTables(source, target);
+	    exportSequences(source, target);
+	    exportViews(source, target);
+	    exportIndexes(source, target);
+	    exportConstraints(source, target);
+	}
+	catch (Exception e) {
+	    throw new MojoExecutionException("Exception while exporting the source schema: " + e.getMessage(), e);
+	}
     }
 
     protected JdbcConnection openConnection(final String url, 
-                                            final String username, 
-                                            final String password, 
-                                            final String className, 
-                                            final String schema) throws MojoExecutionException {
-        Connection retval = null;
-        int retry_count = 0;
-        final int max_retry = 5;
-        while (retry_count < max_retry) {
-            try {
-                getLog().debug("Loading schema " + schema + " at url " + url);
-                Class.forName(className);
-                retval = DriverManager.getConnection(url, username, password);
-                retval.setAutoCommit(true);
-            }
-            catch (Exception e) {
-                if (!e.getMessage().contains("Database lock acquisition failure") && !(e instanceof NullPointerException)) {
-                    throw new MojoExecutionException(e.getMessage(), e);
-                }
-            }
-            finally {
-                retry_count++;
-            }
-        }
-        return new JdbcConnection(retval);
+					    final String username, 
+					    final String password, 
+					    final String className, 
+					    final String schema) throws MojoExecutionException {
+	Connection retval = null;
+	int retry_count = 0;
+	final int max_retry = 5;
+	while (retry_count < max_retry) {
+	    try {
+		getLog().debug("Loading schema " + schema + " at url " + url);
+		Class.forName(className);
+		retval = DriverManager.getConnection(url, username, password);
+		retval.setAutoCommit(true);
+	    }
+	    catch (Exception e) {
+		if (!e.getMessage().contains("Database lock acquisition failure") && !(e instanceof NullPointerException)) {
+		    throw new MojoExecutionException(e.getMessage(), e);
+		}
+	    }
+	    finally {
+		retry_count++;
+	    }
+	}
+	return new JdbcConnection(retval);
     }
     
     @Override
     protected ResourceAccessor getFileOpener(final ClassLoader cl) {
-        final ResourceAccessor mFO = new MavenResourceAccessor(cl);
-        final ResourceAccessor fsFO = new FileSystemResourceAccessor(project.getBasedir().getAbsolutePath());
-        return new CompositeResourceAccessor(mFO, fsFO);
+	final ResourceAccessor mFO = new MavenResourceAccessor(cl);
+	final ResourceAccessor fsFO = new FileSystemResourceAccessor(project.getBasedir().getAbsolutePath());
+	return new CompositeResourceAccessor(mFO, fsFO);
     }
     
     public void setMavenHome(final File mavenHome) {
-        this.mavenHome = mavenHome;
+	this.mavenHome = mavenHome;
     }
     
     public File getMavenHome() {
-        return this.mavenHome;
+	return this.mavenHome;
     }
 
 }

@@ -1,4 +1,4 @@
-// Copyright 2011 Leo Przybylski. All rights reserved.
+// Copyright 2014 Leo Przybylski. All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without modification, are
 // permitted provided that the following conditions are met:
@@ -10,7 +10,7 @@
 //       of conditions and the following disclaimer in the documentation and/or other materials
 //       provided with the distribution.
 //
-// THIS SOFTWARE IS PROVIDED BY <COPYRIGHT HOLDER> ''AS IS'' AND ANY EXPRESS OR IMPLIED
+// THIS SOFTWARE IS PROVIDED BY Leo Przybylski ''AS IS'' AND ANY EXPRESS OR IMPLIED
 // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 // FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> OR
 // CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
@@ -40,8 +40,12 @@ import org.liquibase.maven.plugins.AbstractLiquibaseUpdateMojo;
 import liquibase.Liquibase;
 import liquibase.exception.LiquibaseException;
 import liquibase.serializer.ChangeLogSerializer;
+import liquibase.serializer.LiquibaseSerializable;
+import liquibase.parser.NamespaceDetails;
+import liquibase.parser.NamespaceDetailsFactory;
 import liquibase.parser.core.xml.LiquibaseEntityResolver;
 import liquibase.parser.core.xml.XMLChangeLogSAXParser;
+import liquibase.serializer.core.xml.XMLChangeLogSerializer;
 import org.apache.maven.wagon.authentication.AuthenticationInfo;
 
 import liquibase.util.xml.DefaultXmlWriter;
@@ -79,8 +83,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import static org.tmatesoft.svn.core.wc.SVNRevision.HEAD;
@@ -96,7 +102,8 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     public static final String DEFAULT_CHANGELOG_PATH = "src/main/scripts/changelogs";
     public static final String DEFAULT_UPDATE_FILE    = "target/changelogs/update.xml";
     public static final String DEFAULT_UPDATE_PATH    = "target/changelogs/update";
-    public static final String DEFAULT_LBPROP_PATH    = "target/test-classes/liquibase/";
+    public static final String DEFAULT_LBPROP_PATH    = "target/classes/liquibase/";
+    public static final String TEST_LBPROP_PATH       = "target/test-classes/liquibase/";
     public static final String TEST_ROLLBACK_TAG      = "test";
 
     /**
@@ -120,11 +127,11 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
 
     /**
 
-     The Maven Wagon manager to use when obtaining server authentication details.
-     @component role="org.apache.maven.artifact.manager.WagonManager"
-     @required
-     @readonly
-     */
+       The Maven Wagon manager to use when obtaining server authentication details.
+       @component role="org.apache.maven.artifact.manager.WagonManager"
+       @required
+       @readonly
+    */
     protected WagonManager wagonManager;
     /**
      * The server id in settings.xml to use when authenticating with.
@@ -290,7 +297,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     protected File getBasedir() {
         return project.getBasedir();
     }
-
+    
     protected SVNURL getChangeLogTagUrl() throws SVNException {
         if (changeLogTagUrl == null) {
             return getProjectSvnUrlFrom(getBasedir()).appendPath("tags", true);
@@ -313,15 +320,23 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     }
 
     protected File[] getLiquibasePropertiesFiles() throws MojoExecutionException {
+	File[] retval = null;
         try {
-            final File[] retval = new File(getBasedir(), DEFAULT_LBPROP_PATH).listFiles(new FilenameFilter() {
+             retval = new File(getBasedir(), DEFAULT_LBPROP_PATH).listFiles(new FilenameFilter() {
                     public boolean accept(final File dir, final String name) {
                         return name.endsWith(".properties");
                     }
                 });
             if (retval == null) {
-                throw new NullPointerException();
+		retval = new File(getBasedir(), TEST_LBPROP_PATH).listFiles(new FilenameFilter() {
+			public boolean accept(final File dir, final String name) {
+			    return name.endsWith(".properties");
+			}
+		    });
             }            
+            if (retval == null) {
+		throw new NullPointerException();
+	    }
             return retval;
         }
         catch (Exception e) {
@@ -363,11 +378,16 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
         }
 
         if (svnServer != null) {
-            final AuthenticationInfo info = wagonManager.getAuthenticationInfo(svnServer);
-            if (info != null) {
-                svnUsername = info.getUserName();
-                svnPassword = info.getPassword();
-            }
+	    try {
+		final AuthenticationInfo info = wagonManager.getAuthenticationInfo(svnServer);
+		if (info != null) {
+		    svnUsername = info.getUserName();
+		    svnPassword = info.getPassword();
+		}
+	    }
+	    catch (Exception e) {
+		e.printStackTrace();
+	    }
         }
         DAVRepositoryFactory.setup();
 
@@ -393,7 +413,12 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
             }
         }
         catch (Exception e) {
-            throw new MojoExecutionException("Exception when exporting changelogs from previous revisions", e);
+	    if (e.getMessage().contains("not a working copy")) {
+		shouldLocalUpdate = true;
+	    }
+	    else {
+		throw new MojoExecutionException("Exception when exporting changelogs from previous revisions", e);
+	    }
         }
 
         changeLogFile = new File(changeLogSavePath, "update.xml").getPath();
@@ -428,6 +453,9 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
             return getCurrentRevision() > getLocalRevision() || (hasUpdates);
         }
         catch (Exception e) {
+	    if (e.getMessage().contains("not a working copy")) {
+		return true;
+	    }
             throw new MojoExecutionException("Could not compare local and remote revisions ", e);
         }
     }
@@ -487,7 +515,9 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
 
     protected Collection<File> scanForChangelogs(final File searchPath) {
         final Collection<File> retval = new ArrayList<File>();
-        
+
+	getLog().warn("Searching in " + searchPath.getPath());
+	    
         if (searchPath.getName().endsWith("update")) {
             return Arrays.asList(searchPath.listFiles());
         }
@@ -495,6 +525,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
         if (searchPath.isDirectory()) {
             for (final File file : searchPath.listFiles()) {
                 if (file.isDirectory()) {
+		    System.out.println("Searching " + file.getName());
                     retval.addAll(scanForChangelogs(file));
                 }
             }
@@ -504,34 +535,67 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     }
 
     protected SVNClientManager clientManager() {
-        ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("lprzybylski", "entr0py0");
-        ISVNOptions options = SVNWCUtil.createDefaultOptions(true);       
-        SVNClientManager clientManager = SVNClientManager.newInstance(options, authManager);
+        final ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager("lprzybylski", "entr0py0");
+        final ISVNOptions options = SVNWCUtil.createDefaultOptions(true);       
+        final SVNClientManager clientManager = SVNClientManager.newInstance(options, authManager);
         
         return clientManager;
     }
 
-    protected void generateUpdateLog(final File changeLogFile, final Collection<File> changelogs) throws FileNotFoundException, IOException {
+    protected void generateUpdateLog(final File changeLogFile, 
+				     final Collection<File> changelogs) throws FileNotFoundException, IOException {
         changeLogFile.getParentFile().mkdirs();
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder documentBuilder;
-		try {
-			documentBuilder = factory.newDocumentBuilder();
-		}
-		catch(ParserConfigurationException e) {
-			throw new RuntimeException(e);
-		}
-		documentBuilder.setEntityResolver(new LiquibaseEntityResolver());
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+	DocumentBuilder documentBuilder;
+	try {
+	    documentBuilder = factory.newDocumentBuilder();
+	}
+	catch (ParserConfigurationException e) {
+	    throw new RuntimeException(e);
+	}
+	final XMLChangeLogSerializer serializer = new XMLChangeLogSerializer();
+	documentBuilder.setEntityResolver(new LiquibaseEntityResolver(serializer));
 
-		Document doc = documentBuilder.newDocument();
-		Element changeLogElement = doc.createElementNS(XMLChangeLogSAXParser.getDatabaseChangeLogNameSpace(), "databaseChangeLog");
+	final Document doc = documentBuilder.newDocument();
+        final Element changeLogElement = doc.createElementNS(LiquibaseSerializable.STANDARD_CHANGELOG_NAMESPACE, "databaseChangeLog");
 
-		changeLogElement.setAttribute("xmlns", XMLChangeLogSAXParser.getDatabaseChangeLogNameSpace());
-		changeLogElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-		changeLogElement.setAttribute("xsi:schemaLocation", "http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-"+ XMLChangeLogSAXParser.getSchemaVersion()+ ".xsd");
+        changeLogElement.setAttribute("xmlns", LiquibaseSerializable.STANDARD_CHANGELOG_NAMESPACE);
+        changeLogElement.setAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
-		doc.appendChild(changeLogElement);
+        final Map<String, String> shortNameByNamespace = new HashMap<String, String>();
+        final Map<String, String> urlByNamespace = new HashMap<String, String>();
+
+        for (final NamespaceDetails details : NamespaceDetailsFactory.getInstance().getNamespaceDetails()) {
+            for (final String namespace : details.getNamespaces()) {
+                if (details.supports(serializer, namespace)){
+                    final String shortName = details.getShortName(namespace);
+                    final String url = details.getSchemaUrl(namespace);
+                    if (shortName != null && url != null) {
+                        shortNameByNamespace.put(namespace, shortName);
+                        urlByNamespace.put(namespace, url);
+                    }
+                }
+            }
+        }
+
+        for (final Map.Entry<String, String> entry : shortNameByNamespace.entrySet()) {
+            if (!entry.getValue().equals("")) {
+                changeLogElement.setAttribute("xmlns:"+entry.getValue(), entry.getKey());
+            }
+        }
+
+
+        String schemaLocationAttribute = "";
+        for (final Map.Entry<String, String> entry : urlByNamespace.entrySet()) {
+            if (!entry.getValue().equals("")) {
+                schemaLocationAttribute += entry.getKey()+" "+entry.getValue()+" ";
+            }
+        }
+
+        changeLogElement.setAttribute("xsi:schemaLocation", schemaLocationAttribute.trim());
+
+        doc.appendChild(changeLogElement);
 
         for (final File changelog : changelogs) {
             doc.getDocumentElement().appendChild(includeNode(doc, changelog));
@@ -541,18 +605,21 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     }
 
     protected Element includeNode(final Document parentChangeLog, final File changelog) throws IOException {
-        final Element retval = parentChangeLog.createElementNS(XMLChangeLogSAXParser.getDatabaseChangeLogNameSpace(), "include");
+        final Element retval = parentChangeLog.createElementNS(LiquibaseSerializable.STANDARD_CHANGELOG_NAMESPACE, 
+							       "include");
+
         retval.setAttribute("file", changelog.getCanonicalPath());
         return retval;
     }
 
     @Override
-    protected void doUpdate(Liquibase liquibase) throws LiquibaseException {
+    protected void doUpdate(final Liquibase liquibase) throws LiquibaseException {
         if (dropFirst) {
             dropAll(liquibase);
         }
 
-        liquibase.tag("undo");
+	// TODO: Check if this is working later. Seems to be just plain broken at the moment.
+        // liquibase.tag("undo");
 
         if (changesToApply > 0) {
             liquibase.update(changesToApply, contexts);
@@ -607,7 +674,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
      *          the file.
      */
     protected void parsePropertiesFile(InputStream propertiesInputStream)
-            throws MojoExecutionException {
+	throws MojoExecutionException {
         if (propertiesInputStream == null) {
             throw new MojoExecutionException("Properties file InputStream is null.");
         }
@@ -636,7 +703,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
             }
             catch (Exception e) {
                 getLog().info("  '" + key + "' in properties file is not being used by this "
-                        + "task.");
+			      + "task.");
             }
         }
     }
