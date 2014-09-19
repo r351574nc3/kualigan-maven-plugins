@@ -378,11 +378,16 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
         }
 
         if (svnServer != null) {
-            final AuthenticationInfo info = wagonManager.getAuthenticationInfo(svnServer);
-            if (info != null) {
-                svnUsername = info.getUserName();
-                svnPassword = info.getPassword();
-            }
+	    try {
+		final AuthenticationInfo info = wagonManager.getAuthenticationInfo(svnServer);
+		if (info != null) {
+		    svnUsername = info.getUserName();
+		    svnPassword = info.getPassword();
+		}
+	    }
+	    catch (Exception e) {
+		e.printStackTrace();
+	    }
         }
         DAVRepositoryFactory.setup();
 
