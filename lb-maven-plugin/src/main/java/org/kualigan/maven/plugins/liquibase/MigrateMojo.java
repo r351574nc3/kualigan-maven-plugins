@@ -613,6 +613,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
             dropAll(liquibase);
         }
 
+	// TODO: Check if this is working later. Seems to be just plain broken at the moment.
         // liquibase.tag("undo");
 
         if (changesToApply > 0) {
