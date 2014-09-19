@@ -102,7 +102,8 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     public static final String DEFAULT_CHANGELOG_PATH = "src/main/scripts/changelogs";
     public static final String DEFAULT_UPDATE_FILE    = "target/changelogs/update.xml";
     public static final String DEFAULT_UPDATE_PATH    = "target/changelogs/update";
-    public static final String DEFAULT_LBPROP_PATH    = "target/test-classes/liquibase/";
+    public static final String DEFAULT_LBPROP_PATH    = "target/classes/liquibase/";
+    public static final String TEST_LBPROP_PATH       = "target/test-classes/liquibase/";
     public static final String TEST_ROLLBACK_TAG      = "test";
 
     /**
@@ -296,7 +297,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     protected File getBasedir() {
         return project.getBasedir();
     }
-
+    
     protected SVNURL getChangeLogTagUrl() throws SVNException {
         if (changeLogTagUrl == null) {
             return getProjectSvnUrlFrom(getBasedir()).appendPath("tags", true);
@@ -319,15 +320,23 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
     }
 
     protected File[] getLiquibasePropertiesFiles() throws MojoExecutionException {
+	File[] retval = null;
         try {
-            final File[] retval = new File(getBasedir(), DEFAULT_LBPROP_PATH).listFiles(new FilenameFilter() {
+             retval = new File(getBasedir(), DEFAULT_LBPROP_PATH).listFiles(new FilenameFilter() {
                     public boolean accept(final File dir, final String name) {
                         return name.endsWith(".properties");
                     }
                 });
             if (retval == null) {
-                throw new NullPointerException();
+		retval = new File(getBasedir(), TEST_LBPROP_PATH).listFiles(new FilenameFilter() {
+			public boolean accept(final File dir, final String name) {
+			    return name.endsWith(".properties");
+			}
+		    });
             }            
+            if (retval == null) {
+		throw new NullPointerException();
+	    }
             return retval;
         }
         catch (Exception e) {
@@ -399,7 +408,12 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
             }
         }
         catch (Exception e) {
-            throw new MojoExecutionException("Exception when exporting changelogs from previous revisions", e);
+	    if (e.getMessage().contains("not a working copy")) {
+		shouldLocalUpdate = true;
+	    }
+	    else {
+		throw new MojoExecutionException("Exception when exporting changelogs from previous revisions", e);
+	    }
         }
 
         changeLogFile = new File(changeLogSavePath, "update.xml").getPath();
@@ -434,6 +448,9 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
             return getCurrentRevision() > getLocalRevision() || (hasUpdates);
         }
         catch (Exception e) {
+	    if (e.getMessage().contains("not a working copy")) {
+		return true;
+	    }
             throw new MojoExecutionException("Could not compare local and remote revisions ", e);
         }
     }
@@ -493,7 +510,9 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
 
     protected Collection<File> scanForChangelogs(final File searchPath) {
         final Collection<File> retval = new ArrayList<File>();
-        
+
+	getLog().warn("Searching in " + searchPath.getPath());
+	    
         if (searchPath.getName().endsWith("update")) {
             return Arrays.asList(searchPath.listFiles());
         }
@@ -501,6 +520,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
         if (searchPath.isDirectory()) {
             for (final File file : searchPath.listFiles()) {
                 if (file.isDirectory()) {
+		    System.out.println("Searching " + file.getName());
                     retval.addAll(scanForChangelogs(file));
                 }
             }
@@ -581,7 +601,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
 
     protected Element includeNode(final Document parentChangeLog, final File changelog) throws IOException {
         final Element retval = parentChangeLog.createElementNS(LiquibaseSerializable.STANDARD_CHANGELOG_NAMESPACE, 
-							       "databaseChangeLog");
+							       "include");
 
         retval.setAttribute("file", changelog.getCanonicalPath());
         return retval;
@@ -593,7 +613,7 @@ public class MigrateMojo extends AbstractLiquibaseUpdateMojo {
             dropAll(liquibase);
         }
 
-        liquibase.tag("undo");
+        // liquibase.tag("undo");
 
         if (changesToApply > 0) {
             liquibase.update(changesToApply, contexts);
