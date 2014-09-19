@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20140919" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Liquibase Copy Plugin - Dependency Information</title>
+    <title>Kualigan Maven Plugin API - Dependency Information</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.1.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -42,58 +42,7 @@
             
                 
                                 <ul class="nav">
-                          <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kualigan Maven Plugins <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-        
-                      <li>      <a href="index.html"  title="Overview">Overview</a>
-</li>
-                          </ul>
-      </li>
-                <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project Documentation <b class="caret"></b></a>
-        <ul class="dropdown-menu">
-        
-                      <li class="dropdown-submenu">
-                                      <a href="project-info.html"  title="Project Information">Project Information</a>
-              <ul class="dropdown-menu">
-                                  <li>      <a href="index.html"  title="About">About</a>
-</li>
-                                  <li>      <a href="plugin-management.html"  title="Plugin Management">Plugin Management</a>
-</li>
-                                  <li>      <a href="distribution-management.html"  title="Distribution Management">Distribution Management</a>
-</li>
-                                  <li>      <a href="dependency-info.html"  title="Dependency Information">Dependency Information</a>
-</li>
-                                  <li>      <a href="dependency-convergence.html"  title="Dependency Convergence">Dependency Convergence</a>
-</li>
-                                  <li>      <a href="source-repository.html"  title="Source Repository">Source Repository</a>
-</li>
-                                  <li>      <a href="mail-lists.html"  title="Mailing Lists">Mailing Lists</a>
-</li>
-                                  <li>      <a href="issue-tracking.html"  title="Issue Tracking">Issue Tracking</a>
-</li>
-                                  <li>      <a href="integration.html"  title="Continuous Integration">Continuous Integration</a>
-</li>
-                                  <li>      <a href="plugins.html"  title="Project Plugins">Project Plugins</a>
-</li>
-                                  <li>      <a href="license.html"  title="Project License">Project License</a>
-</li>
-                                  <li>      <a href="modules.html"  title="Project Modules">Project Modules</a>
-</li>
-                                  <li>      <a href="dependency-management.html"  title="Dependency Management">Dependency Management</a>
-</li>
-                                  <li>      <a href="team-list.html"  title="Project Team">Project Team</a>
-</li>
-                                  <li>      <a href="project-summary.html"  title="Project Summary">Project Summary</a>
-</li>
-                                  <li>      <a href="dependencies.html"  title="Dependencies">Dependencies</a>
-</li>
-                              </ul>
-            </li>
-                          </ul>
-      </li>
-                  </ul>
+                            </ul>
           
           
                                               
@@ -116,7 +65,7 @@
           <div id="banner">
         <div class="pull-left">
                                     <a href="http://www.kuali.org" id="bannerLeft">
-                                                                                                <img src="images/kuali_commercial.png"  alt="Kuali"/>
+                                                                                                <img src="../images/kuali_commercial.png"  alt="Kuali"/>
                 </a>
                       </div>
         <div class="pull-right">  </div>
@@ -150,38 +99,37 @@
 <div class="source">
 <pre>&lt;dependency&gt;
   &lt;groupId&gt;org.kualigan.maven.plugins&lt;/groupId&gt;
-  &lt;artifactId&gt;kualigan-maven-plugins&lt;/artifactId&gt;
+  &lt;artifactId&gt;kualigan-maven-plugin-api&lt;/artifactId&gt;
   &lt;version&gt;2.0.1-SNAPSHOT&lt;/version&gt;
-  &lt;type&gt;pom&lt;/type&gt;
 &lt;/dependency&gt;</pre></div></div>
 <div class="section">
 <h3>Apache Buildr<a name="Apache_Buildr"></a></h3><a name="Apache_Buildr"></a>
 <div class="source">
-<pre>'org.kualigan.maven.plugins:kualigan-maven-plugins:pom:2.0.1-SNAPSHOT'</pre></div></div>
+<pre>'org.kualigan.maven.plugins:kualigan-maven-plugin-api:jar:2.0.1-SNAPSHOT'</pre></div></div>
 <div class="section">
 <h3>Apache Ant<a name="Apache_Ant"></a></h3><a name="Apache_Ant"></a>
 <div class="source">
-<pre>&lt;dependency org=&quot;org.kualigan.maven.plugins&quot; name=&quot;kualigan-maven-plugins&quot; rev=&quot;2.0.1-SNAPSHOT&quot;&gt;
-  &lt;artifact name=&quot;kualigan-maven-plugins&quot; type=&quot;pom&quot; /&gt;
+<pre>&lt;dependency org=&quot;org.kualigan.maven.plugins&quot; name=&quot;kualigan-maven-plugin-api&quot; rev=&quot;2.0.1-SNAPSHOT&quot;&gt;
+  &lt;artifact name=&quot;kualigan-maven-plugin-api&quot; type=&quot;jar&quot; /&gt;
 &lt;/dependency&gt;</pre></div></div>
 <div class="section">
 <h3>Groovy Grape<a name="Groovy_Grape"></a></h3><a name="Groovy_Grape"></a>
 <div class="source">
 <pre>@Grapes(
-@Grab(group='org.kualigan.maven.plugins', module='kualigan-maven-plugins', version='2.0.1-SNAPSHOT')
+@Grab(group='org.kualigan.maven.plugins', module='kualigan-maven-plugin-api', version='2.0.1-SNAPSHOT')
 )</pre></div></div>
 <div class="section">
 <h3>Grails<a name="Grails"></a></h3><a name="Grails"></a>
 <div class="source">
-<pre>compile 'org.kualigan.maven.plugins:kualigan-maven-plugins:2.0.1-SNAPSHOT'</pre></div></div>
+<pre>compile 'org.kualigan.maven.plugins:kualigan-maven-plugin-api:2.0.1-SNAPSHOT'</pre></div></div>
 <div class="section">
 <h3>Leiningen<a name="Leiningen"></a></h3><a name="Leiningen"></a>
 <div class="source">
-<pre>[org.kualigan.maven.plugins/kualigan-maven-plugins &quot;2.0.1-SNAPSHOT&quot;]</pre></div></div>
+<pre>[org.kualigan.maven.plugins/kualigan-maven-plugin-api &quot;2.0.1-SNAPSHOT&quot;]</pre></div></div>
 <div class="section">
 <h3>SBT<a name="SBT"></a></h3><a name="SBT"></a>
 <div class="source">
-<pre>libraryDependencies += &quot;org.kualigan.maven.plugins&quot; %% &quot;kualigan-maven-plugins&quot; % &quot;2.0.1-SNAPSHOT&quot;</pre></div></div></div>
+<pre>libraryDependencies += &quot;org.kualigan.maven.plugins&quot; %% &quot;kualigan-maven-plugin-api&quot; % &quot;2.0.1-SNAPSHOT&quot;</pre></div></div></div>
                   </div>
           </div>
 
