@@ -653,7 +653,7 @@
 	
 	<site>
           <id>github-project-site</id>
-          <url>gitsite:git@github.com/r351574nc3/lbcopy</url>
+          <url>gitsite:git@github.com/r351574nc3/kualigan-maven-plugins</url>
 	</site>
     </distributionManagement>  
 </project>
