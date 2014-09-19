@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="Date-Revision-yyyymmdd" content="20140919" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>Liquibase Copy Plugin - Project Dependencies</title>
+    <title>Liquibase Copy Plugin - Dependency Information</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.3.1.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -143,10 +143,45 @@
                 
         <div id="bodyColumn" >
                                   
-            <a name="Project_Dependencies"></a>
+            <div class="section">
+<h2>Dependency Information<a name="Dependency_Information"></a></h2><a name="Dependency_Information"></a>
 <div class="section">
-<h2>Project Dependencies<a name="Project_Dependencies"></a></h2>
-<p>There are no dependencies for this project. It is a standalone application that does not depend on any other project.</p></div>
+<h3>Apache Maven<a name="Apache_Maven"></a></h3><a name="Apache_Maven"></a>
+<div class="source">
+<pre>&lt;dependency&gt;
+  &lt;groupId&gt;org.kualigan.maven.plugins&lt;/groupId&gt;
+  &lt;artifactId&gt;kualigan-maven-plugins&lt;/artifactId&gt;
+  &lt;version&gt;2.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;type&gt;pom&lt;/type&gt;
+&lt;/dependency&gt;</pre></div></div>
+<div class="section">
+<h3>Apache Buildr<a name="Apache_Buildr"></a></h3><a name="Apache_Buildr"></a>
+<div class="source">
+<pre>'org.kualigan.maven.plugins:kualigan-maven-plugins:pom:2.0.1-SNAPSHOT'</pre></div></div>
+<div class="section">
+<h3>Apache Ant<a name="Apache_Ant"></a></h3><a name="Apache_Ant"></a>
+<div class="source">
+<pre>&lt;dependency org=&quot;org.kualigan.maven.plugins&quot; name=&quot;kualigan-maven-plugins&quot; rev=&quot;2.0.1-SNAPSHOT&quot;&gt;
+  &lt;artifact name=&quot;kualigan-maven-plugins&quot; type=&quot;pom&quot; /&gt;
+&lt;/dependency&gt;</pre></div></div>
+<div class="section">
+<h3>Groovy Grape<a name="Groovy_Grape"></a></h3><a name="Groovy_Grape"></a>
+<div class="source">
+<pre>@Grapes(
+@Grab(group='org.kualigan.maven.plugins', module='kualigan-maven-plugins', version='2.0.1-SNAPSHOT')
+)</pre></div></div>
+<div class="section">
+<h3>Grails<a name="Grails"></a></h3><a name="Grails"></a>
+<div class="source">
+<pre>compile 'org.kualigan.maven.plugins:kualigan-maven-plugins:2.0.1-SNAPSHOT'</pre></div></div>
+<div class="section">
+<h3>Leiningen<a name="Leiningen"></a></h3><a name="Leiningen"></a>
+<div class="source">
+<pre>[org.kualigan.maven.plugins/kualigan-maven-plugins &quot;2.0.1-SNAPSHOT&quot;]</pre></div></div>
+<div class="section">
+<h3>SBT<a name="SBT"></a></h3><a name="SBT"></a>
+<div class="source">
+<pre>libraryDependencies += &quot;org.kualigan.maven.plugins&quot; %% &quot;kualigan-maven-plugins&quot; % &quot;2.0.1-SNAPSHOT&quot;</pre></div></div></div>
                   </div>
           </div>
 
