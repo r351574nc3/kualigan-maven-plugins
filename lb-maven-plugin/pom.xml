@@ -72,10 +72,6 @@
     </dependency>
     <dependency>
       <groupId>org.kualigan.liquibase</groupId>
-      <artifactId>kualigan-lb-extensions</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.kualigan.liquibase</groupId>
       <artifactId>kualigan-lb-ant</artifactId>
     </dependency>
     <dependency>
