@@ -650,13 +650,8 @@
     <modules>
         <module>kualigan-maven-plugin-api</module>
         <module>kualigan-maven-skin</module>
-        <module>kc-archetype</module>
         <module>kc-maven-plugin</module>
-        <module>kfs-archetype</module>
-        <module>kfs3-archetype</module>
-        <module>kfs4-archetype</module>
         <module>kfs-maven-plugin</module>
-        <module>kr-archetype</module>
         <module>kuali-maven-plugin</module>
         <module>lb-copy-archetype</module>
         <module>lb-maven-plugin</module>
